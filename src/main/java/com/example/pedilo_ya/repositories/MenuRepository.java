@@ -1,6 +1,7 @@
 package com.example.pedilo_ya.repositories;
 
-import com.example.pedilo_ya.entities.Restaurante.Empleado;
+import com.example.pedilo_ya.entities.Factura.Factura;
+import com.example.pedilo_ya.entities.Restaurante.Menu.Menu;
 import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
-    @Query("SELECT * FROM Restaurante WHERE id = :id")
-    Optional<Empleado> findById(@Param("id") long id);
+public interface MenuRepository extends JpaRepository<Menu, Long> {
+    @Query("SELECT * FROM Menu WHERE id_restaurante = :id")
+    List<Menu> findByIdRestaurante(@Param("id") long id);
+
 }

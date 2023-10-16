@@ -1,5 +1,6 @@
 package com.example.pedilo_ya.entities.Restaurante.Menu;
 
+import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ public class Menu {
     @Column(name = "precio")
     private double precio;
 
+    @ManyToOne
+    @JoinColumn(name = "id_restaurante")
+    private Restaurante restaurante;
     @OneToMany
     @JoinTable(
             name = "menu_ingredientes",
@@ -44,6 +48,19 @@ public class Menu {
         this.tipo = tipo;
         this.comensales = comensales;
         this.precio = precio;
+    }
+
+
+    public Restaurante getRestaurante() {
+        return restaurante;
+    }
+
+    public void setRestaurante(Restaurante restaurante) {
+        this.restaurante = restaurante;
+    }
+
+    public void setIngredientes(List<Ingrediente> ingredientes) {
+        this.ingredientes = ingredientes;
     }
 
     public Long getId() {
