@@ -1,6 +1,6 @@
 package com.example.pedilo_ya.repositories;
 
-import com.example.pedilo_ya.entities.Cliente.Cliente;
+import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<Cliente, Long> {
-    List<Cliente> findAll();
-    @Query("SELECT u FROM User u WHERE u.email = :email")
-    Optional<Cliente> findByEmail(@Param("email") String email);
+public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
+    List<Restaurante> findAll();
+
+    @Query("SELECT * FROM Restaurante WHERE id = :id")
+    Optional<Restaurante> findById(@Param("id") long id);
+
 }

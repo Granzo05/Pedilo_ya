@@ -1,10 +1,11 @@
 package com.example.pedilo_ya.controllers;
 
 import com.example.pedilo_ya.entities.Cliente.Cliente;
-import com.example.pedilo_ya.repositories.UserRepository;
+import com.example.pedilo_ya.repositories.ClienteRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,32 +13,32 @@ import java.util.Optional;
 
 @RestController
 public class ClienteController {
-    ArrayList<Cliente> clientes = new ArrayList();
-    private final UserRepository userRepository;
-    public ClienteController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private final ClienteRepository clienteRepository;
+
+    public ClienteController(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
     }
 
-    @GetMapping("/user")
-    public List<Cliente> getUsers() {
-        return userRepository.findAll();
+    @GetMapping("/cliente")
+    public List<Cliente> getClientes() {
+        return clienteRepository.findAll();
     }
 
-    @PostMapping("/user")
-    public ResponseEntity<String> createUser(@RequestBody Cliente clienteDetails){
-        Optional<Cliente> user = userRepository.findByEmail(clienteDetails.getEmail());
-        if(!user.isPresent()){
-            userRepository.save(clienteDetails);
+    @PostMapping("/cliente")
+    public ResponseEntity<String> crearCliente(@RequestBody Cliente clienteDetails) {
+        Optional<Cliente> user = clienteRepository.findByEmail(clienteDetails.getEmail());
+        if (user.isEmpty()) {
+            clienteRepository.save(clienteDetails);
             return new ResponseEntity<>("El usuario ha sido añadido correctamente", HttpStatus.CREATED);
-        }else{
+        } else {
             return new ResponseEntity<>("El usuario ya existe", HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PutMapping("/user/{id}")
+    @PutMapping("/cliente/{id}")
     public ResponseEntity<Cliente> updateUser(@PathVariable Long id, @RequestBody Cliente clienteDetails) {
-        Optional<Cliente> userOptional = userRepository.findById(id);
-        if (!userOptional.isPresent()) {
+        Optional<Cliente> userOptional = clienteRepository.findById(id);
+        if (userOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         Cliente cliente = userOptional.get();
@@ -58,16 +59,17 @@ public class ClienteController {
                 System.out.println("El error es " + e.getClass());
             }
         }
-        Cliente savedCliente = userRepository.save(cliente);
+        Cliente savedCliente = clienteRepository.save(cliente);
         return ResponseEntity.ok(savedCliente);
     }
-    @DeleteMapping("/user/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-        Optional<Cliente> user = userRepository.findById(id);
+
+    @DeleteMapping("/cliente/{id}")
+    public ResponseEntity<?> borrarCliente(@PathVariable Long id) {
+        Optional<Cliente> user = clienteRepository.findById(id);
         if (!user.isPresent()) {
             return new ResponseEntity<>("El usuario no existe o ya ha sido borrado", HttpStatus.BAD_REQUEST);
         }
-        userRepository.delete(user.get());
+        clienteRepository.delete(user.get());
         return new ResponseEntity<>("El usuario ha sido borrado correctamente", HttpStatus.ACCEPTED);
     }
 }

@@ -1,31 +1,40 @@
 package com.example.pedilo_ya.entities.Cliente;
 
+import com.example.pedilo_ya.entities.Factura.Factura;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
-@jakarta.persistence.Entity
+@Entity
 @Table(name = "clientes")
 public class Cliente {
-    @jakarta.persistence.Id
-    @jakarta.persistence.GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(name = "nombre")
     private String nombre;
+
     @Column(name = "apellido")
     private String apellido;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "domicilio")
     private String domicilio;
+
     @Column(name = "telefono")
     private long telefono;
+
     @Column(name = "fecha_registro", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     public Date fechaRegistro;
+
+    @OneToOne(mappedBy = "cliente")
+    private Factura factura;
 
     public Cliente() {
     }
@@ -36,6 +45,14 @@ public class Cliente {
         this.email = email;
         this.domicilio = domicilio;
         this.telefono = telefono;
+    }
+
+    public Factura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
     }
 
     public Long getId() {
