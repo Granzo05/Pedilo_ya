@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styleLogin.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>pediloYa - Inicio sesión</title>
+</head>
+<body>
+    <div class="container-form registrar ocultar">
+        <div class="info">
+            <div class="info-childs">
+                <h2>¡Bienvenido!</h2>
+                <p>Si ya posees una cuenta, por favor, inicia sesión con tus datos</p>
+                <input type="button" value="Iniciar sesión" id="iniciarSesionDatos">
+            </div>
+        </div>
+        <div class="form-info">
+            <div class="form-info-childs">
+                <h2>Crear una cuenta</h2>
+                <div class="icons">
+                    <i class='bx bxl-google'></i>
+                    <i class='bx bxl-facebook' ></i>
+                    <i class='bx bxl-discord'></i>
+                </div>
+                <p>o usa tu e-mail para registrarte</p>
+                <form class="form">
+                    <label>
+                        <i class='bx bxs-user'></i>
+                        <input type="text" placeholder="Nombre completo">
+                    </label>
+                    <label>
+                        <i class='bx bx-envelope'></i>
+                        <input type="text" placeholder="Correo electrónico">
+                    </label>
+                    <label>
+                        <i class='bx bx-lock'></i>
+                        <input type="password" placeholder="Contraseña">
+                    </label>
+                    <input type="submit" value="Registrarse" id="registrarse">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-form iniciar">
+        <div class="info">
+            <div class="info-childs">
+                <h2>¡Bienvenido!</h2>
+                <p>Si no posees una cuenta, por favor, registrate aquí</p>
+                <input type="button" value="Registrarse" id="registrarDatos">
+            </div>
+        </div>
+        <div class="form-info">
+            <div class="form-info-childs">
+                <h2>Iniciar sesión</h2>
+                <div class="icons">
+                    <i class='bx bxl-google'></i>
+                    <i class='bx bxl-facebook' ></i>
+                    <i class='bx bxl-discord'></i>
+                </div>
+                <p>o iniciar sesión con una cuenta</p>
+                <form class="form">
+                    <label>
+                        <i class='bx bx-envelope'></i>
+                        <input type="text" placeholder="Correo electrónico">
+                    </label>
+                    <label>
+                        <i class='bx bx-lock'></i>
+                        <input type="password" placeholder="Contraseña">
+                    </label>
+                    <input type="submit" value="Iniciar sesión" id="iniciarSesion">
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</body>
+<script src="js/scriptLogin.js"></script>
+</html>
