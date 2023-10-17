@@ -26,7 +26,6 @@ public class ClienteController {
 
     @PostMapping("/cliente")
     public ResponseEntity<String> crearCliente(@RequestBody Cliente clienteDetails) {
-        System.out.println(clienteDetails);
         Optional<Cliente> cliente = clienteRepository.findByEmail(clienteDetails.getEmail());
         if (cliente.isEmpty()) {
             clienteRepository.save(clienteDetails);
@@ -35,8 +34,10 @@ public class ClienteController {
             return new ResponseEntity<>("El usuario ya existe", HttpStatus.BAD_REQUEST);
         }
     }
+    @CrossOrigin
     @PostMapping("/cliente/login")
     public ResponseEntity<Cliente> buscarCliente(@RequestBody Cliente clienteDetails) {
+        System.out.println(clienteDetails);
         Optional<Cliente> clienteOptional = clienteRepository.findByEmail(clienteDetails.getEmail());
         if (clienteOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
