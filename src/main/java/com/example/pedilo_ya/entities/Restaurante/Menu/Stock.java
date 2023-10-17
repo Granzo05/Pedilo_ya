@@ -4,7 +4,9 @@ import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "stock")
@@ -18,10 +20,9 @@ public class Stock {
     private String medida;
     @ManyToOne
     @JoinColumn(name = "id_restaurante")
-    private long idRestaurante;
-    @Column(name = "id_ingrediente")
-    private Ingrediente id_ingrediente;
-
+    private Restaurante restaurante;
+    @OneToOne
+    private Ingrediente ingrediente;
     @Column(name = "fecha_llegada", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
@@ -30,11 +31,11 @@ public class Stock {
     public Stock() {
     }
 
-    public Stock(int cantidad, String medida, Restaurante restaurante, Ingrediente id_ingrediente) {
+    public Stock(int cantidad, String medida, Restaurante restaurante, Ingrediente ingrediente) {
         this.cantidad = cantidad;
         this.medida = medida;
-        this.idRestaurante = restaurante.getId();
-        this.id_ingrediente = id_ingrediente;
+        this.restaurante = restaurante;
+        this.ingrediente = ingrediente;
     }
 
     public Long getId() {
@@ -61,20 +62,20 @@ public class Stock {
         this.medida = medida;
     }
 
-    public long getIdRestaurante() {
-        return idRestaurante;
+    public Restaurante getRestaurante() {
+        return restaurante;
     }
 
-    public void setIdRestaurante(long idRestaurante) {
-        this.idRestaurante = idRestaurante;
+    public void setRestaurante(Restaurante restaurante) {
+        this.restaurante = restaurante;
     }
 
-    public Ingrediente getId_ingrediente() {
-        return id_ingrediente;
+    public Ingrediente getIngrediente() {
+        return ingrediente;
     }
 
-    public void setId_ingrediente(Ingrediente id_ingrediente) {
-        this.id_ingrediente = id_ingrediente;
+    public void setIngrediente(Ingrediente ingrediente) {
+        this.ingrediente = ingrediente;
     }
 
     public Date getFechaLlegada() {

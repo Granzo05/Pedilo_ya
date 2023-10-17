@@ -26,8 +26,8 @@ public class DetallePedido {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    @OneToMany
-    @JoinColumn(name = "menu_id")
+    @ManyToOne
+    @JoinColumn(name = "pedido")
     private Pedido pedido;
 
     @Column(name = "fecha", updatable = false, nullable = false)

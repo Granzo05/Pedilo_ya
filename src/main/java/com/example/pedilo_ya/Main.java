@@ -6,11 +6,11 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@EntityScan("com.example.ApiREST.entities")
+@EntityScan("com.example.pedilo_ya.entities")
 @ComponentScan(basePackages = {"com.example.pedilo_ya.controllers", "com.example.pedilo_ya.repositories", "com.example.pedilo_ya.configurationSpring"})
-public class ApiRestApplication {
+public class Main {
 	public static void main(String[] args) {
-		SpringApplication.run(ApiRestApplication.class, args);
+		SpringApplication.run(Main.class, args);
 	}
 
 }

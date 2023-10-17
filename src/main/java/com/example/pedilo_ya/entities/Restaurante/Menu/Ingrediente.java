@@ -12,18 +12,8 @@ public class Ingrediente {
     private double costo;
     @Column(name = "nombre")
     private String nombre;
-
-    @ManyToOne
-    @JoinTable(
-            name = "menu_ingredientes",
-            joinColumns = @JoinColumn(name = "ingrediente_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_id")
-    )
-    private Menu menu;
-
     public Ingrediente() {
     }
-
     public Ingrediente(double costo, String nombre) {
         this.costo = costo;
         this.nombre = nombre;
@@ -45,11 +35,11 @@ public class Ingrediente {
         this.nombre = nombre;
     }
 
-    public Menu getMenu() {
-        return menu;
+    public Long getId() {
+        return id;
     }
 
-    public void setMenu(Menu menu) {
-        this.menu = menu;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

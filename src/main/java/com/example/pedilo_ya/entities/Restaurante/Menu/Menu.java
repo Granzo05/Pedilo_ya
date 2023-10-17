@@ -25,13 +25,7 @@ public class Menu {
     @JoinColumn(name = "id_restaurante")
     private Restaurante restaurante;
     @OneToMany
-    @JoinTable(
-            name = "menu_ingredientes",
-            joinColumns = @JoinColumn(name = "menu_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingrediente_id")
-    )
     private List<Ingrediente> ingredientes = new ArrayList<>();
-
     public Menu() {
     }
 

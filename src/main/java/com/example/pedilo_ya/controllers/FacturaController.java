@@ -35,19 +35,8 @@ public class FacturaController {
         return ResponseEntity.ok(factura);
     }
 
-    // Busca la factura asociada a un id de detalle
-    @GetMapping("/cliente/factura/{id}")
-    public ResponseEntity<Factura> getFacturaPorIdDetalle(@PathVariable Long id) {
-        Optional<Factura> facturaEncontrada = facturaRepository.findByIdDetalleFactura(id);
-        if (facturaEncontrada.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        Factura factura = facturaEncontrada.get();
-        return ResponseEntity.ok(factura);
-    }
-
     // Busca las facturas asociadas a un id de cliente
-    @GetMapping("/cliente/factura")
+    @GetMapping("/cliente/factura/{idCliente}")
     public List<Factura> getFacturasIdCliente(@PathVariable Long id) {
         return facturaRepository.findByIdCliente(id);
     }

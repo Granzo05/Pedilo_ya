@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
-    @Query("SELECT * FROM Menu WHERE id_restaurante = :id")
+    @Query("SELECT m FROM Menu m WHERE m.restaurante.id = :id")
     List<Menu> findByIdRestaurante(@Param("id") long id);
-
 }
