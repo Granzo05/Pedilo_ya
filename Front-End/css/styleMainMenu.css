@@ -115,3 +115,7 @@ body .options .option {
     color: white;
     font-weight: bold;
 }
+
+.enlarged {
+    cursor: pointer; 
+}

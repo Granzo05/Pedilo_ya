@@ -31,7 +31,7 @@ function cargarUsuario() {
     // Validaciones aca
     console.log(JSON.stringify(datosCliente));
 
-    fetch('http://localhost:8080/api/cliente', {
+    fetch('http://localhost:8080/cliente', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ function iniciarSesionUsuario() {
     // Validaciones aca
     console.log(JSON.stringify(datosCliente));
 
-    fetch('http://localhost:8080/api/cliente/login', {
+    fetch('http://localhost:8080/cliente/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
