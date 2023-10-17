@@ -29,7 +29,6 @@ function cargarUsuario() {
     };
 
     // Validaciones aca
-    console.log(JSON.stringify(datosCliente));
 
     fetch('http://localhost:8080/cliente', {
         method: 'POST',
@@ -54,7 +53,7 @@ function cargarUsuario() {
         });
 }
 
-function iniciarSesionUsuario() {
+function iniciarSesionNegocio() {
     const emailInput = document.getElementById("emailLogin");
     const contraseñaInput = document.getElementById("contraseñaLogin");
 
@@ -64,7 +63,6 @@ function iniciarSesionUsuario() {
     };
 
     // Validaciones aca
-    console.log(JSON.stringify(datosCliente));
 
     fetch('http://localhost:8080/cliente/login', {
         method: 'POST',

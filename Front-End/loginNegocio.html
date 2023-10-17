@@ -31,7 +31,7 @@
                 <form class="form">
                     <label>
                         <i class='bx bxs-user'></i>
-                        <input type="text" placeholder="Nombre completo" id="nombreRegistracion">
+                        <input type="text" placeholder="Nombre del negocio" id="nombreRegistracion">
                     </label>
                     <label>
                         <i class='bx bx-envelope'></i>
@@ -41,7 +41,15 @@
                         <i class='bx bx-lock'></i>
                         <input type="password" placeholder="Contraseña" id="contraseñaRegistracion">
                     </label>
-                    <input type="button" value="Registrarse" id="registrarse" onclick="cargarUsuario()">
+                    <label>
+                        <i class='bx bx-lock'></i>
+                        <input type="text" placeholder="Domicilio" id="domicilioRegistracion">
+                    </label>
+                    <label>
+                        <i class='bx bx-lock'></i>
+                        <input type="text" placeholder="Telefono" id="telefonoRegistracion">
+                    </label>
+                    <input type="button" value="Registrarse" id="registrarse" onclick="cargarNegocio()">
                 </form>
             </div>
         </div>
@@ -51,7 +59,7 @@
         <div class="info">
             <div class="info-childs">
                 <h2>¡Bienvenido!</h2>
-                <p>Si no posees una cuenta, por favor, registrate aquí</p>
+                <p>Si no posees una cuenta de negocio, por favor, registrate aquí</p>
                 <input type="button" value="Registrarse" id="registrarDatos">
             </div>
         </div>
@@ -73,12 +81,12 @@
                         <i class='bx bx-lock'></i>
                         <input type="password" placeholder="Contraseña" id="contraseñaLogin">
                     </label>
-                    <input type="button" value="Iniciar sesión" id="iniciarSesion" onclick="iniciarSesionUsuario()">
+                    <input type="button" value="Iniciar sesión" id="iniciarSesion" onclick="iniciarSesionNegocio()">
                 </form>
             </div>
         </div>
     </div>
     
 </body>
-<script src="js/scriptLogin.js"></script>
+<script src="js/scriptLoginNegocio.js"></script>
 </html>

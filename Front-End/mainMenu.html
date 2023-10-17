@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="options">
-        <div class="option active" style="--optionBackground:url(https://cdn.sanity.io/images/jsdrzfkj/production-esmx/5e2316cc629ede9cd6646163efeafc5486161751-6240x4160.jpg?w=800&h=533&fit=crop);" id="hamburguesas" onclick="toggleImage(this)">
+        <div class="option active" style="--optionBackground:url(https://cdn.sanity.io/images/jsdrzfkj/production-esmx/5e2316cc629ede9cd6646163efeafc5486161751-6240x4160.jpg?w=800&h=533&fit=crop);">
             <div class="label">
                 <div class="icon">
                     <img width="28" height="28" src="https://img.icons8.com/external-line-zulfa-mahendra/48/external-burguer-food-delivery-line-zulfa-mahendra.png" alt="external-burguer-food-delivery-line-zulfa-mahendra"/>
@@ -23,9 +23,9 @@
                     <div class="main">HAMBURGUESAS</div>
                     <div class="sub">¡Encuentra la que gustes!</div>
                 </div>
-            </div>            
+            </div>
         </div>
-        <div class="option" style="--optionBackground: url(https://media.minutouno.com/p/7b22d01bdaf2dfb7c979c5b2e993b6c1/adjuntos/150/imagenes/038/105/0038105149/610x0/smart/super-pancho.jpg);" id="panchos" onclick="toggleImage(this)">
+        <div class="option" style="--optionBackground: url(https://media.minutouno.com/p/7b22d01bdaf2dfb7c979c5b2e993b6c1/adjuntos/150/imagenes/038/105/0038105149/610x0/smart/super-pancho.jpg);">
             <div class="label">
                 <div class="icon">
                     <img width="28" height="28" src="https://img.icons8.com/ios/50/hot-dog.png" alt="hot-dog"/>
@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="option" style="--optionBackground: url(https://www.clarin.com/img/2022/05/18/f91_3iwyd_1200x630__1.jpg);" id="empanadas" onclick="toggleImage(this)">
+        <div class="option" style="--optionBackground: url(https://www.clarin.com/img/2022/05/18/f91_3iwyd_1200x630__1.jpg);">
             <div class="label">
                 <div class="icon">
                     <img width="35" height="35" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-empanada-world-cuisine-flaticons-lineal-color-flat-icons-3.png" alt="external-empanada-world-cuisine-flaticons-lineal-color-flat-icons-3"/>
@@ -47,8 +47,8 @@
                 </div>
             </div>
         </div>
-        <div class="option" style="--optionBackground: url(https://media.istockphoto.com/id/938742222/photo/cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=D1z4xPCs-qQIZyUqRcHrnsJSJy_YbUD9udOrXpilNpI=);" id="pizzas" onclick="toggleImage(this)">
-            <div class="label" id="lomos">
+        <div class="option" style="--optionBackground: url(https://media.istockphoto.com/id/938742222/photo/cheesy-pepperoni-pizza.jpg?s=612x612&w=0&k=20&c=D1z4xPCs-qQIZyUqRcHrnsJSJy_YbUD9udOrXpilNpI=);">
+            <div class="label">
                 <div class="icon">
                     <img width="27" height="27" src="https://img.icons8.com/ios/50/pizza.png" alt="pizza"/>
                 </div>
@@ -58,7 +58,7 @@
                 </div>
             </div>
         </div>
-        <div class="option" style="--optionBackground: url(https://saboresmendoza.com/wp-content/uploads/2019/09/lomos-1.jpg);" id="lomos" onclick="toggleImage(this)">
+        <div class="option" style="--optionBackground: url(https://saboresmendoza.com/wp-content/uploads/2019/09/lomos-1.jpg);">
             <div class="label">
                 <div class="icon">
                     <img width="31" height="31" src="https://img.icons8.com/ios/50/steak-medium.png" alt="steak-medium"/>
@@ -70,6 +70,12 @@
             </div>
         </div>
     </div>
-    <script src="js/scriptMainMenu.js"></script>
+
+    <script>
+        $(".option").click(function () {
+            $(".option").removeClass("active");
+            $(this).addClass("active");
+        });
+    </script>
 </body>
 </html>
