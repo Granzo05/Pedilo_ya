@@ -27,6 +27,8 @@ public class Cliente {
 
     @Column(name = "telefono")
     private long telefono;
+    @Column(name = "contraseña")
+    private long contraseña;
 
     @Column(name = "fecha_registro", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -45,6 +47,14 @@ public class Cliente {
         this.email = email;
         this.domicilio = domicilio;
         this.telefono = telefono;
+    }
+
+    public long getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(long contraseña) {
+        this.contraseña = contraseña;
     }
 
     public Factura getFactura() {
@@ -109,5 +119,14 @@ public class Cliente {
 
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
