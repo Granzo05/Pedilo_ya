@@ -16,6 +16,8 @@ public class Restaurante {
     private String domicilio;
     @Column(name = "telefono")
     private long telefono;
+    @Column(name = "tipo_comida")
+    private String tipoDeComida;
     @Column(name = "fecha_registracion", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
@@ -28,12 +30,20 @@ public class Restaurante {
         this.telefono = telefono;
     }
 
-    public Long getId() {
-        return id;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getTipoDeComida() {
+        return tipoDeComida;
+    }
+
+    public void setTipoDeComida(String tipoDeComida) {
+        this.tipoDeComida = tipoDeComida;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getDomicilio() {

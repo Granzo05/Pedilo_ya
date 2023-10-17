@@ -11,19 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
 public class ClienteController {
     private final ClienteRepository clienteRepository;
 
     public ClienteController(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
     }
-
-    @GetMapping("/cliente")
-    public List<Cliente> getClientes() {
-        return clienteRepository.findAll();
-    }
-
     @PostMapping("/cliente")
     public ResponseEntity<String> crearCliente(@RequestBody Cliente clienteDetails) {
         Optional<Cliente> cliente = clienteRepository.findByEmail(clienteDetails.getEmail());

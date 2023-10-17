@@ -1,5 +1,6 @@
 package com.example.pedilo_ya.controllers;
 
+import com.example.pedilo_ya.entities.Restaurante.Menu.Menu;
 import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import com.example.pedilo_ya.repositories.RestauranteRepository;
 import org.springframework.http.HttpStatus;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +46,27 @@ public class RestauranteController {
             return new ResponseEntity<>("La restaurante ya existe", HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/restaurante/{comida}")
+    public List<Restaurante> getRestaurantesPorTipoComida(@PathVariable String tipoComida) {
+        List<Restaurante> restaurantesConTipoComida = new ArrayList<>();
+
+        List<Restaurante> restaurantes = restauranteRepository.findAll();
+        for (Restaurante rest : restaurantes) {
+            String tipoComidas = rest.getTipoDeComida();
+            // Quitar espacios y separar por cada tipo de comida
+            tipoComidas = tipoComidas.replaceAll(" ", "");
+
+            String[] comidas = tipoComidas.split(",");
+
+            for (String comida : comidas) {
+                if (comida.equals(tipoComida)) {
+                    restaurantesConTipoComida.add(rest);
+                }
+            }
+        }
+        return restaurantesConTipoComida;
+    }
+
     @PutMapping("/restaurante/{id}")
     public ResponseEntity<Restaurante> actualizarRestaurante(@PathVariable Long id, @RequestBody Restaurante rest) {
         Optional<Restaurante> restauranteEncontrado = restauranteRepository.findById(id);
