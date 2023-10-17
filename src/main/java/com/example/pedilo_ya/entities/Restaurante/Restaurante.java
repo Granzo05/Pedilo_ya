@@ -2,7 +2,6 @@ package com.example.pedilo_ya.entities.Restaurante;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
@@ -12,10 +11,16 @@ public class Restaurante {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(name = "nombre")
+    private String nombre;
     @Column(name = "domicilio")
     private String domicilio;
+    @Column(name = "contraseña")
+    private String contraseña;
     @Column(name = "telefono")
     private long telefono;
+    @Column(name = "email")
+    private String email;
     @Column(name = "tipo_comida")
     private String tipoDeComida;
     @Column(name = "fecha_registracion", updatable = false, nullable = false)
@@ -23,11 +28,48 @@ public class Restaurante {
     @CreationTimestamp
     public Date fechaRegistracion;
 
+    @Lob
+    @Column(name = "imagen", columnDefinition = "BLOB")
+    private byte[] imagen;
+
     public Restaurante() {
     }
+
     public Restaurante(String domicilio, long telefono) {
         this.domicilio = domicilio;
         this.telefono = telefono;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setId(long id) {

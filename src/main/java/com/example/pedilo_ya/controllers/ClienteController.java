@@ -30,7 +30,6 @@ public class ClienteController {
     @CrossOrigin
     @PostMapping("/cliente/login")
     public ResponseEntity<Cliente> buscarCliente(@RequestBody Cliente clienteDetails) {
-        System.out.println(clienteDetails);
         Optional<Cliente> clienteOptional = clienteRepository.findByEmail(clienteDetails.getEmail());
         if (clienteOptional.isEmpty()) {
             return ResponseEntity.notFound().build();

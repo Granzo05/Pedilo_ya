@@ -1,11 +1,11 @@
 package com.example.pedilo_ya.controllers;
 
-import com.example.pedilo_ya.entities.Restaurante.Menu.Menu;
 import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import com.example.pedilo_ya.repositories.RestauranteRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -37,14 +37,50 @@ public class RestauranteController {
         return ResponseEntity.ok(restaurante);
     }
     @PostMapping("/restaurante")
-    public ResponseEntity<String> crearRestaurante(@RequestBody Restaurante restaurante) {
-        Optional<Restaurante> rest = restauranteRepository.findById(restaurante.getId());
-        if (rest.isEmpty()) {
+    public ResponseEntity<String> crearRestaurante(@RequestPart("imagen") MultipartFile imagen, @RequestPart("nombre") String nombre, @RequestPart("email") String email, @RequestPart("contraseña") String contraseña, @RequestPart("domicilio") String domicilio, @RequestPart("telefono") long telefono) {
+        try {
+            Restaurante restaurante = new Restaurante();
+            restaurante.setNombre(nombre);
+            restaurante.setEmail(email);
+            restaurante.setContraseña(contraseña);
+            restaurante.setDomicilio(domicilio);
+            restaurante.setTelefono(telefono);
+            restaurante.setImagen(imagen.getBytes());
+
             restauranteRepository.save(restaurante);
-            return new ResponseEntity<>("La restaurante ha sido añadida correctamente", HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>("La restaurante ya existe", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("El restaurante ha sido añadido correctamente", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al registrar el restaurante", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @CrossOrigin
+    @PostMapping("/restaurante/login")
+    public ResponseEntity<Restaurante> buscarRestaurante(@RequestBody Restaurante restauranteDetails) {
+        Optional<Restaurante> restauranteOptional = restauranteRepository.findByEmail(restauranteDetails.getEmail());
+        if (restauranteOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Restaurante restaurante = restauranteOptional.get();
+        Class<?> restauranteClass = restaurante.getClass();
+        Class<?> restauranteDetailsClass = restaurante.getClass();
+
+        for (Field field : restauranteClass.getDeclaredFields()) {
+            field.setAccessible(true);
+            String fieldName = field.getName();
+            try {
+                Field restauranteDetailsField = restauranteDetailsClass.getDeclaredField(fieldName);
+                restauranteDetailsField.setAccessible(true);
+                Object newValue = restauranteDetailsField.get(restauranteDetails);
+                if (newValue != null && !newValue.equals(field.get(restaurante))) {
+                    field.set(restaurante, newValue);
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                System.out.println("El error es " + e.getClass());
+            }
+        }
+        Restaurante savedRestaurante = restauranteRepository.save(restaurante);
+        return ResponseEntity.ok(savedRestaurante);
     }
     @GetMapping("/restaurante/{comida}")
     public List<Restaurante> getRestaurantesPorTipoComida(@PathVariable String tipoComida) {
