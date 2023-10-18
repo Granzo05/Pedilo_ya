@@ -20,38 +20,34 @@ function cargarNegocio() {
     const contraseñaInput = document.getElementById("contraseñaRegistracion");
     const domicilioInput = document.getElementById("domicilioRegistracion");
     const telefonoInput = document.getElementById("telefonoRegistracion");
+    const imagenInput = document.getElementById("imagenRegistracion");
 
-    let datosLocal = {
-        nombre: nombreInput.value,
-        email: emailInput.value,
-        contraseña: contraseñaInput.value,
-        domicilio: domicilioInput.value,
-        telefono: telefonoInput.value
-    };
+    const formData = new FormData();
+    formData.append("nombre", nombreInput.value);
+    formData.append("email", emailInput.value);
+    formData.append("contraseña", contraseñaInput.value);
+    formData.append("domicilio", domicilioInput.value);
+    formData.append("telefono", telefonoInput.value);
+    formData.append("imagen", imagenInput.files[0]);
 
     // Validaciones aca
 
     fetch('http://localhost:8080/restaurante', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(datosLocal),
-      })      
+        body: formData, 
+    })
         .then(response => {
             if (!response.ok) {
                 //MOSTRAR CARTEL DE QUE HUBO ALGUN ERROR
-                throw new Error('Local existente');
+                throw new Error('Error al registrar');
             }
-            //ACA TENDRIAMOS QUE HACER UN CARTEL O ALGO DE INICIO EXITOSO O DE BIENVENIDA
-            window.location.href = 'mainMenu.html';
-        })
-        .then(data => {
-            console.log(data);
+            // Redirigir a una página de éxito
+            window.location.href = 'exito.html';
         })
         .catch(error => {
             console.error('Error:', error);
         });
+
 }
 
 function iniciarSesionUsuario() {
@@ -68,10 +64,10 @@ function iniciarSesionUsuario() {
     fetch('http://localhost:8080/restaurante/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(datosLocal),
-      })      
+    })
         .then(response => {
             if (!response.ok) {
                 //MOSTRAR CARTEL DE QUE HUBO ALGUN ERROR
