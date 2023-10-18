@@ -23,12 +23,6 @@ public class RestauranteController {
         this.restauranteRepository = restauranteRepository;
     }
 
-    private static String extractBase64Data(String base64Image) {
-        // Extrae los datos base64 de la cadena (ignorando el encabezado 'data:image/png;base64,')
-        int commaIndex = base64Image.indexOf(",");
-        return base64Image.substring(commaIndex + 1);
-    }
-
     // Realiza un get completo de todas los restaurantes
     @GetMapping("/restaurante")
     public List<Restaurante> getRestaurantes() {
@@ -53,9 +47,11 @@ public class RestauranteController {
             Restaurante restauranteDetails = new Restaurante();
             restauranteDetails.setNombre(nombre);
             restauranteDetails.setEmail(email);
+            //Encripto la pass con md5
             restauranteDetails.setContraseña(Encrypt.encryptPassword(contraseña));
             restauranteDetails.setDomicilio(domicilio);
             restauranteDetails.setTelefono(telefono);
+            // Separo la imagen en bytes
             restauranteDetails.setImagen(file.getBytes());
 
             restauranteRepository.save(restauranteDetails);
@@ -68,6 +64,7 @@ public class RestauranteController {
     @CrossOrigin
     @PostMapping("/restaurante/login")
     public ResponseEntity<Restaurante> buscarRestaurante(@RequestBody Restaurante restauranteDetails) {
+        // Busco por email y clave encriptada, si se encuentra envio un ok
         Optional<Restaurante> restauranteOptional = restauranteRepository.findByEmailAndPassword(restauranteDetails.getEmail(), Encrypt.encryptPassword(restauranteDetails.getContraseña()));
         if (restauranteOptional.isEmpty()) {
             return ResponseEntity.notFound().build();

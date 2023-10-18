@@ -25,9 +25,4 @@ public class Encrypt {
             return null;
         }
     }
-
-    public static boolean verifyPassword(String inputPassword, String storedPassword) {
-        String hashedInputPassword = encryptPassword(inputPassword);
-        return hashedInputPassword.equals(storedPassword);
-    }
 }
