@@ -29,7 +29,7 @@ public class Restaurante {
     public Date fechaRegistracion;
 
     @Lob
-    @Column(name = "imagen", columnDefinition = "BLOB")
+    @Column(name = "imagen")
     private byte[] imagen;
 
     public Restaurante() {
@@ -40,16 +40,16 @@ public class Restaurante {
         this.telefono = telefono;
     }
 
+    public byte[] getImagen() {
+        return imagen;
+    }
+
     public String getContraseña() {
         return contraseña;
     }
 
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
-    }
-
-    public byte[] getImagen() {
-        return imagen;
     }
 
     public void setImagen(byte[] imagen) {

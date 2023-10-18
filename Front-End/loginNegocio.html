@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/styleLogin.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>pediloYa - Inicio sesión</title>
 </head>
+
 <body>
     <div class="container-form registrar ocultar">
         <div class="info">
@@ -24,11 +27,11 @@
                 <h2>Crear una cuenta</h2>
                 <div class="icons">
                     <i class='bx bxl-google'></i>
-                    <i class='bx bxl-facebook' ></i>
+                    <i class='bx bxl-facebook'></i>
                     <i class='bx bxl-discord'></i>
                 </div>
                 <p>o usa tu e-mail para registrarte</p>
-                <form class="form">
+                <form class="form" id="registration-form" enctype="multipart/form-data">
                     <label>
                         <i class='bx bxs-user'></i>
                         <input type="text" placeholder="Nombre del negocio" id="nombreRegistracion">
@@ -47,16 +50,16 @@
                     </label>
                     <label>
                         <i class='bx bx-lock'></i>
-                        <input type="text" placeholder="Telefono" id="telefonoRegistracion">
+                        <input type="number" placeholder="Telefono" id="telefonoRegistracion">
                     </label>
                     <label>
                         <i class='bx bx-image'></i>
-                        <input type="file" id="imagenInput" accept="image/*" />
+                        <input type="file" id="imagenRegistracion" accept="image/*" />
                     </label>
-                    
 
                     <input type="button" value="Registrarse" id="registrarse" onclick="cargarNegocio()">
                 </form>
+
             </div>
         </div>
     </div>
@@ -74,7 +77,7 @@
                 <h2>Iniciar sesión</h2>
                 <div class="icons">
                     <i class='bx bxl-google'></i>
-                    <i class='bx bxl-facebook' ></i>
+                    <i class='bx bxl-facebook'></i>
                     <i class='bx bxl-discord'></i>
                 </div>
                 <p>o iniciar sesión con una cuenta</p>
@@ -92,7 +95,8 @@
             </div>
         </div>
     </div>
-    
+
 </body>
 <script src="js/scriptLoginNegocio.js"></script>
+
 </html>

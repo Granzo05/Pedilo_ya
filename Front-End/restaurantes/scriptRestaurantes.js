@@ -12,19 +12,17 @@ function cargarGrids(tipoComida) {
             return response.json();
         })
         .then(data => {
-            let gridContainer = document.getElementById("gridRestaurantepizza");
+            let gridContainer = document.getElementById("gridRestaurante" + tipoComida);
 
             data.forEach(restaurante => {
-                // Crea un nuevo elemento de la cuadrícula
                 let gridItem = document.createElement("div");
                 gridItem.className = "grid-item";
 
-                // Crea una imagen y establece la fuente
                 let img = document.createElement("img");
-                img.src = restaurante.imagen; 
+                img.src = restaurante.imagen;
 
                 let nombreRestaurante = document.createElement("p");
-                nombreRestaurante.textContent = restaurante.nombre; 
+                nombreRestaurante.textContent = restaurante.nombre;
                 gridItem.appendChild(img);
                 gridItem.appendChild(nombreRestaurante);
 

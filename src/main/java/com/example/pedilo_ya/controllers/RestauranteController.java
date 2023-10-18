@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,23 +37,26 @@ public class RestauranteController {
         Restaurante restaurante = restauranteEncontrado.get();
         return ResponseEntity.ok(restaurante);
     }
-    @PostMapping("/restaurante")
-    public ResponseEntity<String> crearRestaurante(@RequestPart("imagen") MultipartFile imagen, @RequestPart("nombre") String nombre, @RequestPart("email") String email, @RequestPart("contraseña") String contraseña, @RequestPart("domicilio") String domicilio, @RequestPart("telefono") long telefono) {
-        try {
-            Restaurante restaurante = new Restaurante();
-            restaurante.setNombre(nombre);
-            restaurante.setEmail(email);
-            restaurante.setContraseña(contraseña);
-            restaurante.setDomicilio(domicilio);
-            restaurante.setTelefono(telefono);
-            restaurante.setImagen(imagen.getBytes());
 
-            restauranteRepository.save(restaurante);
+    @PostMapping("/restaurante")
+    public ResponseEntity<String> crearRestaurante(@RequestParam("file") MultipartFile file, @RequestParam("nombre") String nombre, @RequestParam("email") String email, @RequestParam("contraseña") String contraseña, @RequestParam("domicilio") String domicilio, @RequestParam("telefono") long telefono) throws IOException {
+        Optional<Restaurante> rest = restauranteRepository.findByEmail(email);
+        if (rest.isEmpty()) {
+            Restaurante restauranteDetails = new Restaurante();
+            restauranteDetails.setNombre(nombre);
+            restauranteDetails.setEmail(email);
+            restauranteDetails.setContraseña(contraseña);
+            restauranteDetails.setDomicilio(domicilio);
+            restauranteDetails.setTelefono(telefono);
+            restauranteDetails.setImagen(file.getBytes());
+
+            restauranteRepository.save(restauranteDetails);
             return new ResponseEntity<>("El restaurante ha sido añadido correctamente", HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error al registrar el restaurante", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>("Error al registrar el restaurante: el correo electrónico ya existe", HttpStatus.BAD_REQUEST);
         }
     }
+
 
     @CrossOrigin
     @PostMapping("/restaurante/login")
@@ -82,6 +86,7 @@ public class RestauranteController {
         Restaurante savedRestaurante = restauranteRepository.save(restaurante);
         return ResponseEntity.ok(savedRestaurante);
     }
+
     @GetMapping("/restaurante/{comida}")
     public List<Restaurante> getRestaurantesPorTipoComida(@PathVariable String tipoComida) {
         List<Restaurante> restaurantesConTipoComida = new ArrayList<>();
@@ -139,5 +144,11 @@ public class RestauranteController {
         }
         restauranteRepository.delete(restaurante.get());
         return new ResponseEntity<>("La restaurante ha sido correctamente", HttpStatus.ACCEPTED);
+    }
+
+    private static String extractBase64Data(String base64Image) {
+        // Extrae los datos base64 de la cadena (ignorando el encabezado 'data:image/png;base64,')
+        int commaIndex = base64Image.indexOf(",");
+        return base64Image.substring(commaIndex + 1);
     }
 }

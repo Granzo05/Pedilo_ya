@@ -28,27 +28,28 @@ function cargarNegocio() {
     formData.append("contraseña", contraseñaInput.value);
     formData.append("domicilio", domicilioInput.value);
     formData.append("telefono", telefonoInput.value);
-    formData.append("imagen", imagenInput.files[0]);
+    formData.append("file", imagenInput.files[0]); 
 
-    // Validaciones aca
+    enviarSolicitud(formData);
+}
 
+function enviarSolicitud(formData) {
     fetch('http://localhost:8080/restaurante', {
         method: 'POST',
-        body: formData, 
+        body: formData,
     })
         .then(response => {
             if (!response.ok) {
-                //MOSTRAR CARTEL DE QUE HUBO ALGUN ERROR
-                throw new Error('Error al registrar');
+                throw new Error('Error al cargar la imagen');
             }
-            // Redirigir a una página de éxito
-            window.location.href = 'exito.html';
+            window.location.href = 'mainMenu.html';
         })
         .catch(error => {
             console.error('Error:', error);
         });
-
 }
+
+
 
 function iniciarSesionUsuario() {
     const emailInput = document.getElementById("emailLogin");
