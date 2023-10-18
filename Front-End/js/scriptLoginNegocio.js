@@ -51,7 +51,7 @@ function enviarSolicitud(formData) {
 
 
 
-function iniciarSesionUsuario() {
+function iniciarSesionNegocio() {
     const emailInput = document.getElementById("emailLogin");
     const contraseñaInput = document.getElementById("contraseñaLogin");
 
@@ -74,6 +74,7 @@ function iniciarSesionUsuario() {
                 //MOSTRAR CARTEL DE QUE HUBO ALGUN ERROR
                 throw new Error('');
             }
+            //Tambien se puede recuperar momentaneamente la imagen y los datos desde la db para usarlos durante la sesion y despues descartarlos
             //ACA TENDRIAMOS QUE HACER UN CARTEL O ALGO DE INICIO EXITOSO O DE BIENVENIDA
             window.location.href = 'mainMenu.html';
         })

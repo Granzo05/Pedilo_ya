@@ -7,39 +7,31 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "facturas")
 public class Factura {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(name = "metodo_pago")
-    private MetodoPago metodoPago;
-
-    @OneToOne
-    @JoinColumn(name = "id_detalle_factura")
-    private DetalleFactura detalleFactura;
-
-    @ManyToOne
-    @JoinColumn(name = "id_cliente")
-    private Cliente cliente;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "domicilio")
-    private String domicilio;
-
-    @Column(name = "telefono")
-    private long telefono;
-
     @Column(name = "fecha_factura", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     public Date registerDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Column(name = "metodo_pago")
+    private MetodoPago metodoPago;
+    @OneToOne
+    @JoinColumn(name = "id_detalle_factura")
+    private DetalleFactura detalleFactura;
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "domicilio")
+    private String domicilio;
+    @Column(name = "telefono")
+    private long telefono;
 
     public Factura() {
     }

@@ -6,5 +6,5 @@ public enum TipoFactura {
     C,
     M,
     E,
-    T;
+    T
 }

@@ -4,13 +4,15 @@ import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "stock")
 public class Stock {
+    @Column(name = "fecha_llegada", updatable = false, nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    public Date fechaLlegada;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -23,10 +25,6 @@ public class Stock {
     private Restaurante restaurante;
     @OneToOne
     private Ingrediente ingrediente;
-    @Column(name = "fecha_llegada", updatable = false, nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    public Date fechaLlegada;
 
     public Stock() {
     }

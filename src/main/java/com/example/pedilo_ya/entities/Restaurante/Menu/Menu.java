@@ -26,6 +26,7 @@ public class Menu {
     private Restaurante restaurante;
     @OneToMany
     private List<Ingrediente> ingredientes = new ArrayList<>();
+
     public Menu() {
     }
 
@@ -51,10 +52,6 @@ public class Menu {
 
     public void setRestaurante(Restaurante restaurante) {
         this.restaurante = restaurante;
-    }
-
-    public void setIngredientes(List<Ingrediente> ingredientes) {
-        this.ingredientes = ingredientes;
     }
 
     public Long getId() {
@@ -99,6 +96,10 @@ public class Menu {
 
     public List<Ingrediente> getIngredientes() {
         return ingredientes;
+    }
+
+    public void setIngredientes(List<Ingrediente> ingredientes) {
+        this.ingredientes = ingredientes;
     }
 
     public void addIngredientes(Ingrediente ingredientes) {

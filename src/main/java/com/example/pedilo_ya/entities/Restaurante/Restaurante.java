@@ -3,11 +3,16 @@ package com.example.pedilo_ya.entities.Restaurante;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.util.Arrays;
 import java.util.Date;
 
 @Entity
 @Table(name = "restaurantes")
 public class Restaurante {
+    @Column(name = "fecha_registracion", updatable = false, nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    public Date fechaRegistracion;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -23,11 +28,6 @@ public class Restaurante {
     private String email;
     @Column(name = "tipo_comida")
     private String tipoDeComida;
-    @Column(name = "fecha_registracion", updatable = false, nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    public Date fechaRegistracion;
-
     @Lob
     @Column(name = "imagen")
     private byte[] imagen;
@@ -44,16 +44,16 @@ public class Restaurante {
         return imagen;
     }
 
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
+    }
+
     public String getContraseña() {
         return contraseña;
     }
 
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
-    }
-
-    public void setImagen(byte[] imagen) {
-        this.imagen = imagen;
     }
 
     public String getNombre() {
@@ -72,10 +72,6 @@ public class Restaurante {
         this.email = email;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getTipoDeComida() {
         return tipoDeComida;
     }
@@ -86,6 +82,10 @@ public class Restaurante {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getDomicilio() {
@@ -110,5 +110,20 @@ public class Restaurante {
 
     public void setFechaRegistracion(Date fechaRegistracion) {
         this.fechaRegistracion = fechaRegistracion;
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurante{" +
+                "fechaRegistracion=" + fechaRegistracion +
+                ", id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", domicilio='" + domicilio + '\'' +
+                ", contraseña='" + contraseña + '\'' +
+                ", telefono=" + telefono +
+                ", email='" + email + '\'' +
+                ", tipoDeComida='" + tipoDeComida + '\'' +
+                ", imagen=" + Arrays.toString(imagen) +
+                '}';
     }
 }

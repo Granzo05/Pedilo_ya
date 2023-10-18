@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @org.springframework.context.annotation.Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = { "com.example.pedilo_ya.repositories" },
+        basePackages = {"com.example.pedilo_ya.repositories"},
         entityManagerFactoryRef = "entityManagerFactory")
 class Configuration {
 }

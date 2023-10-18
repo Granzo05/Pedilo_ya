@@ -1,6 +1,5 @@
 package com.example.pedilo_ya.entities.Pedidos;
 
-import com.example.pedilo_ya.entities.Factura.DetalleFactura.DetalleFactura;
 import com.example.pedilo_ya.entities.Factura.Factura;
 import com.example.pedilo_ya.entities.Restaurante.Menu.Menu;
 import jakarta.persistence.*;
@@ -11,29 +10,24 @@ import java.util.Date;
 @Entity
 @Table(name = "detalles_pedido")
 public class DetallePedido {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(name = "cantidad")
-    private int cantidad;
-
-    @ManyToOne
-    @JoinColumn(name = "factura_id")
-    private Factura factura;
-
-    @ManyToOne
-    @JoinColumn(name = "menu_id")
-    private Menu menu;
-
-    @ManyToOne
-    @JoinColumn(name = "pedido")
-    private Pedido pedido;
-
     @Column(name = "fecha", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     public Date fechaPedido;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Column(name = "cantidad")
+    private int cantidad;
+    @ManyToOne
+    @JoinColumn(name = "factura_id")
+    private Factura factura;
+    @ManyToOne
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
+    @ManyToOne
+    @JoinColumn(name = "pedido")
+    private Pedido pedido;
 
     public DetallePedido() {
     }

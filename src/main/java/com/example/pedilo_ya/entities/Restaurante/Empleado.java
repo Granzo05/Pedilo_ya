@@ -2,13 +2,16 @@ package com.example.pedilo_ya.entities.Restaurante;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "empleados")
 public class Empleado {
+    @Column(name = "fecha_ingreso", updatable = false, nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    public Date fechaIngreso;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -23,13 +26,10 @@ public class Empleado {
     @OneToOne
     @JoinColumn(name = "id_restaurante")
     private Restaurante idRestaurante;
-    @Column(name = "fecha_ingreso", updatable = false, nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    public Date fechaIngreso;
 
     public Empleado() {
     }
+
     public Empleado(String nombre, String apellido, long cuit, long telefono, Restaurante idRestaurante) {
         this.nombre = nombre;
         this.apellido = apellido;

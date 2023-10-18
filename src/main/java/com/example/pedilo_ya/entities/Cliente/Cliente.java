@@ -9,32 +9,25 @@ import java.util.Date;
 @Entity
 @Table(name = "clientes")
 public class Cliente {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(name = "nombre")
-    private String nombre;
-
-    @Column(name = "apellido")
-    private String apellido;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "domicilio")
-    private String domicilio;
-
-    @Column(name = "telefono")
-    private long telefono;
-    @Column(name = "contraseña")
-    private long contraseña;
-
     @Column(name = "fecha_registro", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     public Date fechaRegistro;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Column(name = "nombre")
+    private String nombre;
+    @Column(name = "apellido")
+    private String apellido;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "domicilio")
+    private String domicilio;
+    @Column(name = "telefono")
+    private long telefono;
+    @Column(name = "contraseña")
+    private String contraseña;
     @OneToOne(mappedBy = "cliente")
     private Factura factura;
 
@@ -49,11 +42,11 @@ public class Cliente {
         this.telefono = telefono;
     }
 
-    public long getContraseña() {
+    public String getContraseña() {
         return contraseña;
     }
 
-    public void setContraseña(long contraseña) {
+    public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
     }
 

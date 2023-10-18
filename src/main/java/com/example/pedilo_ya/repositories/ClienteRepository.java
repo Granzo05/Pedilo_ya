@@ -12,7 +12,12 @@ import java.util.Optional;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     List<Cliente> findAll();
+
     @Query("SELECT c FROM Cliente c WHERE c.email = :email")
     Optional<Cliente> findByEmail(@Param("email") String email);
+
+    @Query("SELECT c FROM Cliente c WHERE c.email = :email AND c.contraseña = :contraseña")
+    Optional<Cliente> findByEmailAndPassword(@Param("email") String email, @Param("contraseña") String contraseña);
+
 
 }

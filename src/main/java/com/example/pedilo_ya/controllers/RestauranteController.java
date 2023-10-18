@@ -1,5 +1,7 @@
 package com.example.pedilo_ya.controllers;
 
+import com.example.pedilo_ya.controllers.EncryptMD5.Encrypt;
+import com.example.pedilo_ya.entities.Cliente.Cliente;
 import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import com.example.pedilo_ya.repositories.RestauranteRepository;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,12 @@ public class RestauranteController {
 
     public RestauranteController(RestauranteRepository restauranteRepository) {
         this.restauranteRepository = restauranteRepository;
+    }
+
+    private static String extractBase64Data(String base64Image) {
+        // Extrae los datos base64 de la cadena (ignorando el encabezado 'data:image/png;base64,')
+        int commaIndex = base64Image.indexOf(",");
+        return base64Image.substring(commaIndex + 1);
     }
 
     // Realiza un get completo de todas los restaurantes
@@ -45,7 +53,7 @@ public class RestauranteController {
             Restaurante restauranteDetails = new Restaurante();
             restauranteDetails.setNombre(nombre);
             restauranteDetails.setEmail(email);
-            restauranteDetails.setContraseña(contraseña);
+            restauranteDetails.setContraseña(Encrypt.encryptPassword(contraseña));
             restauranteDetails.setDomicilio(domicilio);
             restauranteDetails.setTelefono(telefono);
             restauranteDetails.setImagen(file.getBytes());
@@ -57,34 +65,15 @@ public class RestauranteController {
         }
     }
 
-
     @CrossOrigin
     @PostMapping("/restaurante/login")
     public ResponseEntity<Restaurante> buscarRestaurante(@RequestBody Restaurante restauranteDetails) {
-        Optional<Restaurante> restauranteOptional = restauranteRepository.findByEmail(restauranteDetails.getEmail());
+        Optional<Restaurante> restauranteOptional = restauranteRepository.findByEmailAndPassword(restauranteDetails.getEmail(), Encrypt.encryptPassword(restauranteDetails.getContraseña()));
         if (restauranteOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         Restaurante restaurante = restauranteOptional.get();
-        Class<?> restauranteClass = restaurante.getClass();
-        Class<?> restauranteDetailsClass = restaurante.getClass();
-
-        for (Field field : restauranteClass.getDeclaredFields()) {
-            field.setAccessible(true);
-            String fieldName = field.getName();
-            try {
-                Field restauranteDetailsField = restauranteDetailsClass.getDeclaredField(fieldName);
-                restauranteDetailsField.setAccessible(true);
-                Object newValue = restauranteDetailsField.get(restauranteDetails);
-                if (newValue != null && !newValue.equals(field.get(restaurante))) {
-                    field.set(restaurante, newValue);
-                }
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                System.out.println("El error es " + e.getClass());
-            }
-        }
-        Restaurante savedRestaurante = restauranteRepository.save(restaurante);
-        return ResponseEntity.ok(savedRestaurante);
+        return ResponseEntity.ok(restaurante);
     }
 
     @GetMapping("/restaurante/{comida}")
@@ -144,11 +133,5 @@ public class RestauranteController {
         }
         restauranteRepository.delete(restaurante.get());
         return new ResponseEntity<>("La restaurante ha sido correctamente", HttpStatus.ACCEPTED);
-    }
-
-    private static String extractBase64Data(String base64Image) {
-        // Extrae los datos base64 de la cadena (ignorando el encabezado 'data:image/png;base64,')
-        int commaIndex = base64Image.indexOf(",");
-        return base64Image.substring(commaIndex + 1);
     }
 }
