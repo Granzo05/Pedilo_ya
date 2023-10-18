@@ -63,7 +63,7 @@ public class RestauranteController {
 
     @CrossOrigin
     @PostMapping("/restaurante/login")
-    public ResponseEntity<Restaurante> buscarRestaurante(@RequestBody Restaurante restauranteDetails) {
+    public ResponseEntity<Restaurante> loginRestaurante(@RequestBody Restaurante restauranteDetails) {
         // Busco por email y clave encriptada, si se encuentra envio un ok
         Optional<Restaurante> restauranteOptional = restauranteRepository.findByEmailAndPassword(restauranteDetails.getEmail(), Encrypt.encryptPassword(restauranteDetails.getContraseña()));
         if (restauranteOptional.isEmpty()) {
@@ -73,18 +73,19 @@ public class RestauranteController {
         return ResponseEntity.ok(restaurante);
     }
 
+    //TIpo comida se envia al abrir el html dependiendo de la busqueda que haga el cliente
     @GetMapping("/restaurante/{comida}")
     public List<Restaurante> getRestaurantesPorTipoComida(@PathVariable String tipoComida) {
         List<Restaurante> restaurantesConTipoComida = new ArrayList<>();
 
+        // Traigo todos los restaurantes
         List<Restaurante> restaurantes = restauranteRepository.findAll();
         for (Restaurante rest : restaurantes) {
+            // Veo el tipo de comida de cada uno el cual tiene el formato comida comida1 comida2 (cada tipo separado por espacios nada mas)
             String tipoComidas = rest.getTipoDeComida();
             // Quitar espacios y separar por cada tipo de comida
-            tipoComidas = tipoComidas.replaceAll(" ", "");
-
-            String[] comidas = tipoComidas.split(",");
-
+            String[] comidas = tipoComidas.split(" ");
+            // Todos los que coincidan los voy cargando en el array para finalmente enviar al cliente para ir llenando la pagina
             for (String comida : comidas) {
                 if (comida.equals(tipoComida)) {
                     restaurantesConTipoComida.add(rest);

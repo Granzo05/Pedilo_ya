@@ -21,6 +21,8 @@ function cargarNegocio() {
     const domicilioInput = document.getElementById("domicilioRegistracion");
     const telefonoInput = document.getElementById("telefonoRegistracion");
     const imagenInput = document.getElementById("imagenRegistracion");
+    const tipoComida = "";
+
 
     const formData = new FormData();
     formData.append("nombre", nombreInput.value);
@@ -28,12 +30,61 @@ function cargarNegocio() {
     formData.append("contraseña", contraseñaInput.value);
     formData.append("domicilio", domicilioInput.value);
     formData.append("telefono", telefonoInput.value);
-    formData.append("file", imagenInput.files[0]); 
+    formData.append("file", imagenInput.files[0]);
 
-    enviarSolicitud(formData);
-}
+    const pizzaCheckbox = document.getElementById("pizzaBox");
+    const hamburguesaBox = document.getElementById("hamburguesaBox");
+    const empanadasBox = document.getElementById("empanadasBox");
+    const heladoBox = document.getElementById("heladoBox");
+    const sushiBox = document.getElementById("sushiBox");
+    const lomosBox = document.getElementById("lomosBox");
+    const parrillaBox = document.getElementById("parrillaBox");
+    const pastasBox = document.getElementById("pastasBox");
+    const vegetarianoBox = document.getElementById("vegetarianoBox");
+    const sanguchesBox = document.getElementById("sanguchesBox");
 
-function enviarSolicitud(formData) {
+    if (pizzaCheckbox.checked) {
+        tipoComida = pizzaCheckbox.value + " ";
+    }
+
+    if (hamburguesaBox.checked) {
+        tipoComida = hamburguesaBox.value + " ";
+    }
+
+    if (empanadasBox.checked) {
+        tipoComida = empanadasBox.value + " ";
+    }
+
+    if (heladoBox.checked) {
+        tipoComida = heladoBox.value + " ";
+    }
+
+    if (sushiBox.checked) {
+        tipoComida = sushiBox.value + " ";
+    }
+
+    if (lomosBox.checked) {
+        tipoComida = lomosBox.value + " ";
+    }
+
+    if (parrillaBox.checked) {
+        tipoComida = parrillaBox.value + " ";
+    }
+
+    if (pastasBox.checked) {
+        tipoComida = pastasBox.value + " ";
+    }
+
+    if (vegetarianoBox.checked) {
+        tipoComida = vegetarianoBox.value + " ";
+    }
+
+    if (sanguchesBox.checked) {
+        tipoComida = sanguchesBox.value + " ";
+    }
+
+    formData.append("tipoDeComida", tipoComida);
+
     fetch('http://localhost:8080/restaurante', {
         method: 'POST',
         body: formData,
@@ -48,8 +99,6 @@ function enviarSolicitud(formData) {
             console.error('Error:', error);
         });
 }
-
-
 
 function iniciarSesionNegocio() {
     const emailInput = document.getElementById("emailLogin");

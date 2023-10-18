@@ -12,7 +12,7 @@ function cargarGrids(tipoComida) {
             return response.json();
         })
         .then(data => {
-            let gridContainer = document.getElementById("gridRestaurante" + tipoComida);
+            let gridContainer = document.getElementById("grid-container");
 
             data.forEach(restaurante => {
                 let gridItem = document.createElement("div");
@@ -21,8 +21,9 @@ function cargarGrids(tipoComida) {
                 let img = document.createElement("img");
                 img.src = restaurante.imagen;
 
-                let nombreRestaurante = document.createElement("p");
+                let nombreRestaurante = document.createElement("h2");
                 nombreRestaurante.textContent = restaurante.nombre;
+
                 gridItem.appendChild(img);
                 gridItem.appendChild(nombreRestaurante);
 

@@ -111,19 +111,4 @@ public class Restaurante {
     public void setFechaRegistracion(Date fechaRegistracion) {
         this.fechaRegistracion = fechaRegistracion;
     }
-
-    @Override
-    public String toString() {
-        return "Restaurante{" +
-                "fechaRegistracion=" + fechaRegistracion +
-                ", id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", domicilio='" + domicilio + '\'' +
-                ", contraseña='" + contraseña + '\'' +
-                ", telefono=" + telefono +
-                ", email='" + email + '\'' +
-                ", tipoDeComida='" + tipoDeComida + '\'' +
-                ", imagen=" + Arrays.toString(imagen) +
-                '}';
-    }
 }
