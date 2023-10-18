@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pediloYa - Pizzas</title>
+  <style>
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .grid-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .cart-container {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 20%;
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+  </style>
+
+  <script src="/Front-End/js/scriptCargaRestaurantes.js"></script>
+</head>
+
+<body>
+  <div id="grid-container">
+
+  </div>
+
+
+</body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    cargarGrids('pastas');
+  });
+</script>
+
+
+
+</html>

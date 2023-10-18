@@ -26,6 +26,24 @@ function toggleImage(div) {
             case "lomos":
                 window.location.href = "Front-End/html/restaurantePorComida/lomos.html";
                 break;
+            case "helado":
+                window.location.href = "Front-End/html/restaurantePorComida/helado.html";
+                break;
+            case "parrilla":
+                window.location.href = "Front-End/html/restaurantePorComida/parrilla.html";
+                break;
+            case "pastas":
+                window.location.href = "Front-End/html/restaurantePorComida/pastas.html";
+                break;
+            case "sushi":
+                window.location.href = "Front-End/html/restaurantePorComida/sushi.html";
+                break;
+            case "vegetariano":
+                window.location.href = "Front-End/html/restaurantePorComida/vegetariano.html";
+                break;
+            case "sanguche":
+                window.location.href = "Front-End/html/restaurantePorComida/sanguches.html";
+                break;
         }
         //Si la pagina se abre por primera vez, hamburguesas va a esta ampliada por lo que es al pedo hacerle dos clic para entrar, con esto deberia enviarte a la pagina con un solo clic
     } else if (primerClic === null && divId === "hamburguesas") {
