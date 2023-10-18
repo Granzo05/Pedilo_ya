@@ -43,7 +43,7 @@ function cargarUsuario() {
                 throw new Error('Usuario existente');
             }
             //ACA TENDRIAMOS QUE HACER UN CARTEL O ALGO DE INICIO EXITOSO O DE BIENVENIDA
-            window.location.href = 'mainMenu.html';
+            window.location.href = 'Front-End/html/mainMenu.html';
         })
         .then(data => {
             console.log(data);

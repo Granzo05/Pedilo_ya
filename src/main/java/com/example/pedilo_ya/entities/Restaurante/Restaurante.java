@@ -3,7 +3,6 @@ package com.example.pedilo_ya.entities.Restaurante;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Arrays;
 import java.util.Date;
 
 @Entity
@@ -31,6 +30,7 @@ public class Restaurante {
     @Lob
     @Column(name = "imagen")
     private byte[] imagen;
+    private String imagen64;
 
     public Restaurante() {
     }
@@ -38,6 +38,19 @@ public class Restaurante {
     public Restaurante(String domicilio, long telefono) {
         this.domicilio = domicilio;
         this.telefono = telefono;
+    }
+
+    public Restaurante(String nombre, String imagen) {
+        this.nombre = nombre;
+        this.imagen64 = imagen;
+    }
+
+    public String getImagen64() {
+        return imagen64;
+    }
+
+    public void setImagen64(String imagen64) {
+        this.imagen64 = imagen64;
     }
 
     public byte[] getImagen() {

@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,15 +23,8 @@ public class RestauranteController {
     public RestauranteController(RestauranteRepository restauranteRepository) {
         this.restauranteRepository = restauranteRepository;
     }
-
-    // Realiza un get completo de todas los restaurantes
-    @GetMapping("/restaurante")
-    public List<Restaurante> getRestaurantes() {
-        return restauranteRepository.findAll();
-    }
-
     // Busca por id de restaurante
-    @GetMapping("/restaurante/{id}")
+    @GetMapping("/restaurante/id/{id}")
     public ResponseEntity<Restaurante> getRestaurantePorId(@PathVariable Long id) {
         Optional<Restaurante> restauranteEncontrado = restauranteRepository.findById(id);
         if (restauranteEncontrado.isEmpty()) {
@@ -41,7 +35,7 @@ public class RestauranteController {
     }
 
     @PostMapping("/restaurante")
-    public ResponseEntity<String> crearRestaurante(@RequestParam("file") MultipartFile file, @RequestParam("nombre") String nombre, @RequestParam("email") String email, @RequestParam("contraseña") String contraseña, @RequestParam("domicilio") String domicilio, @RequestParam("telefono") long telefono) throws IOException {
+    public ResponseEntity<String> crearRestaurante(@RequestParam("file") MultipartFile file, @RequestParam("nombre") String nombre, @RequestParam("email") String email, @RequestParam("contraseña") String contraseña, @RequestParam("domicilio") String domicilio, @RequestParam("telefono") long telefono, @RequestParam("tipoDeComida") String tipoDeComida) throws IOException {
         Optional<Restaurante> rest = restauranteRepository.findByEmail(email);
         if (rest.isEmpty()) {
             Restaurante restauranteDetails = new Restaurante();
@@ -51,6 +45,7 @@ public class RestauranteController {
             restauranteDetails.setContraseña(Encrypt.encryptPassword(contraseña));
             restauranteDetails.setDomicilio(domicilio);
             restauranteDetails.setTelefono(telefono);
+            restauranteDetails.setTipoDeComida(tipoDeComida);
             // Separo la imagen en bytes
             restauranteDetails.setImagen(file.getBytes());
 
@@ -74,27 +69,28 @@ public class RestauranteController {
     }
 
     //TIpo comida se envia al abrir el html dependiendo de la busqueda que haga el cliente
-    @GetMapping("/restaurante/{comida}")
+    @GetMapping("/restaurante/{tipoComida}")
     public List<Restaurante> getRestaurantesPorTipoComida(@PathVariable String tipoComida) {
         List<Restaurante> restaurantesConTipoComida = new ArrayList<>();
 
         // Traigo todos los restaurantes
         List<Restaurante> restaurantes = restauranteRepository.findAll();
         for (Restaurante rest : restaurantes) {
-            // Veo el tipo de comida de cada uno el cual tiene el formato comida comida1 comida2 (cada tipo separado por espacios nada mas)
+            // Veo el tipo de comida de cada uno el cual tiene el formato comida comida1 comida2 (cada tipo separado por espacios nada más)
             String tipoComidas = rest.getTipoDeComida();
             // Quitar espacios y separar por cada tipo de comida
             String[] comidas = tipoComidas.split(" ");
-            // Todos los que coincidan los voy cargando en el array para finalmente enviar al cliente para ir llenando la pagina
+            // Todos los que coincidan los voy cargando en el array para finalmente enviar al cliente para ir llenando la página
             for (String comida : comidas) {
                 if (comida.equals(tipoComida)) {
-                    restaurantesConTipoComida.add(rest);
+                    // Codificar la imagen en Base64
+                    Restaurante restaurante = new Restaurante(rest.getNombre(), Base64.getEncoder().encodeToString(rest.getImagen()));
+                    restaurantesConTipoComida.add(restaurante);
                 }
             }
         }
         return restaurantesConTipoComida;
     }
-
     @PutMapping("/restaurante/{id}")
     public ResponseEntity<Restaurante> actualizarRestaurante(@PathVariable Long id, @RequestBody Restaurante rest) {
         Optional<Restaurante> restauranteEncontrado = restauranteRepository.findById(id);

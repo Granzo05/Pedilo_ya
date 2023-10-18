@@ -12,24 +12,24 @@ function toggleImage(div) {
     if (div.classList.contains("enlarged")) {
         switch (divId) {
             case "hamburguesas":
-                window.location.href = "restaurantes/hamburguesas.html";
+                window.location.href = "Front-End/html/restaurantePorComida/hamburguesas.html";
                 break;
             case "panchos":
-                window.location.href = "restaurantes/panchos.html";
+                window.location.href = "Front-End/html/restaurantePorComida/panchos.html";
                 break;
             case "empanadas":
-                window.location.href = "restaurantes/empanadas.html";
+                window.location.href = "Front-End/html/restaurantePorComida/empanadas.html";
                 break;
             case "pizzas":
-                window.location.href = "restaurantes/pizzas.html";
+                window.location.href = "Front-End/html/restaurantePorComida/pizzas.html";
                 break;
             case "lomos":
-                window.location.href = "restaurantes/lomos.html";
+                window.location.href = "Front-End/html/restaurantePorComida/lomos.html";
                 break;
         }
-    //Si la pagina se abre por primera vez, hamburguesas va a esta ampliada por lo que es al pedo hacerle dos clic para entrar, con esto deberia enviarte a la pagina con un solo clic
+        //Si la pagina se abre por primera vez, hamburguesas va a esta ampliada por lo que es al pedo hacerle dos clic para entrar, con esto deberia enviarte a la pagina con un solo clic
     } else if (primerClic === null && divId === "hamburguesas") {
-        window.location.href = "restaurantes/hamburguesas.html";
+        window.location.href = "Front-End/html/restaurantePorComida/hamburguesas.html";
     } else {
         div.classList.add("enlarged");
     }
