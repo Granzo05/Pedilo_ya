@@ -1,4 +1,4 @@
-# ApiRest-SpringBoot-Hibernate-JPA.
+# Pagina de comida.
 Una página de pedidos conectada a una base de datos Oracle a través de una Api RESTful creada con Java.
 
 Explicación de clases API:
