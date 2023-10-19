@@ -44,11 +44,12 @@
                     </label>
                     <label>
                         <i class='bx bx-envelope'></i>
-                        <input type="text" placeholder="Correo electrónico" id="emailRegistracion">
+                        <input type="email" placeholder="Correo electrónico" id="emailRegistracion">
                     </label>
                     <label>
                         <i class='bx bx-lock'></i>
                         <input type="password" placeholder="Contraseña" id="contraseñaRegistracion">
+                        <i class='bx bx-show-alt' id="ocultarR"></i>
                     </label>
                     <input type="button" value="Registrarse" id="registrarse" onclick="cargarUsuario()">
                     <input type="button" value="Registrarse" id="registrarseGoogle" hidden="true">
@@ -82,11 +83,12 @@
                 <form class="form">
                     <label>
                         <i class='bx bx-envelope'></i>
-                        <input type="text" placeholder="Correo electrónico" id="emailLogin">
+                        <input type="email" placeholder="Correo electrónico" id="emailLogin">
                     </label>
                     <label>
                         <i class='bx bx-lock'></i>
                         <input type="password" placeholder="Contraseña" id="contraseñaLogin">
+                        <i class='bx bx-show-alt' id="ocultarI"></i>
                     </label>
                     <input type="button" value="Iniciar sesión" id="iniciarSesion" onclick="iniciarSesionUsuario()">
                 </form>

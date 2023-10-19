@@ -4,6 +4,35 @@ gapi.load('auth2', function () {
     });
 });
 
+const tipoI = document.getElementById("contraseñaLogin");
+const tipoR = document.getElementById("contraseñaRegistracion");
+const iconI = document.getElementById("ocultarI");
+const iconR = document.getElementById("ocultarR");
+
+iconI.addEventListener("click", e => {
+    if (tipoI.type == "password") {
+        tipoI.type = "text";
+        iconI.classList.remove("bx-show-alt");
+        iconI.classList.add("bx-hide");
+    } else {
+        tipoI.type = "password";
+        iconI.classList.remove("bx-hide");
+        iconI.classList.add("bx-show-alt");
+    }
+})
+
+iconR.addEventListener("click", e => {
+    if (tipoR.type == "password") {
+        tipoR.type = "text";
+        iconR.classList.remove("bx-show-alt");
+        iconR.classList.add("bx-hide");
+    } else {
+        tipoR.type = "password";
+        iconR.classList.remove("bx-hide");
+        iconR.classList.add("bx-show-alt");
+    }
+})
+
 const btnIniciarConCuenta = document.getElementById("iniciarSesionDatos"),
     btnRegistrarDatos = document.getElementById("registrarDatos"),
     formRegistrar = document.querySelector(".registrar"),
@@ -18,6 +47,8 @@ btnIniciarConCuenta.addEventListener("click", e => {
     formRegistrar.classList.add("ocultar");
     formIniciar.classList.remove("ocultar")
 })
+
+    
 
 function cargarUsuario() {
     const nombreInput = document.getElementById("nombreRegistracion");

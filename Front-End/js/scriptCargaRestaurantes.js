@@ -34,3 +34,10 @@ function cargarGrids(tipoComida) {
             console.error('Error:', error);
         });
 }
+
+const btnCarrito = document.querySelector('.container-icon');
+const containerCarrito = document.querySelector('.container-productosCarrito');
+
+btnCarrito.addEventListener('click', e => {
+    containerCarrito.classList.toggle('hidden-cart');
+});
