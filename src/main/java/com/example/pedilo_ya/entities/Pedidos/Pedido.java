@@ -4,7 +4,9 @@ import com.example.pedilo_ya.entities.Cliente.Cliente;
 import com.example.pedilo_ya.entities.Factura.Factura;
 import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,48 +18,55 @@ public class Pedido {
 
     @Column(name = "tipo_envio")
     private EnumTipoEnvio tipoEnvio;
-
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
-
     @ManyToOne
     @JoinColumn(name = "id_restaurante")
     private Restaurante restaurante;
-
     @OneToOne
     @JoinColumn(name = "id_factura")
     private Factura factura;
-
-    @OneToMany(mappedBy = "pedido")
-    private List<DetallePedido> detalles;
-
     @Column(name = "domicilio")
     private String domicilio;
 
     @Column(name = "telefono")
     private long telefono;
 
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DetallesPedido> detallesPedido;
+
+    @Column(name = "fecha", updatable = false, nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    public Date fechaPedido;
+
     public Pedido() {
     }
 
     //En caso que sea retiro en local no es necesario ni domicilio ni telefono del cliente
-    public Pedido(EnumTipoEnvio tipoEnvio, Cliente cliente, Restaurante restaurante, Factura factura, List<DetallePedido> detalles) {
+    public Pedido(EnumTipoEnvio tipoEnvio, Cliente cliente, Restaurante restaurante, Factura factura) {
         this.tipoEnvio = tipoEnvio;
         this.cliente = cliente;
         this.restaurante = restaurante;
         this.factura = factura;
-        this.detalles = detalles;
     }
 
-    public Pedido(EnumTipoEnvio tipoEnvio, Cliente clienteId, Restaurante restauranteId, Factura facturaId, List<DetallePedido> detalleId, String domicilio, long telefono) {
+    public Pedido(EnumTipoEnvio tipoEnvio, Cliente clienteId, Restaurante restauranteId, Factura facturaId, String domicilio, long telefono) {
         this.tipoEnvio = tipoEnvio;
         this.cliente = cliente;
         this.restaurante = restaurante;
         this.factura = factura;
-        this.detalles = detalles;
         this.domicilio = domicilio;
         this.telefono = telefono;
+    }
+
+    public List<DetallesPedido> getDetallesPedido() {
+        return detallesPedido;
+    }
+
+    public void setDetallesPedido(List<DetallesPedido> detallesPedido) {
+        this.detallesPedido = detallesPedido;
     }
 
     public Long getId() {
@@ -100,14 +109,6 @@ public class Pedido {
         this.factura = factura;
     }
 
-    public List<DetallePedido> getDetalles() {
-        return detalles;
-    }
-
-    public void setDetalles(List<DetallePedido> detalles) {
-        this.detalles = detalles;
-    }
-
     public String getDomicilio() {
         return domicilio;
     }
@@ -122,5 +123,13 @@ public class Pedido {
 
     public void setTelefono(long telefono) {
         this.telefono = telefono;
+    }
+
+    public Date getFechaPedido() {
+        return fechaPedido;
+    }
+
+    public void setFechaPedido(Date fechaPedido) {
+        this.fechaPedido = fechaPedido;
     }
 }

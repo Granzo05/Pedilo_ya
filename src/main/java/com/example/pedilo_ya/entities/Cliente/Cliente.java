@@ -1,10 +1,12 @@
 package com.example.pedilo_ya.entities.Cliente;
 
 import com.example.pedilo_ya.entities.Factura.Factura;
+import com.example.pedilo_ya.entities.Pedidos.Pedido;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "clientes")
@@ -33,6 +35,8 @@ public class Cliente {
     // Privilegios de clientes <1>
     @Column(name = "privilegio")
     private String privilegios;
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos;
 
     public Cliente() {
     }

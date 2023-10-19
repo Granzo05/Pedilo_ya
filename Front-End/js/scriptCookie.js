@@ -21,17 +21,17 @@ function verificarCookies(privilegioNecesario = false) {
         // El usuario está autenticado, puedes realizar acciones específicas
     } else {
         // El usuario no está autenticado, puedes redirigirlo a la página de inicio de sesión
-        window.location.href = 'Front-End/html/login/loginCliente.html';
+        window.location.href = 'login/loginCliente.html';
     }
 
     if (privilegioNecesario === true) {
         const privilegio = getCookie('privilegio');
 
         if (privilegio === 'negocio') {
-            // El usuario es un usuario estándar y no deberia tener el ingreso permitido a las paginas de negocio
+            // El usuario es un usuario estándar y no deberia tener el ingreso permitido a las paginas de negocio o a sus funciones
         } else {
             // El usuario no tiene el tipo de privilegio adecuado, puedes redirigirlo a una página de acceso denegado
-            window.location.href = 'accesoDenegado.html';
+            window.location.href = 'Front-End/html/accesoDenegado.html';
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.pedilo_ya.entities.Factura.DetalleFactura;
 
+import com.example.pedilo_ya.entities.Factura.Factura;
+import com.example.pedilo_ya.entities.Pedidos.Pedido;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -8,24 +10,16 @@ import java.util.Date;
 @Entity
 @Table(name = "detalles_factura")
 public class DetalleFactura {
-    @Column(name = "fecha", updatable = false, nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    public Date fechaFactura;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name = "detalle")
-    private String detalleFactura;
-    @Column(name = "tipoFactura")
-    private TipoFactura tipoFactura;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_factura")
+    private Factura factura;
+
+    private String detalles;
 
     public DetalleFactura() {
-    }
-
-    public DetalleFactura(String detalleFactura, TipoFactura tipoFactura) {
-        this.detalleFactura = detalleFactura;
-        this.tipoFactura = tipoFactura;
     }
 
     public Long getId() {
@@ -36,27 +30,19 @@ public class DetalleFactura {
         this.id = id;
     }
 
-    public String getDetalleFactura() {
-        return detalleFactura;
+    public Factura getFactura() {
+        return factura;
     }
 
-    public void setDetalleFactura(String detalleFactura) {
-        this.detalleFactura = detalleFactura;
+    public void setFactura(Factura factura) {
+        this.factura = factura;
     }
 
-    public TipoFactura getTipoFactura() {
-        return tipoFactura;
+    public String getDetalles() {
+        return detalles;
     }
 
-    public void setTipoFactura(TipoFactura tipoFactura) {
-        this.tipoFactura = tipoFactura;
-    }
-
-    public Date getFechaFactura() {
-        return fechaFactura;
-    }
-
-    public void setFechaFactura(Date fechaFactura) {
-        this.fechaFactura = fechaFactura;
+    public void setDetalles(String detalles) {
+        this.detalles = detalles;
     }
 }

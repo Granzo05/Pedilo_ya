@@ -1,11 +1,19 @@
 package com.example.pedilo_ya.controllers;
 
 import com.example.pedilo_ya.entities.Factura.Factura;
+import com.example.pedilo_ya.entities.Pedidos.Pedido;
 import com.example.pedilo_ya.repositories.FacturaRepository;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
@@ -16,29 +24,6 @@ public class FacturaController {
 
     public FacturaController(FacturaRepository facturaRepository) {
         this.facturaRepository = facturaRepository;
-    }
-
-    // Realiza un get completo de todas las facturas
-    @GetMapping("/cliente/factura")
-    public List<Factura> getFacturas() {
-        return facturaRepository.findAll();
-    }
-
-    // Busca por id de factura
-    @GetMapping("/cliente/factura/{id}")
-    public ResponseEntity<Factura> getFacturaPorId(@PathVariable Long id) {
-        Optional<Factura> facturaEncontrada = facturaRepository.findById(id);
-        if (facturaEncontrada.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        Factura factura = facturaEncontrada.get();
-        return ResponseEntity.ok(factura);
-    }
-
-    // Busca las facturas asociadas a un id de cliente
-    @GetMapping("/cliente/factura/{idCliente}")
-    public List<Factura> getFacturasIdCliente(@PathVariable Long id) {
-        return facturaRepository.findByIdCliente(id);
     }
 
     @PostMapping("/cliente/factura")

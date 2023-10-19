@@ -3,10 +3,12 @@ package com.example.pedilo_ya.entities.Factura;
 import com.example.pedilo_ya.entities.Cliente.Cliente;
 import com.example.pedilo_ya.entities.Factura.DetalleFactura.DetalleFactura;
 import com.example.pedilo_ya.entities.Factura.DetalleFactura.MetodoPago;
+import com.example.pedilo_ya.entities.Factura.DetalleFactura.TipoFactura;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "facturas")
@@ -14,15 +16,16 @@ public class Factura {
     @Column(name = "fecha_factura", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    public Date registerDate;
+    public Date fecha;
+    @Column(name = "tipoFactura")
+    private TipoFactura tipoFactura;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(name = "metodo_pago")
     private MetodoPago metodoPago;
-    @OneToOne
-    @JoinColumn(name = "id_detalle_factura")
-    private DetalleFactura detalleFactura;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "factura")
+    private List<DetalleFactura> detallesFactura;
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
@@ -36,12 +39,19 @@ public class Factura {
     public Factura() {
     }
 
-    public Factura(MetodoPago metodoPago, DetalleFactura detalleFactura, String email, String domicilio, long telefono) {
+    public Factura(MetodoPago metodoPago, String email, String domicilio, long telefono) {
         this.metodoPago = metodoPago;
-        this.detalleFactura = detalleFactura;
         this.email = email;
         this.domicilio = domicilio;
         this.telefono = telefono;
+    }
+
+    public TipoFactura getTipoFactura() {
+        return tipoFactura;
+    }
+
+    public void setTipoFactura(TipoFactura tipoFactura) {
+        this.tipoFactura = tipoFactura;
     }
 
     public Cliente getCliente() {
@@ -68,12 +78,12 @@ public class Factura {
         this.metodoPago = metodoPago;
     }
 
-    public DetalleFactura getDetalleFactura() {
-        return detalleFactura;
+    public List<DetalleFactura> getDetallesFactura() {
+        return detallesFactura;
     }
 
-    public void setDetalleFactura(DetalleFactura detalleFactura) {
-        this.detalleFactura = detalleFactura;
+    public void setDetallesFactura(List<DetalleFactura> detallesFactura) {
+        this.detallesFactura = detallesFactura;
     }
 
     public String getEmail() {
@@ -100,11 +110,11 @@ public class Factura {
         this.telefono = telefono;
     }
 
-    public Date getRegisterDate() {
-        return registerDate;
+    public Date getFecha() {
+        return fecha;
     }
 
-    public void setRegisterDate(Date registerDate) {
-        this.registerDate = registerDate;
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 }
