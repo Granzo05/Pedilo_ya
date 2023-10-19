@@ -31,6 +31,9 @@ public class Restaurante {
     @Column(name = "imagen")
     private byte[] imagen;
     private String imagen64;
+    // Privilegios de restaurantes <2>
+    @Column(name = "privilegio")
+    private String privilegios;
 
     public Restaurante() {
     }
@@ -43,6 +46,14 @@ public class Restaurante {
     public Restaurante(String nombre, String imagen) {
         this.nombre = nombre;
         this.imagen64 = imagen;
+    }
+
+    public String getPrivilegios() {
+        return privilegios;
+    }
+
+    public void setPrivilegios(String privilegios) {
+        this.privilegios = privilegios;
     }
 
     public String getImagen64() {

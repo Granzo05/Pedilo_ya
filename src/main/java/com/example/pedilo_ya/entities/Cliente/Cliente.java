@@ -30,6 +30,9 @@ public class Cliente {
     private String contraseña;
     @OneToOne(mappedBy = "cliente")
     private Factura factura;
+    // Privilegios de clientes <1>
+    @Column(name = "privilegio")
+    private String privilegios;
 
     public Cliente() {
     }
@@ -40,6 +43,14 @@ public class Cliente {
         this.email = email;
         this.domicilio = domicilio;
         this.telefono = telefono;
+    }
+
+    public String getPrivilegios() {
+        return privilegios;
+    }
+
+    public void setPrivilegios(String privilegios) {
+        this.privilegios = privilegios;
     }
 
     public String getContraseña() {

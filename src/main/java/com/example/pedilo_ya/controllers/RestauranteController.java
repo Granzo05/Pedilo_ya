@@ -46,6 +46,7 @@ public class RestauranteController {
             restauranteDetails.setDomicilio(domicilio);
             restauranteDetails.setTelefono(telefono);
             restauranteDetails.setTipoDeComida(tipoDeComida);
+            restauranteDetails.setPrivilegios("negocio");
             // Separo la imagen en bytes
             restauranteDetails.setImagen(file.getBytes());
 
