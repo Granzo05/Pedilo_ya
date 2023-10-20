@@ -92,7 +92,6 @@ function añadirAlCarrito(button) {
 
     // Obtén el precio desde la tarjeta copiada
     const precio = tarjetaCopia.querySelector(".precio").textContent;
-    const precioNumerico = parseFloat(precio.replace("$", "").replace(".",","));
 
     // Agrega la tarjeta copiada al contenedor del carrito
     const carrito = document.getElementById('carrito');
@@ -104,7 +103,13 @@ function añadirAlCarrito(button) {
 
     // Actualiza el total del carrito
     var totalPagar = document.querySelector('.total-pagar');
-    totalPagar.textContent += precioNumerico;
+    var total = 0;
+
+    if (totalPagar.textContent != "") {
+        total = parseFloat(totalPagar.textContent.replace("$", "").replace(".", ""));
+    }
+    var precioActual = parseFloat(precio.replace("$", "").replace(".", "")) + parseFloat(total);
+    totalPagar.textContent = precioActual;
 }
 
 
