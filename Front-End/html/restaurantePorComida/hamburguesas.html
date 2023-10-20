@@ -4,104 +4,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>pediloYa - Hamburguesas</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="/Front-End/css/styleHamburguesas.css">
+  <title>pediloYa - Pizzas</title>
+  <style>
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
 
+    .grid-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
 
+    .cart-container {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 20%;
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+  </style>
+
+  <script src="/Front-End/js/scriptCargaRestaurantes.js"></script>
 </head>
 
 <body>
-  <header>
-    <div>
-      <img src="/Front-End/css/img/logoPediloYa-removebg-preview.png" class="logo">
-    </div>
-    <div class="container-icon">
-      <i class='bx bx-cart'></i>
-      <div class="contadorProductos">
-        <span id="contador">0</span>
-      </div>
-      <div class="container-productosCarrito hidden-cart">
-        <div class="carrito-producto">
-          <div class="info-carrito-producto">
-            <span class="cantidad-producto-carrito">1</span>
-            <p class="titulo-producto">Milei</p>
-            <span class="precio-producto">$7.777</span>
-          </div>
-          <img width="50" height="50" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply" class="iconoCerrar"/>
-        </div>
-        <div class="total-carrito">
-          <h3>Total:</h3>
-          <span class="total-pagar">$20</span>
-        </div>
-      </div>
-    </div>
-    
-  </header>
-  <div class="container-items">
-      <div class="item">
-        <figure>
-          <img src="https://www.infobae.com/new-resizer/T5TWckyCxeUgQXQ2WbzatAnMvdI=/filters:format(webp):quality(85)/arc-anglerfish-arc2-prod-infobae.s3.amazonaws.com/public/FJKXKQKMMJBV7KQ7XQ3YNFO7LU.jpg" alt="producto">
-        </figure>
-        <div class="info-producto">
-          <h2 id="burguer1">La Mega Dibu nashe</h2>
-          <p class="precio">$4.000</p>
-          <button>Añadir al pedido</button>
-        </div>
-      </div>
-      <div class="item">
-        <figure>
-          <img src="https://www.clarin.com/2022/05/27/0HXb0UR0v_360x240__1.jpg" alt="producto">
-        </figure>
-        <div class="info-producto">
-          <h2 id="burguer2">La libertad avanza</h2>
-          <p class="precio">$0.000</p>
-          <button>Añadir al pedido</button>
-        </div>
-      </div>
-      <div class="item">
-        <figure>
-          <img src="https://images.aws.nestle.recipes/original/8689e8d974203563ddcc9bbff91323c2_MG_CHORIZOBURGER_Main-880x660.png" alt="producto">
-        </figure>
-        <div class="info-producto">
-          <h2 id="burguer3">La de messi</h2>
-          <p class="precio">$7.777</p>
-          <button>Añadir al pedido</button>
-        </div>
-      </div>
-      <div class="item">
-        <figure>
-          <img src="https://i.ytimg.com/vi/8sxlsm14h2Q/maxresdefault.jpg" alt="producto">
-        </figure>
-        <div class="info-producto">
-          <h2 id="burguer4">Seremo meno malo que lo dema</h2>
-          <p class="precio">$10.000</p>
-          <button>Añadir al pedido</button>
-        </div>
-      </div>
-      <div class="item">
-        <figure>
-          <img src="https://cadenaser.com/resizer/UW3IS51bwjCl3oVuXN7V9rq1oHY=/736x414/filters:format(jpg):quality(70)/cloudfront-eu-central-1.images.arcpublishing.com/prisaradio/ZGOSRKIK2JLXZFRMTBCA3HIPYA.jpg" alt="producto">
-        </figure>
-        <div class="info-producto">
-          <h2 id="burguer5">Allá la están pidiendo</h2>
-          <p class="precio">$5.000</p>
-          <button>Añadir al pedido</button>
-        </div>
-      </div>
-  </div>
   <div id="grid-container">
-
   </div>
-
 </body>
-<script src="/Front-End/js/scriptCargaRestaurantes.js">
+
+<script src="/Front-End/js/scriptCookie.js"></script>
+<script>
   document.addEventListener("DOMContentLoaded", function () {
     cargarGrids('hamburguesas');
+  });
+  document.addEventListener("DOMContentLoaded", function () {
+    verificarCookies();
   });
 </script>
 

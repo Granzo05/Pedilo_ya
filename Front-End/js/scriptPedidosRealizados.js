@@ -42,9 +42,9 @@ function cargarPedidos(idCliente) {
                 fecha.textContent = pedido.detalles.fechaPedido;
                 gridItem.appendChild(fecha);
 
-                let factura = document.createElement("h2");
-                nombreRestaurante.textContent = restaurante.nombre;
-                gridItem.appendChild(nombreRestaurante);
+                let facturaButton = document.createElement("button");
+                facturaButton.textContent = "DESCARGAR FACTURA";
+
 
                 gridContainer.appendChild(gridItem);
             });
