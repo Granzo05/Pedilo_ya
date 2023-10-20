@@ -20,12 +20,17 @@ public class Menu {
     private int comensales;
     @Column(name = "precio")
     private double precio;
-
+    @Column(name = "nombre")
+    private String nombre;
     @ManyToOne
     @JoinColumn(name = "id_restaurante")
     private Restaurante restaurante;
     @OneToMany
     private List<Ingrediente> ingredientes = new ArrayList<>();
+    @Lob
+    @Column(name = "imagen")
+    private byte[] imagen;
+    private String imagen64;
 
     public Menu() {
     }
@@ -45,6 +50,29 @@ public class Menu {
         this.precio = precio;
     }
 
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
+    }
+
+    public String getImagen64() {
+        return imagen64;
+    }
+
+    public void setImagen64(String imagen64) {
+        this.imagen64 = imagen64;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
     public Restaurante getRestaurante() {
         return restaurante;

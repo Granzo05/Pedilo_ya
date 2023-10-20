@@ -2,7 +2,6 @@
 // como verificarCookies();
 
 function verificarCookies(privilegioNecesario = false) {
-    // Función para obtener el valor de una cookie por su nombre
     function getCookie(cookieName) {
         const cookies = document.cookie.split(';');
         for (const cookie of cookies) {
@@ -14,26 +13,27 @@ function verificarCookies(privilegioNecesario = false) {
         return null;
     }
 
-    // Verificar la cookie de usuario
+    // Verificar la cookie de usuario y privilegio
     const usuario = getCookie('usuario');
+    const privilegio = getCookie('privilegio');
 
-    if (usuario) {
-        // El usuario está autenticado, puedes realizar acciones específicas
-    } else {
-        // El usuario no está autenticado, puedes redirigirlo a la página de inicio de sesión
+    if (!usuario) {
+        // El usuario no está autenticado
         window.location.href = 'login/loginCliente.html';
+        return;
     }
 
-    if (privilegioNecesario === true) {
-        const privilegio = getCookie('privilegio');
-
-        if (privilegio === 'negocio') {
-            // El usuario es un usuario estándar y no deberia tener el ingreso permitido a las paginas de negocio o a sus funciones
-        } else {
-            // El usuario no tiene el tipo de privilegio adecuado, puedes redirigirlo a una página de acceso denegado
-            window.location.href = 'Front-End/html/accesoDenegado.html';
-        }
+    if (privilegioNecesario && privilegio !== 'negocio') {
+        // El usuario no tiene el tipo de privilegio adecuado
+        window.location.href = 'Front-End/html/accesoDenegado.html';
     }
 
+    if (usuario !== "negocio") {
+        const elementosAdmin = document.querySelectorAll(".admin");
+        elementosAdmin.forEach(elemento => {
+            elemento.style.display = "none";
+        });
+    }
 }
+
 

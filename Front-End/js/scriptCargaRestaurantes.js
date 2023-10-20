@@ -17,8 +17,10 @@ function cargarGrids(tipoComida) {
             data.forEach(restaurante => {
                 let gridItem = document.createElement("div");
                 gridItem.className = "grid-item";
+
                 const imgElement = document.createElement("img");
                 imgElement.src = "data:image/png;base64," + restaurante.imagen64;
+
 
                 let nombreRestaurante = document.createElement("h2");
                 nombreRestaurante.textContent = restaurante.nombre;
@@ -27,6 +29,8 @@ function cargarGrids(tipoComida) {
                 gridItem.appendChild(nombreRestaurante);
 
                 gridContainer.appendChild(gridItem);
+                gridContainer.id = restaurante.id;
+                gridContainer.onclick = getRestaurante(restaurante.id);
             });
 
         })
@@ -35,9 +39,23 @@ function cargarGrids(tipoComida) {
         });
 }
 
-const btnCarrito = document.querySelector('.container-icon');
-const containerCarrito = document.querySelector('.container-productosCarrito');
-
-btnCarrito.addEventListener('click', e => {
-    containerCarrito.classList.toggle('hidden-cart');
-});
+function getRestaurante(id) {
+    fetch('http://localhost:8080/restaurante/id/' + id, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error al obtener datos (${response.status}): ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            window.location.href = date.url;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}

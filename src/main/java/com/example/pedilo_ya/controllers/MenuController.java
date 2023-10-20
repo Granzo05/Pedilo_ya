@@ -1,12 +1,19 @@
 package com.example.pedilo_ya.controllers;
 
+import com.example.pedilo_ya.controllers.EncryptMD5.Encrypt;
+import com.example.pedilo_ya.entities.Restaurante.Menu.EnumTipoMenu;
+import com.example.pedilo_ya.entities.Restaurante.Menu.Ingrediente;
 import com.example.pedilo_ya.entities.Restaurante.Menu.Menu;
+import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import com.example.pedilo_ya.repositories.MenuRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,13 +32,39 @@ public class MenuController {
     }
 
     @PostMapping("/restaurante/menu")
-    public ResponseEntity<String> crearMenu(@RequestBody Menu menu) {
-        Optional<Menu> rest = menuRepository.findById(menu.getId());
-        if (rest.isEmpty()) {
-            menuRepository.save(menu);
-            return new ResponseEntity<>("La menu ha sido añadida correctamente", HttpStatus.CREATED);
+    public ResponseEntity<String> crearMenu(@RequestParam("file") MultipartFile file,
+                                            @RequestParam("nombre") String nombre,
+                                            @RequestParam("tiempoCoccion") int tiempoCoccion,
+                                            @RequestParam("tipo") String tipoMenu,
+                                            @RequestParam("comensales") int comensales,
+                                            @RequestParam("precio") double precio,
+                                            @RequestParam("ingredientes") List<String> ingredientesString) throws IOException {
+        Optional<Menu> menu = menuRepository.findByName(nombre);
+        if (menu.isEmpty()) {
+            Menu menuDetails = new Menu();
+            menuDetails.setNombre(nombre);
+            menuDetails.setTiempoCoccion(tiempoCoccion);
+            menuDetails.setTipo(EnumTipoMenu.valueOf(tipoMenu));
+            menuDetails.setComensales(comensales);
+            menuDetails.setPrecio(precio);
+
+            List<String> ingredientesPagina = ingredientesString;
+            // Almaceno cada ingrediente por su clase
+            List<Ingrediente> ingredientes = new ArrayList<>();
+
+            for (String ingrediente: ingredientesPagina){
+                Ingrediente ingred = new Ingrediente();
+                ingred.setNombre(ingrediente);
+                ingredientes.add(ingred);
+            }
+            menuDetails.setIngredientes(ingredientes);
+            // Separo la imagen en bytes
+            menuDetails.setImagen(file.getBytes());
+
+            menuRepository.save(menuDetails);
+            return new ResponseEntity<>("El restaurante ha sido añadido correctamente", HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>("La menu ya existe", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Error al registrar el restaurante: el correo electrónico ya existe", HttpStatus.BAD_REQUEST);
         }
     }
 

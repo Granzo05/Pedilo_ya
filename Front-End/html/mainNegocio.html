@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="/Front-End/css/styleHamburguesas.css">
+  <link rel="stylesheet" href="/Front-End/css/styleNegocio.css">
 </head>
 
 <body>
@@ -26,69 +26,78 @@
       <div id="carrito" class="container-productosCarrito hidden-cart">
         <img width="50" height="50" src="https://img.icons8.com/ios/50/multiply.png" alt="multiply"
           class="iconoCerrar" />
+        <div id="tarjeta-carrito"></div>
         <div class="total-carrito">
           <h3>Total:</h3>
           <span class="total-pagar"></span>
         </div>
+        <button onclick="finalizarPedido()">Finalizar pedido</button>
       </div>
     </div>
 
   </header>
+
+  <button class="boton admin" onclick="abrirModal()">Añadir menu</button>
+
   <div class="container-items">
     <div class="card">
-      <figure>
-        <img
-          src="https://www.infobae.com/new-resizer/T5TWckyCxeUgQXQ2WbzatAnMvdI=/filters:format(webp):quality(85)/arc-anglerfish-arc2-prod-infobae.s3.amazonaws.com/public/FJKXKQKMMJBV7KQ7XQ3YNFO7LU.jpg"
-          alt="producto">
-      </figure>
+
       <div class="info-producto">
+        <figure>
+          <img
+            src="https://www.infobae.com/new-resizer/T5TWckyCxeUgQXQ2WbzatAnMvdI=/filters:format(webp):quality(85)/arc-anglerfish-arc2-prod-infobae.s3.amazonaws.com/public/FJKXKQKMMJBV7KQ7XQ3YNFO7LU.jpg"
+            alt="producto">
+        </figure>
         <h2 id="burguer1">La Mega Dibu nashe</h2>
         <p class="precio">$4.000</p>
-        <button>Añadir al pedido</button>
+        <button onclick="añadirAlCarrito(this)">Añadir al pedido</button>
       </div>
     </div>
     <div class="card">
-      <figure>
-        <img src="https://www.clarin.com/2022/05/27/0HXb0UR0v_360x240__1.jpg" alt="producto">
-      </figure>
+
       <div class="info-producto">
+        <figure>
+          <img src="https://www.clarin.com/2022/05/27/0HXb0UR0v_360x240__1.jpg" alt="producto">
+        </figure>
         <h2 id="burguer2">La libertad avanza</h2>
         <p class="precio">$0.000</p>
-        <button>Añadir al pedido</button>
+        <button onclick="añadirAlCarrito(this)">Añadir al pedido</button>
       </div>
     </div>
 
     <div class="card">
-      <figure>
-        <img
-          src="https://images.aws.nestle.recipes/original/8689e8d974203563ddcc9bbff91323c2_MG_CHORIZOBURGER_Main-880x660.png"
-          alt="producto">
-      </figure>
+
       <div class="info-producto">
+        <figure>
+          <img
+            src="https://images.aws.nestle.recipes/original/8689e8d974203563ddcc9bbff91323c2_MG_CHORIZOBURGER_Main-880x660.png"
+            alt="producto">
+        </figure>
         <h2 id="burguer3">La de messi</h2>
         <p class="precio">$7.777</p>
-        <button>Añadir al pedido</button>
+        <button onclick="añadirAlCarrito(this)">Añadir al pedido</button>
       </div>
     </div>
     <div class="card">
-      <figure>
-        <img src="https://i.ytimg.com/vi/8sxlsm14h2Q/maxresdefault.jpg" alt="producto">
-      </figure>
+
       <div class="info-producto">
+        <figure>
+          <img src="https://i.ytimg.com/vi/8sxlsm14h2Q/maxresdefault.jpg" alt="producto">
+        </figure>
         <h2 id="burguer4">Seremo meno malo que lo dema</h2>
         <p class="precio">$10.000</p>
-        <button>Añadir al pedido</button>
+        <button onclick="añadirAlCarrito(this)">Añadir al pedido</button>
       </div>
     </div>
 
     <div class="card" id="1" onclick="girarCarta(this)">
       <div class="front">
-        <figure>
-          <img
-            src="https://cadenaser.com/resizer/UW3IS51bwjCl3oVuXN7V9rq1oHY=/736x414/filters:format(jpg):quality(70)/cloudfront-eu-central-1.images.arcpublishing.com/prisaradio/ZGOSRKIK2JLXZFRMTBCA3HIPYA.jpg"
-            alt="producto">
-        </figure>
         <div class="info-producto">
+          <figure>
+            <img
+              src="https://cadenaser.com/resizer/UW3IS51bwjCl3oVuXN7V9rq1oHY=/736x414/filters:format(jpg):quality(70)/cloudfront-eu-central-1.images.arcpublishing.com/prisaradio/ZGOSRKIK2JLXZFRMTBCA3HIPYA.jpg"
+              alt="producto" class="">
+          </figure>
           <h2>Allá la están pidiendo</h2>
           <p class="precio">$5.000</p>
           <button onclick="añadirAlCarrito(this)">Añadir al pedido</button>
@@ -109,20 +118,64 @@
 
   </div>
 
+  <div id="miModal" class="modal">
+    <div class="modal-content">
+      <label>
+        <i class='bx bx-image'></i>
+        <input type="file" id="imagenProducto" accept="image/*" />
+      </label>
+      <br>
+      <label>
+        <i class='bx bx-lock'></i>
+        <input type="text" placeholder="Nombre del menu" id="nombreMenu">
+      </label>
+      <br>
+      <label>
+        <i class='bx bx-lock'></i>
+        <input type="text" placeholder="Minutos de coccion" id="coccionMenu">
+      </label>
+      <br>
+      <label>
+        <select id="tipoMenu" name="tipoMenu">
+          <option value="ENTRADA">Entrada</option>
+          <option value="DESAYUNO">Desayuno</option>
+          <option value="MEDIATARDE">Merienda</option>
+          <option value="MENU">Menú</option>
+          <option value="BEBIDA_ALCOHOLICA">Bebida Alcohólica</option>
+          <option value="BEBIDA_SIN_ALCOHOL">Bebida sin Alcohol</option>
+        </select>
+      </label>
+      <br>
+      <label>
+        <i class='bx bx-lock'></i>
+        <input type="text" placeholder="¿Cuantas personas comen?" id="comensales">
+      </label>
+      <br>
+      <label id="ingrediente-containter">
+      </label>
+      <br>
+      <button onclick="añadirCampoIngrediente()">Añadir ingrediente</button>
+      <br>
+      <label>
+        <i class='bx bx-price'></i>
+        <input type="number" placeholder="Precio" id="precioMenu">
+      </label>
+      <br>
+      <input type="button" value="cargarMenu" id="cargarMenu" onclick="enviarMenu()">
+    </div>
+  </div>
+
 </body>
 
 <script src="/Front-End/js/scriptCargaRestaurantes.js"></script>
 <script src="/Front-End/js/scriptCookie.js"></script>
-<script src="/Front-End/js/scriptMenuPorResturante.js"></script>
+<script src="/Front-End/js/ScriptPedido.js"></script>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    //verificarCookies();
-    //cargarMenu();
+    verificarCookies();
+    cargarMenu();
   });
 </script>
-
-
-
 
 </html>

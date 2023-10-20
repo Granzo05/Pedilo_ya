@@ -40,8 +40,7 @@ function cargarNegocio() {
     });
 
     formData.append("tipoDeComida", tipoComida);
-
-    console.log(formData);
+    formData.append("privilegios", "negocio");
 
     fetch('http://localhost:8080/restaurante', {
         method: 'POST',
@@ -49,9 +48,32 @@ function cargarNegocio() {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Error al cargar la imagen');
+                //MOSTRAR CARTEL DE QUE HUBO ALGUN ERROR
+                throw new Error('Usuario existente');
             }
-            window.location.href = 'Front-End/html/mainMenu.html';
+            return response.json(); // Parsea la respuesta JSON para obtener el ID del cliente
+        })
+        .then(data => {
+            // Asigna el ID del cliente a la cookie
+            document.cookie = `usuario=${data.id}; privilegio=${data.privilegios}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
+
+            const url = `http://localhost:3000/restaurante_${data.id}.html`;
+
+            // Crea la página HTML personalizada en el servidor
+            fetch(`http://localhost:3000/crear-pagina/${data.id}`, {
+                method: 'POST',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al crear la página');
+                    }
+
+                    // Redirige al negocio a su nueva página
+                    window.location.href = url;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         })
         .catch(error => {
             console.error('Error:', error);
@@ -65,7 +87,8 @@ function iniciarSesionNegocio() {
 
     let datosLocal = {
         email: emailInput.value,
-        contraseña: contraseñaInput.value
+        contraseña: contraseñaInput.value,
+        privilegios: "negocio"
     };
 
     // Validaciones aca
@@ -80,14 +103,16 @@ function iniciarSesionNegocio() {
         .then(response => {
             if (!response.ok) {
                 //MOSTRAR CARTEL DE QUE HUBO ALGUN ERROR
-                throw new Error('');
+                throw new Error('Usuario existente');
             }
-            //Tambien se puede recuperar momentaneamente la imagen y los datos desde la db para usarlos durante la sesion y despues descartarlos
-            //ACA TENDRIAMOS QUE HACER UN CARTEL O ALGO DE INICIO EXITOSO O DE BIENVENIDA
-            window.location.href = 'mainMenu.html';
+            return response.json(); // Parsea la respuesta JSON para obtener el ID del cliente
         })
         .then(data => {
-            console.log(data);
+            // Asigna el ID del cliente a la cookie
+            document.cookie = `usuario=${data.id}; privilegio=${data.privilegios}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
+
+            // Redirige al usuario al menú principal
+            window.location.href = 'mainNegocio.html';
         })
         .catch(error => {
             console.error('Error:', error);

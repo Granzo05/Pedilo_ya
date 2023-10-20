@@ -12,42 +12,42 @@ function toggleImage(div) {
     if (div.classList.contains("enlarged")) {
         switch (divId) {
             case "hamburguesas":
-                window.location.href = "Front-End/html/restaurantePorComida/hamburguesas.html";
+                window.location.href = "restaurantePorComida/hamburguesas.html";
                 break;
             case "panchos":
-                window.location.href = "Front-End/html/restaurantePorComida/panchos.html";
+                window.location.href = "restaurantePorComida/panchos.html";
                 break;
             case "empanadas":
-                window.location.href = "Front-End/html/restaurantePorComida/empanadas.html";
+                window.location.href = "restaurantePorComida/empanadas.html";
                 break;
             case "pizzas":
-                window.location.href = "Front-End/html/restaurantePorComida/pizzas.html";
+                window.location.href = "restaurantePorComida/pizzas.html";
                 break;
             case "lomos":
-                window.location.href = "Front-End/html/restaurantePorComida/lomos.html";
+                window.location.href = "restaurantePorComida/lomos.html";
                 break;
             case "helado":
-                window.location.href = "Front-End/html/restaurantePorComida/helado.html";
+                window.location.href = "restaurantePorComida/helado.html";
                 break;
             case "parrilla":
-                window.location.href = "Front-End/html/restaurantePorComida/parrilla.html";
+                window.location.href = "restaurantePorComida/parrilla.html";
                 break;
             case "pastas":
-                window.location.href = "Front-End/html/restaurantePorComida/pastas.html";
+                window.location.href = "restaurantePorComida/pastas.html";
                 break;
             case "sushi":
-                window.location.href = "Front-End/html/restaurantePorComida/sushi.html";
+                window.location.href = "restaurantePorComida/sushi.html";
                 break;
             case "vegetariano":
-                window.location.href = "Front-End/html/restaurantePorComida/vegetariano.html";
+                window.location.href = "restaurantePorComida/vegetariano.html";
                 break;
             case "sanguche":
-                window.location.href = "Front-End/html/restaurantePorComida/sanguches.html";
+                window.location.href = "restaurantePorComida/sanguche.html";
                 break;
         }
         //Si la pagina se abre por primera vez, hamburguesas va a esta ampliada por lo que es al pedo hacerle dos clic para entrar, con esto deberia enviarte a la pagina con un solo clic
     } else if (primerClic === null && divId === "hamburguesas") {
-        window.location.href = "Front-End/html/restaurantePorComida/hamburguesas.html";
+        window.location.href = "restaurantePorComida/hamburguesas.html";
     } else {
         div.classList.add("enlarged");
     }

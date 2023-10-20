@@ -4,7 +4,7 @@ public enum EnumTipoMenu {
     ENTRADA,
     DESAYUNO,
     MEDIATARDE,
-    CENA,
+    MENU,
     BEBIDA_ALCOHOLICA,
     BEBIDA_SIN_ALCOHOL
 }

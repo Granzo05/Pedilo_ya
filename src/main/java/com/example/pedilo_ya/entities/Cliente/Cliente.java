@@ -33,7 +33,7 @@ public class Cliente {
     @OneToOne(mappedBy = "cliente")
     private Factura factura;
     // Privilegios de clientes <1>
-    @Column(name = "privilegio")
+    @Column(name = "privilegios")
     private String privilegios;
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos;

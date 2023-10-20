@@ -85,7 +85,7 @@ public class RestauranteController {
             for (String comida : comidas) {
                 if (comida.equals(tipoComida)) {
                     // Codificar la imagen en Base64
-                    Restaurante restaurante = new Restaurante(rest.getNombre(), Base64.getEncoder().encodeToString(rest.getImagen()));
+                    Restaurante restaurante = new Restaurante(rest.getNombre(), Base64.getEncoder().encodeToString(rest.getImagen()), rest.getId());
                     restaurantesConTipoComida.add(restaurante);
                 }
             }

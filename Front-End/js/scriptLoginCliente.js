@@ -48,7 +48,7 @@ btnIniciarConCuenta.addEventListener("click", e => {
     formIniciar.classList.remove("ocultar")
 })
 
-    
+
 
 function cargarUsuario() {
     const nombreInput = document.getElementById("nombreRegistracion");
@@ -79,11 +79,14 @@ function cargarUsuario() {
                 //MOSTRAR CARTEL DE QUE HUBO ALGUN ERROR
                 throw new Error('Usuario existente');
             }
-            //ACA TENDRIAMOS QUE HACER UN CARTEL O ALGO DE INICIO EXITOSO O DE BIENVENIDA
-            window.location.href = 'Front-End/html/mainMenu.html';
+            return response.json(); // Parsea la respuesta JSON para obtener el ID del cliente
         })
         .then(data => {
-            console.log(data);
+            // Asigna el ID del cliente a la cookie
+            document.cookie = `usuario=${data.id}; privilegio=${data.privilegios}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
+
+            // Redirige al usuario al menú principal
+            window.location.href = 'mainMenu.html';
         })
         .catch(error => {
             console.error('Error:', error);
@@ -111,17 +114,14 @@ function iniciarSesionUsuario() {
         body: JSON.stringify(datosCliente),
     })
         .then(response => {
-            if (!response.ok) {
-                //MOSTRAR CARTEL DE QUE HUBO ALGUN ERROR
-                throw new Error('Usuario existente');
-            }
-            document.cookie = `usuario=${data.nombre}; privilegio=${data.privilegios}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
-
-            //ACA TENDRIAMOS QUE HACER UN CARTEL O ALGO DE INICIO EXITOSO O DE BIENVENIDA
-            window.location.href = 'mainMenu.html';
+            return response.json();
         })
         .then(data => {
-            console.log(data);
+            // Asigna el ID del cliente a la cookie
+            document.cookie = `usuario=${data.id}; privilegio=${data.privilegios}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
+
+            // Redirige al usuario al menú principal
+            window.location.href = '/Front-End/html/mainMenu.html';
         })
         .catch(error => {
             console.error('Error:', error);
