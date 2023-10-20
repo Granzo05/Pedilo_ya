@@ -213,13 +213,14 @@ window.addEventListener("click", function (event) {
     }
 });
 
+/*
 const btnCarrito = document.querySelector('.container-icon');
 const containerCarrito = document.querySelector('.container-productosCarrito');
 
 btnCarrito.addEventListener('click', e => {
     containerCarrito.classList.toggle('hidden-cart');
 });
-
+*/
 
 
 
