@@ -1,9 +1,9 @@
 package com.example.pedilo_ya.entities.Factura;
 
 import com.example.pedilo_ya.entities.Cliente.Cliente;
-import com.example.pedilo_ya.entities.Factura.DetalleFactura.DetalleFactura;
 import com.example.pedilo_ya.entities.Factura.DetalleFactura.MetodoPago;
 import com.example.pedilo_ya.entities.Factura.DetalleFactura.TipoFactura;
+import com.example.pedilo_ya.entities.Pedidos.DetallesPedido;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,19 +13,20 @@ import java.util.List;
 @Entity
 @Table(name = "facturas")
 public class Factura {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     @Column(name = "fecha_factura", updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     public Date fecha;
     @Column(name = "tipoFactura")
     private TipoFactura tipoFactura;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     @Column(name = "metodo_pago")
     private MetodoPago metodoPago;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "factura")
-    private List<DetalleFactura> detallesFactura;
+
+    @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DetallesPedido> detallesPedido;
     @ManyToOne
     @JoinColumn(name = "id_cliente")
     private Cliente cliente;
@@ -38,7 +39,6 @@ public class Factura {
 
     public Factura() {
     }
-
     public Factura(MetodoPago metodoPago, String email, String domicilio, long telefono) {
         this.metodoPago = metodoPago;
         this.email = email;
@@ -78,12 +78,12 @@ public class Factura {
         this.metodoPago = metodoPago;
     }
 
-    public List<DetalleFactura> getDetallesFactura() {
-        return detallesFactura;
+    public List<DetallesPedido> getDetallesPedido() {
+        return detallesPedido;
     }
 
-    public void setDetallesFactura(List<DetalleFactura> detallesFactura) {
-        this.detallesFactura = detallesFactura;
+    public void setDetallesPedido(List<DetallesPedido> detallesPedido) {
+        this.detallesPedido = detallesPedido;
     }
 
     public String getEmail() {

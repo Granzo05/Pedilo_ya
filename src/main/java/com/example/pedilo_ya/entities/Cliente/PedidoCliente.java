@@ -1,5 +1,6 @@
 package com.example.pedilo_ya.entities.Cliente;
 
+import com.example.pedilo_ya.entities.Factura.DetalleFactura.MetodoPago;
 import com.example.pedilo_ya.entities.Pedidos.EnumTipoEnvio;
 import com.example.pedilo_ya.entities.Restaurante.Menu.Menu;
 
@@ -11,6 +12,15 @@ public class PedidoCliente {
     private String email;
     private Date fecha;
     private EnumTipoEnvio tipoEnvio;
+    private MetodoPago metodoPago;
+
+    public MetodoPago getMetodoPago() {
+        return metodoPago;
+    }
+
+    public void setMetodoPago(MetodoPago metodoPago) {
+        this.metodoPago = metodoPago;
+    }
 
     public Date getFecha() {
         return fecha;

@@ -41,12 +41,12 @@
                 <input type="text" id="codigo-seguridad" name="codigo-seguridad" required>
 
 
-                <button type="submit" onclick="enviarPedidoARestaurante()" hidden id="botonEncargo">Realizar
+                <button type="submit" onclick="enviarPedidoARestaurante('EFECTIVO')" hidden id="botonEncargo">Realizar
                     encargo</button>
 
-
+                <!-- Me falta programar esto todavia, pero lo dejo para mas adelante, igual el boton este va a quedar -->
                 <div id="wallet_container">
-                    <button type="submit" onclick="enviarPedidoARestaurante()" hidden id="botonMercadoPago">Pagar con
+                    <button type="submit" onclick="efectuarPago()" hidden id="botonMercadoPago">Pagar con
                         mercadopago</button>
                 </div>
             </form>
@@ -55,15 +55,16 @@
 
     <script>
 
-        const mp = new MercadoPago("YOUR_PUBLIC_KEY");
-
-        mp.bricks().create("wallet", "wallet_container", {
-            initialization: {
-                preferenceId: "botonMercadoPago",
-            },
-        });
-
-
+        /*
+                const mp = new MercadoPago("YOUR_PUBLIC_KEY");
+        
+                mp.bricks().create("wallet", "wallet_container", {
+                    initialization: {
+                        preferenceId: "botonMercadoPago",
+                    },
+                });
+        
+        */
     </script>
 </body>
 

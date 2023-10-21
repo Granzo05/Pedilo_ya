@@ -16,5 +16,11 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     @Query("SELECT p FROM Pedido p WHERE p.restaurante.id = :id")
     List<Pedido> findByIdNegocio(@Param("id") long id);
+
+    @Query("SELECT p FROM Pedido p WHERE p.restaurante.id = :id AND p.estado = 'procesado'")
+    List<Pedido> findPedidosProcesadosByRestaurante(@Param("id") Long restauranteId);
+
+    @Query("SELECT p FROM Pedido p WHERE p.restaurante.id = :id AND p.estado = 'aceptado'")
+    List<Pedido> findPedidosAceptadosACocina(@Param("id") Long restauranteId);
 }
 

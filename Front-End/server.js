@@ -25,22 +25,22 @@ app.get('/css/styleNegocio.css', (req, res) => {
 
 app.get('/login/js/scriptLoginCliente.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scriptLoginCliente.js'));
+    res.sendFile(path.join(__dirname, '/js/cliente/scriptLoginCliente.js'));
 });
 
 app.get('/login/js/scriptLoginNegocio.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scriptLoginCliente.js'));
+    res.sendFile(path.join(__dirname, '/js/restaurante/scriptLoginNegocio.js'));
 });
 
 app.get('/js/scripCargaRestaurantes.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scripCargaRestaurantes.js'));
+    res.sendFile(path.join(__dirname, '/js/restaurante/scripCargaRestaurantes.js'));
 });
 
 app.get('/menu/js/scriptMainMenu.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scriptMainMenu.js'));
+    res.sendFile(path.join(__dirname, '/js/cliente/scriptMainMenu.js'));
 });
 
 app.get('/pago/js/scriptPago.js', (req, res) => {
@@ -48,16 +48,45 @@ app.get('/pago/js/scriptPago.js', (req, res) => {
     res.sendFile(path.join(__dirname, '/js/scriptPago.js'));
 });
 
-app.get('/pedidos/js/scriptPedidosRealizados.js', (req, res) => {
+app.get('/pedidos/js/scriptPedidosRealizadosCliente.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scriptPedidosRealizados.js'));
+    res.sendFile(path.join(__dirname, '/js/scriptPedidosRealizadosCliente.js'));
+});
+
+app.get('/pedidos/js/scriptPedidosRealizadosNegocio.js', (req, res) => {
+    res.set('Content-Type', 'application/javascript');
+    res.sendFile(path.join(__dirname, '/js/cliente/scriptPedidosRealizadosNegocio.js'));
+});
+
+app.get('/pedidos/js/scriptPedidosEntrantes.js', (req, res) => {
+    res.set('Content-Type', 'application/javascript');
+    res.sendFile(path.join(__dirname, '/js/restaurante/scriptPedidosEntrantes.js'));
+});
+
+app.get('/pedidos/js/scriptPedido.js', (req, res) => {
+    res.set('Content-Type', 'application/javascript');
+    res.sendFile(path.join(__dirname, '/js/pedidos/scriptPedido.js'));
+});
+
+app.get('/pedidos/js/scriptPedidosRecibidosCocina.js', (req, res) => {
+    res.set('Content-Type', 'application/javascript');
+    res.sendFile(path.join(__dirname, '/js/restaurante/scriptPedidosRecibidosCocina.js'));
 });
 
 app.get('/pedidos/js/scriptCookies.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scriptCookies.js'));
+    res.sendFile(path.join(__dirname, '/js/cookies/scriptCookies.js'));
 });
 
+app.get('/pedidos/js/scriptDescargaPDF.js', (req, res) => {
+    res.set('Content-Type', 'application/javascript');
+    res.sendFile(path.join(__dirname, '/js/pdfs/scriptDescargaPDF.js'));
+});
+
+app.get('/pedidos/js/scriptPedidosRecibidosNegocio.js', (req, res) => {
+    res.set('Content-Type', 'application/javascript');
+    res.sendFile(path.join(__dirname, '/js/restaurante/scriptPedidosRecibidosNegocio.js'));
+});
 
 // HTML
 
@@ -70,43 +99,43 @@ app.get('/login/negocio', (req, res) => {
 });
 
 app.get('/empanadas', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/restaurantePorComida/empanadas.html'));
+    res.sendFile(path.join(__dirname, 'html/restaurantesPorCategoriaComida/empanadas.html'));
 });
 
 app.get('/hamburguesas', (req, res) => {
-    res.sendFile(path.join('html/restaurantePorComida/hamburguesas.html'));
+    res.sendFile(path.join('html/restaurantesPorCategoriaComida/hamburguesas.html'));
 });
 
 app.get('/lomos', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/restaurantePorComida/lomos.html'));
+    res.sendFile(path.join(__dirname, 'html/restaurantesPorCategoriaComida/lomos.html'));
 });
 
 app.get('/panchos', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/restaurantePorComida/panchos.html'));
+    res.sendFile(path.join(__dirname, 'html/restaurantesPorCategoriaComida/panchos.html'));
 });
 
 app.get('/parrilla', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/restaurantePorComida/parrilla.html'));
+    res.sendFile(path.join(__dirname, 'html/restaurantesPorCategoriaComida/parrilla.html'));
 });
 
 app.get('/pastas', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/restaurantePorComida/pastas.html'));
+    res.sendFile(path.join(__dirname, 'html/restaurantesPorCategoriaComida/pastas.html'));
 });
 
 app.get('/pizzas', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/restaurantePorComida/pizzas.html'));
+    res.sendFile(path.join(__dirname, 'html/restaurantesPorCategoriaComida/pizzas.html'));
 });
 
 app.get('/sanguches', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/restaurantePorComida/sanguches.html'));
+    res.sendFile(path.join(__dirname, 'html/restaurantesPorCategoriaComida/sanguches.html'));
 });
 
 app.get('/sushi', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/restaurantePorComida/sushi.html'));
+    res.sendFile(path.join(__dirname, 'html/restaurantesPorCategoriaComida/sushi.html'));
 });
 
 app.get('/vegetariano', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/restaurantePorComida/vegetariano.html'));
+    res.sendFile(path.join(__dirname, 'html/restaurantesPorCategoriaComida/vegetariano.html'));
 });
 
 app.get('/accesoDenegado', (req, res) => {
@@ -114,11 +143,15 @@ app.get('/accesoDenegado', (req, res) => {
 });
 
 app.get('/menu', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/mainMenu.html'));
+    res.sendFile(path.join(__dirname, 'html/clientes/mainMenu.html'));
+});
+
+app.get('/menu', (req, res) => {
+    res.sendFile(path.join(__dirname, 'html/clientes/mainMenu.html'));
 });
 
 app.get('/restaurante/id/:id/pago', (req, res) => {
-    const rutaArchivo = path.join(__dirname, `html/pago.html`);
+    const rutaArchivo = path.join(__dirname, `html/clientes/pago.html`);
 
     fs.access(rutaArchivo, fs.constants.R_OK, (err) => {
         if (err) {
@@ -130,12 +163,22 @@ app.get('/restaurante/id/:id/pago', (req, res) => {
 });
 
 app.get('cliente/id/:id/pedidos', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/pedidosRealizadosCliente.html'));
+    res.sendFile(path.join(__dirname, 'html/clientes/pedidosRealizadosCliente.html'));
+});
+
+app.get('restaurante/id/:id/pedidos/entrantes', (req, res) => {
+    res.sendFile(path.join(__dirname, 'html/restaurante/pedidosEntrantes.html'));
+});
+
+app.get('restaurante/id/:id/cocina/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'html/restaurante/cocina.html'));
 });
 
 app.get('restaurante/id/:id/pedidos', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/pedidosRecibidosNegocio.html'));
+    res.sendFile(path.join(__dirname, 'html/restaurante/pedidosRecibidosNegocio.html'));
 });
+
+// Creacion de paginas para cada negocio que se registra
 
 const fs = require('fs');
 const cheerio = require('cheerio');
@@ -174,8 +217,6 @@ app.get('/restaurante/id/:id', (req, res) => {
     });
 });
 
-
-
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
 });
@@ -184,4 +225,3 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Algo salió mal en el servidor');
 });
-

@@ -1,5 +1,6 @@
 package com.example.pedilo_ya.entities.Pedidos;
 
+import com.example.pedilo_ya.entities.Factura.Factura;
 import com.example.pedilo_ya.entities.Restaurante.Menu.Menu;
 import jakarta.persistence.*;
 
@@ -17,6 +18,9 @@ public class DetallesPedido {
     @ManyToOne
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
+    @ManyToOne
+    @JoinColumn(name = "id_pedido")
+    private Factura factura;
     @Column(name = "subTotal")
 
     private double subTotal;
@@ -26,6 +30,14 @@ public class DetallesPedido {
     public DetallesPedido(int cantidad, Menu menu) {
         this.cantidad = cantidad;
         this.menu = menu;
+    }
+
+    public Factura getFactura() {
+        return factura;
+    }
+
+    public void setFactura(Factura factura) {
+        this.factura = factura;
     }
 
     public double getSubTotal() {

@@ -2,7 +2,9 @@ package com.example.pedilo_ya.controllers;
 
 import com.example.pedilo_ya.controllers.EncryptMD5.Encrypt;
 import com.example.pedilo_ya.entities.Cliente.Cliente;
+import com.example.pedilo_ya.entities.Pedidos.Pedido;
 import com.example.pedilo_ya.entities.Restaurante.Restaurante;
+import com.example.pedilo_ya.repositories.PedidoRepository;
 import com.example.pedilo_ya.repositories.RestauranteRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +21,12 @@ import java.util.Optional;
 @RestController
 public class RestauranteController {
     private final RestauranteRepository restauranteRepository;
+    private final PedidoRepository pedidoRepository;
 
-    public RestauranteController(RestauranteRepository restauranteRepository) {
+    public RestauranteController(RestauranteRepository restauranteRepository,
+                                 PedidoRepository pedidoRepository) {
         this.restauranteRepository = restauranteRepository;
+        this.pedidoRepository = pedidoRepository;
     }
     // Busca por id de restaurante
     @GetMapping("/restaurante/id/{id}")
@@ -33,7 +38,11 @@ public class RestauranteController {
         Restaurante restaurante = restauranteEncontrado.get();
         return ResponseEntity.ok(restaurante);
     }
-
+    @GetMapping("/restaurante/id/{idNegocio}/cocina")
+    public List<Pedido> getPedidosEntrantesACocina(@PathVariable Long idNegocio) {
+        List<Pedido> pedidos = pedidoRepository.findPedidosProcesadosByRestaurante(idNegocio);
+        return pedidos;
+    }
     @PostMapping("/restaurante")
     public ResponseEntity<Restaurante> crearRestaurante(@RequestParam("file") MultipartFile file, @RequestParam("nombre") String nombre, @RequestParam("email") String email, @RequestParam("contraseña") String contraseña, @RequestParam("domicilio") String domicilio, @RequestParam("telefono") long telefono, @RequestParam("tipoDeComida") String tipoDeComida) throws IOException {
         Optional<Restaurante> rest = restauranteRepository.findByEmail(email);

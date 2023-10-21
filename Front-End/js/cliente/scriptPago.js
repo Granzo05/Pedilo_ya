@@ -1,7 +1,7 @@
-// Carga de los detalles de productos para el pago
-
 let productos = [];
 
+
+// Carga de los detalles de productos para el pago
 document.addEventListener('DOMContentLoaded', function () {
     // Obtener los parametros de la URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -65,9 +65,32 @@ document.addEventListener('DOMContentLoaded', function () {
     total.textContent = parseFloat(totalPagar * parseFloat(descuento));
 });
 
-// Falta la logica del pago y el exito del mismo, que una vez que funcione se deberia enviar el pedido al restaurante
+function efectuarPago() {
+    // Enviar todo la informacion a la api y manejar el resultado
 
-function enviarPedidoARestaurante() {
+    fetch("/mercadopago", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pedido)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error al efectuar el pago(${response.status}): ${response.statusText}`);
+            }
+            // Si no falló el pago, entonces envío el pedido al restaurante
+            enviarPedidoARestaurante("MERCADOPAGO");
+
+            // Generar factura y enviarla por correo
+            generarFactura();
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
+
+function enviarPedidoARestaurante(tipoPago) {
     // Obtengo todos los productos
     const productos = productos;
 
@@ -107,9 +130,10 @@ function enviarPedidoARestaurante() {
         tipoEnvio: tipoEnvioValor,
         fecha: fechaFormateada,
         email: emailCliente,
-        productos: productos
+        productos: productos,
+        tipoPago: tipoPago
     };
-
+    // Enviar pedido
     fetch("/restaurante/id/" + idRestaurante + "/pedido", {
         method: "POST",
         headers: {

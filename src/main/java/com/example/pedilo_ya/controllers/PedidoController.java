@@ -2,7 +2,9 @@ package com.example.pedilo_ya.controllers;
 
 import com.example.pedilo_ya.entities.Cliente.Cliente;
 import com.example.pedilo_ya.entities.Cliente.PedidoCliente;
-import com.example.pedilo_ya.entities.Factura.DetalleFactura.DetalleFactura;
+import com.example.pedilo_ya.entities.Factura.DetalleFactura.MetodoPago;
+import com.example.pedilo_ya.entities.Factura.DetalleFactura.TipoFactura;
+import com.example.pedilo_ya.entities.Factura.Factura;
 import com.example.pedilo_ya.entities.Pedidos.DetallesPedido;
 import com.example.pedilo_ya.entities.Pedidos.EnumTipoEnvio;
 import com.example.pedilo_ya.entities.Pedidos.Pedido;
@@ -55,6 +57,13 @@ public class PedidoController {
         List<Pedido> pedidos = pedidoRepository.findByIdNegocio(idNegocio);
         return pedidos;
     }
+
+    @GetMapping("/restaurante/id/{idNegocio}/pedidos/entrantes")
+    public List<Pedido> getPedidosEntrantesPorNegocio(@PathVariable Long idNegocio) {
+        List<Pedido> pedidos = pedidoRepository.findPedidosProcesadosByRestaurante(idNegocio);
+        return pedidos;
+    }
+
     //Funcion para cargar pdfs
     @GetMapping("/pedido/{idPedido}/pdf")
     public ResponseEntity<byte[]> generarPedidoPDF(@PathVariable Long idCliente, @PathVariable Long idPedido) {
@@ -107,61 +116,14 @@ public class PedidoController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdfBytes);
     }
-    // Enviar Factura asociada al pedido como pdf
-    @GetMapping("/factura/pedido/{idPedido}/pdf")
-    public ResponseEntity<byte[]> generarFacturaPDF(@PathVariable Long idCliente, @PathVariable Long idPedido) {
-        // Lógica para obtener el pedido y su factura desde la base de datos
-        Pedido pedido = pedidoRepository.findById(idPedido).orElse(null);
 
-        if (pedido == null) {
-            return ResponseEntity.notFound().build();
-        }
-        // Crear un nuevo documento PDF
-        Document document = new Document();
-
-        // Crear un flujo de bytes para almacenar el PDF generado
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-        try {
-            PdfWriter.getInstance(document, baos);
-            document.open();
-
-            // Agregar contenido al PDF
-            document.add(new Paragraph("Factura del Pedido"));
-            document.add(new Paragraph("Tipo: " + pedido.getFactura().getTipoFactura()));
-            document.add(new Paragraph("Fecha: " + pedido.getFactura().getFecha()));
-            document.add(new Paragraph("Cliente: " + pedido.getFactura().getCliente().getNombre() + " " + pedido.getFactura().getCliente().getApellido()));
-            document.add(new Paragraph("Email: " + pedido.getFactura().getEmail()));
-            document.add(new Paragraph("Domicilio: " + pedido.getFactura().getFecha()));
-            document.add(new Paragraph(""));
-            document.add(new Paragraph("Detalles de la factura"));
-            for (DetalleFactura facturaDetalle: pedido.getFactura().getDetallesFactura()) {
-                document.add(new Paragraph("Detalles: " + facturaDetalle.getDetalles()));
-            }
-            // Aquí puedes agregar más información del pedido y la factura
-
-            document.close();
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        }
-
-        // Obtener los bytes del PDF generado
-        byte[] pdfBytes = baos.toByteArray();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=factura.pdf");
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(pdfBytes);
-    }
     @PostMapping("/restaurante/id/{id}/pedido")
     public ResponseEntity<String> crearPedido(@PathVariable Long id, @RequestBody PedidoCliente pedidoRequest) {
         List<Menu> menus = pedidoRequest.getMenus();
         String emailCliente = pedidoRequest.getEmail();
         Date fecha = pedidoRequest.getFecha();
         EnumTipoEnvio tipoEnvio = pedidoRequest.getTipoEnvio();
+        MetodoPago metodoPago = pedidoRequest.getMetodoPago();
 
         // Buscar si el cliente existe
         Optional<Cliente> cliente = clienteRepository.findByEmail(emailCliente);
@@ -191,6 +153,18 @@ public class PedidoController {
             detalles.add(detalle);
         }
 
+        Factura factura = new Factura();
+
+        factura.setDomicilio(restauranteFinal.getDomicilio());
+        factura.setTelefono(restauranteFinal.getTelefono());
+        factura.setDetallesPedido(detalles);
+        factura.setCliente(clienteFinal);
+        factura.setFecha(fecha);
+        factura.setMetodoPago(metodoPago);
+        factura.setEmail(clienteFinal.getEmail());
+        // Por default es B, tratar el tema de eleccion de tipo en caso de ser empresa o monotributriste, para todo el resto es B
+        factura.setTipoFactura(TipoFactura.B);
+
         Pedido pedido = new Pedido();
         pedido.setTipoEnvio(tipoEnvio);
         pedido.setFechaPedido(fecha);
@@ -198,40 +172,27 @@ public class PedidoController {
         pedido.setTelefono(cliente.get().getTelefono());
         pedido.setCliente(clienteFinal);
         pedido.setDetallesPedido(detalles);
-
+        pedido.setFactura(factura);
+        // Esto sirve para que al restaurante le aparezca en entrantes ya que en la db se busca constantemente los datos con este atributo en true
+        pedido.setEstadoPedido("procesado");
 
         pedidoRepository.save(pedido);
         return new ResponseEntity<>("La pedido ha sido cargado correctamente", HttpStatus.CREATED);
     }
-    @PutMapping("/cliente/pedido/{id}")
-    public ResponseEntity<Pedido> actualizarPedido(@PathVariable Long id, @RequestBody Pedido pedidoDetails) {
+    @PutMapping("/pedido/update/{id}")
+    public ResponseEntity<String> actualizarPedido(@PathVariable Long id, @RequestBody Pedido pedidoDetails) {
         Optional<Pedido> pedidoEncontrada = pedidoRepository.findById(id);
         if (pedidoEncontrada.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        Pedido pedido = pedidoEncontrada.get();
-        Class<?> pedidoClass = pedido.getClass();
-        Class<?> pedidoDetailsClass = pedidoDetails.getClass();
+        // Guarda el pedido actualizado
+        pedidoRepository.save(pedidoDetails);
 
-        for (Field field : pedidoClass.getDeclaredFields()) {
-            field.setAccessible(true);
-            String nombre = field.getName();
-            try {
-                Field userDetailsField = pedidoDetailsClass.getDeclaredField(nombre);
-                userDetailsField.setAccessible(true);
-                Object newValue = userDetailsField.get(pedidoDetails);
-                if (newValue != null && !newValue.equals(field.get(pedido))) {
-                    field.set(pedido, newValue);
-                }
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                System.out.println("El error es " + e.getClass());
-            }
-        }
-        Pedido pedidoFinal = pedidoRepository.save(pedido);
-        return ResponseEntity.ok(pedidoFinal);
+        return ResponseEntity.ok("El pedido ha sido actualizado correctamente");
     }
 
-    @DeleteMapping("/cliente/pedido/{id}")
+
+    @DeleteMapping("/pedido/delete/{id}")
     public ResponseEntity<?> borrarPedido(@PathVariable Long id) {
         Optional<Pedido> pedido = pedidoRepository.findById(id);
         if (pedido.isEmpty()) {

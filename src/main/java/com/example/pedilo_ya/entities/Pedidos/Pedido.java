@@ -29,10 +29,10 @@ public class Pedido {
     private Factura factura;
     @Column(name = "domicilio")
     private String domicilio;
-
+    @Column(name = "estado")
+    private String estadoPedido;
     @Column(name = "telefono")
     private long telefono;
-
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<DetallesPedido> detallesPedido;
 
@@ -59,6 +59,14 @@ public class Pedido {
         this.factura = factura;
         this.domicilio = domicilio;
         this.telefono = telefono;
+    }
+
+    public String getEstadoPedido() {
+        return estadoPedido;
+    }
+
+    public void setEstadoPedido(String estadoPedido) {
+        this.estadoPedido = estadoPedido;
     }
 
     public List<DetallesPedido> getDetallesPedido() {
