@@ -12,7 +12,7 @@ function cargarPedidos(idCliente) {
             return response.json();
         })
         .then(data => {
-            let gridContainer = document.getElementById("grid-container");
+            let gridContainer = document.getElementById("pedidos");
 
             data.forEach(pedido => {
                 let gridItem = document.createElement("div");
@@ -22,6 +22,7 @@ function cargarPedidos(idCliente) {
                 tipoEnvio.textContent = pedido.tipoEnvio;
                 gridItem.appendChild(tipoEnvio);
 
+                // Si hubo envido el domicilio deberia estar, si fue retiro en tienda no
                 if (pedido.domicilio != null) {
                     let domicilio = document.createElement("h3");
                     domicilio.textContent = pedido.domicilio;
@@ -45,6 +46,10 @@ function cargarPedidos(idCliente) {
                 let facturaButton = document.createElement("button");
                 facturaButton.textContent = "DESCARGAR FACTURA";
 
+                facturaButton.onclick = function () {
+                    descargarFactura(pedido.id, idCliente, fecha);
+                }
+
 
                 gridContainer.appendChild(gridItem);
             });
@@ -52,5 +57,33 @@ function cargarPedidos(idCliente) {
         })
         .catch(error => {
             console.error('Error:', error);
+        });
+}
+
+function descargarFactura(idPedido, idCliente, fechaPedido) {
+    fetch("http://localhost:8080/cliente/" + idCliente + "factura/pedido/" + idPedido, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error al obtener datos (${response.status}): ${response.statusText}`);
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            // Blob y un enlace para descargar el PDF
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "factura" + fechaPedido + ".pdf";
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url); // Liberar la URL del objeto Blob
+        })
+        .catch(error => {
+            console.error("Error:", error);
         });
 }

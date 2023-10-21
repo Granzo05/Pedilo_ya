@@ -52,6 +52,13 @@ public class Restaurante {
         this.id = id;
     }
 
+    public Restaurante(Long id, String domicilio, String nombre, long telefono) {
+        this.id = id;
+        this.domicilio = domicilio;
+        this.nombre = nombre;
+        this.telefono = telefono;
+    }
+
     public String getUrl() {
         return url;
     }

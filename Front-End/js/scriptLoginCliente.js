@@ -83,7 +83,7 @@ function cargarUsuario() {
         })
         .then(data => {
             // Asigna el ID del cliente a la cookie
-            document.cookie = `usuario=${data.id}; privilegio=${data.privilegios}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
+            document.cookie = `id=${data.id}; privilegio=${data.privilegios}; email=${data.email}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
 
             // Redirige al usuario al menú principal
             window.location.href = '/menu';
@@ -118,7 +118,7 @@ function iniciarSesionUsuario() {
         })
         .then(data => {
             // Asigna el ID del cliente a la cookie
-            document.cookie = `usuario=${data.id}; privilegio=${data.privilegios}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
+            document.cookie = `id=${data.id}; privilegio=${data.privilegios}; email=${data.email}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
 
             // Redirige al usuario al menú principal
             window.location.href = '/menu';

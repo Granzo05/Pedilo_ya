@@ -1,10 +1,17 @@
 package com.example.pedilo_ya.controllers;
 
+import com.example.pedilo_ya.entities.Cliente.Cliente;
+import com.example.pedilo_ya.entities.Cliente.PedidoCliente;
 import com.example.pedilo_ya.entities.Factura.DetalleFactura.DetalleFactura;
 import com.example.pedilo_ya.entities.Pedidos.DetallesPedido;
+import com.example.pedilo_ya.entities.Pedidos.EnumTipoEnvio;
 import com.example.pedilo_ya.entities.Pedidos.Pedido;
+import com.example.pedilo_ya.entities.Restaurante.Menu.Menu;
+import com.example.pedilo_ya.entities.Restaurante.Restaurante;
+import com.example.pedilo_ya.repositories.ClienteRepository;
 import com.example.pedilo_ya.repositories.DetallesPedidoRepository;
 import com.example.pedilo_ya.repositories.PedidoRepository;
+import com.example.pedilo_ya.repositories.RestauranteRepository;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -17,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,10 +33,16 @@ import java.util.Optional;
 public class PedidoController {
     private final PedidoRepository pedidoRepository;
     private final DetallesPedidoRepository detallesPedidoRepository;
+    private final ClienteRepository clienteRepository;
+    private final RestauranteRepository restauranteRepository;
 
-    public PedidoController(PedidoRepository pedidoRepository, DetallesPedidoRepository detallesPedidoRepository) {
+    public PedidoController(PedidoRepository pedidoRepository, DetallesPedidoRepository detallesPedidoRepository,
+                            ClienteRepository clienteRepository,
+                            RestauranteRepository restauranteRepository) {
         this.pedidoRepository = pedidoRepository;
         this.detallesPedidoRepository = detallesPedidoRepository;
+        this.clienteRepository = clienteRepository;
+        this.restauranteRepository = restauranteRepository;
     }
     @GetMapping("/cliente/{idCliente}/pedidos")
     public List<Pedido> getPedidosPorCliente(@PathVariable Long idCliente) {
@@ -87,7 +102,7 @@ public class PedidoController {
                 .body(pdfBytes);
     }
     // Enviar Factura asociada al pedido como pdf
-    @GetMapping("/cliente/{idCliente}/factura/pedido/{idPedido}/pdf")
+    @GetMapping("/cliente/{idCliente}/factura/pedido/{idPedido}")
     public ResponseEntity<byte[]> generarFacturaPDF(@PathVariable Long idCliente, @PathVariable Long idPedido) {
         // Lógica para obtener el pedido y su factura desde la base de datos
         Pedido pedido = pedidoRepository.findById(idPedido).orElse(null);
@@ -136,15 +151,52 @@ public class PedidoController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(pdfBytes);
     }
-    @PostMapping("/cliente/pedido")
-    public ResponseEntity<String> crearPedido(@RequestBody Pedido pedidoDetails) {
-        Optional<Pedido> user = pedidoRepository.findById(pedidoDetails.getId());
-        if (user.isEmpty()) {
-            pedidoRepository.save(pedidoDetails);
-            return new ResponseEntity<>("La pedido ha sido añadida correctamente", HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>("La pedido ya existe", HttpStatus.BAD_REQUEST);
+    @PostMapping("/restaurante/id/{id}/pedido")
+    public ResponseEntity<String> crearPedido(@PathVariable Long id, @RequestBody PedidoCliente pedidoRequest) {
+        List<Menu> menus = pedidoRequest.getMenus();
+        String emailCliente = pedidoRequest.getEmail();
+        Date fecha = pedidoRequest.getFecha();
+        EnumTipoEnvio tipoEnvio = pedidoRequest.getTipoEnvio();
+
+        // Buscar si el cliente existe
+        Optional<Cliente> cliente = clienteRepository.findByEmail(emailCliente);
+
+        if (cliente.isEmpty()) {
+            return new ResponseEntity<>("La cliente no está registrado", HttpStatus.BAD_REQUEST);
         }
+
+        Cliente clienteFinal = new Cliente(cliente.get().getId(), cliente.get().getNombre(), cliente.get().getApellido(), cliente.get().getDomicilio());
+
+        // Buscar si el restaurante existe
+        Optional<Restaurante> restaurante = restauranteRepository.findById(id);
+
+        if (restaurante.isEmpty()) {
+            return new ResponseEntity<>("La restaurante no está registrado", HttpStatus.BAD_REQUEST);
+        }
+
+        Restaurante restauranteFinal = new Restaurante(restaurante.get().getId(), restaurante.get().getDomicilio(), restaurante.get().getNombre(), restaurante.get().getTelefono());
+
+        // Vemos los detalles
+
+        List<DetallesPedido> detalles = new ArrayList<>();
+
+        for (Menu menu: menus){
+            DetallesPedido detalle = new DetallesPedido();
+            detalle.setMenu(menu);
+            detalles.add(detalle);
+        }
+
+        Pedido pedido = new Pedido();
+        pedido.setTipoEnvio(tipoEnvio);
+        pedido.setFechaPedido(fecha);
+        pedido.setRestaurante(restauranteFinal);
+        pedido.setTelefono(cliente.get().getTelefono());
+        pedido.setCliente(clienteFinal);
+        pedido.setDetallesPedido(detalles);
+
+
+        pedidoRepository.save(pedido);
+        return new ResponseEntity<>("La pedido ha sido cargado correctamente", HttpStatus.CREATED);
     }
     @PutMapping("/cliente/pedido/{id}")
     public ResponseEntity<Pedido> actualizarPedido(@PathVariable Long id, @RequestBody Pedido pedidoDetails) {

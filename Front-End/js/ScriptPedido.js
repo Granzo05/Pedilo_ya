@@ -96,6 +96,11 @@ function añadirAlCarrito(button) {
     const botonAñadir = tarjetaCopia.querySelector('button');
     botonAñadir.remove();
 
+    const cantidad = tarjetaCopia.createElement('input');
+    cantidad.className("cantidad");
+    cantidad.type = 'number';
+    cantidad.value = 1;
+
     const precio = tarjetaCopia.querySelector(".precio").textContent;
 
     const carrito = document.getElementById('tarjeta-carrito');
@@ -110,7 +115,7 @@ function añadirAlCarrito(button) {
     if (totalPagar.textContent != "") {
         total = parseFloat(totalPagar.textContent.replace("$", "").replace(".", ""));
     }
-    var precioActual = parseFloat(precio.replace("$", "").replace(".", "")) + parseFloat(total);
+    var precioActual = parseFloat(precio.replace("$", "").replace(".", "") * parseFloat(cantidad)) + parseFloat(total);
     totalPagar.textContent = precioActual;
 }
 
@@ -125,10 +130,11 @@ function finalizarPedido() {
 
     tarjetasEnCarrito.forEach(tarjeta => {
         const nombreProducto = tarjeta.querySelector('h2').textContent;
+        const cantidadProducto = tarjeta.querySelector('.cantidad').textContent;
         const precioProducto = tarjeta.querySelector('.precio').textContent;
         const imagenProducto = tarjeta.querySelector('img');
 
-        detallesProductos.push({ nombre: nombreProducto, precio: precioProducto, imagen: ima });
+        detallesProductos.push({ nombre: nombreProducto, precio: precioProducto, imagen: imagenProducto, cantidad: cantidadProducto });
     });
 
     // Codificar los detalles del carrito y el total
@@ -136,8 +142,13 @@ function finalizarPedido() {
     const totalCodificado = encodeURIComponent(totalPagar);
 
     // Redirigir a otra página con los detalles y el total como parámetros en la URL
-    window.location.href = 'pago.html?' + 'detalles=' + detallesCodificados + '&total=' + totalCodificado;
+    // ID del restaurante de la URL actual
+    const urlActual = window.location.href;
+    const restauranteId = urlActual.split('/').pop(); // ultimo segmento de la URL
 
+    const redireccionURL = `/restaurante/id/${restauranteId}/pago?detalles=${detallesCodificados}&total=${totalCodificado}`;
+
+    window.location.href = redireccionURL;
 }
 
 //TODO LO DEL MODAL
@@ -173,8 +184,6 @@ function enviarMenu() {
     ingredientesInputs.forEach((input, index) => {
         formData.append(`ingredientes[${index}]`, input.value);
     });
-
-    console.log(formData);
 
     fetch('http://localhost:8080/restaurante/menu', {
         method: 'POST',

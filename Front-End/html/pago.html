@@ -17,6 +17,13 @@
 
         </div>
 
+        <select name="tipoEnvio" id="tipoEnvio">
+            <option value="DELIVERY">Delivery</option>
+            <option value="RETIRO">Retiro en tienda</option>
+        </select>
+
+        <Input type="text" id="domicilio" hidden placeholder="Domicilio"></Input>
+
         <section class="informacion-pago">
             <h2>Información de Pago</h2>
             <form>
@@ -32,7 +39,7 @@
                 <label for="codigo-seguridad">Código de Seguridad:</label>
                 <input type="text" id="codigo-seguridad" name="codigo-seguridad" required>
 
-                <button type="submit" onclick="EnviarPedidoARestaurante()">Pagar</button>
+                <button type="submit" onclick="enviarPedidoARestaurante()">Pagar</button>
             </form>
         </section>
     </main>

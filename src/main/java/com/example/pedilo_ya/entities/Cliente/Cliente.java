@@ -49,6 +49,13 @@ public class Cliente {
         this.telefono = telefono;
     }
 
+    public Cliente(Long id, String nombre, String apellido, String domicilio) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.domicilio = domicilio;
+    }
+
     public String getPrivilegios() {
         return privilegios;
     }

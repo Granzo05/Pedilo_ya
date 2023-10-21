@@ -14,8 +14,9 @@ function verificarCookies(privilegioNecesario = false) {
     }
 
     // Verificar la cookie de usuario y privilegio
-    const usuario = getCookie('usuario');
+    const id = getCookie('id');
     const privilegio = getCookie('privilegio');
+    const email = getCookie('email');
 
     if (!usuario) {
         // El usuario no está autenticado
@@ -25,7 +26,7 @@ function verificarCookies(privilegioNecesario = false) {
 
     if (privilegioNecesario && privilegio !== 'negocio') {
         // El usuario no tiene el tipo de privilegio adecuado
-        window.location.href = 'Front-End/html/accesoDenegado.html';
+        window.location.href = 'accesoDenegado.html';
     }
 
     if (usuario !== "negocio") {

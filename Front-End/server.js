@@ -117,8 +117,16 @@ app.get('/menu', (req, res) => {
     res.sendFile(path.join(__dirname, 'html/mainMenu.html'));
 });
 
-app.get('/pago', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/pago.html'));
+app.get('/restaurante/id/:id/pago', (req, res) => {
+    const rutaArchivo = path.join(__dirname, `html/pago.html`);
+
+    fs.access(rutaArchivo, fs.constants.R_OK, (err) => {
+        if (err) {
+            res.status(404).send('Página de pago no encontrada para este restaurante');
+        } else {
+            res.sendFile(rutaArchivo);
+        }
+    });
 });
 
 app.get('/pedidos', (req, res) => {
