@@ -60,12 +60,13 @@
             <!-- Aca se cargan los pedidos dinamicamente de la db -->
         </div>
     </div>
-    <script src="scriptPedidosRealizados.js"></script>
+    <script src="scriptPedidosRealizadosCliente.js"></script>
     <script src="js/scriptCookie.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             verificarCookies();
-            cargarPedidos();
+            const id = getCookie('id');
+            cargarPedidos(id);
         });
     </script>
 </body>

@@ -13,5 +13,8 @@ import java.util.Optional;
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     @Query("SELECT p FROM Pedido p WHERE p.cliente.id = :id")
     List<Pedido> findByIdCliente(@Param("id") long id);
+
+    @Query("SELECT p FROM Pedido p WHERE p.restaurante.id = :id")
+    List<Pedido> findByIdNegocio(@Param("id") long id);
 }
 

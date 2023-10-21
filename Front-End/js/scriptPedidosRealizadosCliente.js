@@ -1,5 +1,5 @@
 function cargarPedidos(idCliente) {
-    fetch('http://localhost:8080/cliente/' + idCliente + "/pedidos", {
+    fetch('http://localhost:8080/cliente/id/' + idCliente + "/pedidos", {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ function cargarPedidos(idCliente) {
                 facturaButton.textContent = "DESCARGAR FACTURA";
 
                 facturaButton.onclick = function () {
-                    descargarFactura(pedido.id, idCliente, fecha);
+                    descargarFactura(pedido.id, fecha);
                 }
 
 
@@ -57,33 +57,5 @@ function cargarPedidos(idCliente) {
         })
         .catch(error => {
             console.error('Error:', error);
-        });
-}
-
-function descargarFactura(idPedido, idCliente, fechaPedido) {
-    fetch("http://localhost:8080/cliente/" + idCliente + "factura/pedido/" + idPedido, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Error al obtener datos (${response.status}): ${response.statusText}`);
-            }
-            return response.blob();
-        })
-        .then(blob => {
-            // Blob y un enlace para descargar el PDF
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "factura" + fechaPedido + ".pdf";
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url); // Liberar la URL del objeto Blob
-        })
-        .catch(error => {
-            console.error("Error:", error);
         });
 }

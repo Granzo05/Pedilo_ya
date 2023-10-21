@@ -129,8 +129,12 @@ app.get('/restaurante/id/:id/pago', (req, res) => {
     });
 });
 
-app.get('/pedidos', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html/pedidosRealizados.html'));
+app.get('cliente/id/:id/pedidos', (req, res) => {
+    res.sendFile(path.join(__dirname, 'html/pedidosRealizadosCliente.html'));
+});
+
+app.get('restaurante/id/:id/pedidos', (req, res) => {
+    res.sendFile(path.join(__dirname, 'html/pedidosRecibidosNegocio.html'));
 });
 
 const fs = require('fs');

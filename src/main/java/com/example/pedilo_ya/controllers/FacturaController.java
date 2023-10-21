@@ -29,6 +29,7 @@ public class FacturaController {
     @PostMapping("/cliente/factura")
     public ResponseEntity<String> crearFactura(@RequestBody Factura facturaDetails) {
         Optional<Factura> user = facturaRepository.findById(facturaDetails.getId());
+
         if (user.isEmpty()) {
             facturaRepository.save(facturaDetails);
             return new ResponseEntity<>("La factura ha sido añadida correctamente", HttpStatus.CREATED);

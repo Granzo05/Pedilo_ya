@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Pago</title>
     <script src="js/scriptPago.js"></script>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
 </head>
 
 <body>
@@ -39,10 +40,31 @@
                 <label for="codigo-seguridad">Código de Seguridad:</label>
                 <input type="text" id="codigo-seguridad" name="codigo-seguridad" required>
 
-                <button type="submit" onclick="enviarPedidoARestaurante()">Pagar</button>
+
+                <button type="submit" onclick="enviarPedidoARestaurante()" hidden id="botonEncargo">Realizar
+                    encargo</button>
+
+
+                <div id="wallet_container">
+                    <button type="submit" onclick="enviarPedidoARestaurante()" hidden id="botonMercadoPago">Pagar con
+                        mercadopago</button>
+                </div>
             </form>
         </section>
     </main>
+
+    <script>
+
+        const mp = new MercadoPago("YOUR_PUBLIC_KEY");
+
+        mp.bricks().create("wallet", "wallet_container", {
+            initialization: {
+                preferenceId: "botonMercadoPago",
+            },
+        });
+
+
+    </script>
 </body>
 
 </html>

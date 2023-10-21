@@ -52,7 +52,11 @@ document.addEventListener('DOMContentLoaded', function () {
     if (tipoEnvioValor === "Delivery") {
         const domicilio = document.getElementById("domicilio");
         domicilio.hidden = false;
+        const botonEncargo = document.getElementById("botonEncargo");
+        botonEncargo.hidden = false;
     } else {
+        const botonMercadoPago = document.getElementById("botonMercadoPago");
+        botonMercadoPago.hidden = false;
         let descuento = 0.9;
     }
 

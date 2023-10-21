@@ -44,13 +44,19 @@ public class PedidoController {
         this.clienteRepository = clienteRepository;
         this.restauranteRepository = restauranteRepository;
     }
-    @GetMapping("/cliente/{idCliente}/pedidos")
+    @GetMapping("/cliente/id/{idCliente}/pedidos")
     public List<Pedido> getPedidosPorCliente(@PathVariable Long idCliente) {
         List<Pedido> pedidos = pedidoRepository.findByIdCliente(idCliente);
         return pedidos;
     }
+
+    @GetMapping("/restaurante/id/{idNegocio}/pedidos")
+    public List<Pedido> getPedidosPorNegocio(@PathVariable Long idNegocio) {
+        List<Pedido> pedidos = pedidoRepository.findByIdNegocio(idNegocio);
+        return pedidos;
+    }
     //Funcion para cargar pdfs
-    @GetMapping("/cliente/{idCliente}/pedido/{idPedido}/pdf")
+    @GetMapping("/pedido/{idPedido}/pdf")
     public ResponseEntity<byte[]> generarPedidoPDF(@PathVariable Long idCliente, @PathVariable Long idPedido) {
         // Lógica para obtener el pedido y su factura desde la base de datos
         Pedido pedido = pedidoRepository.findById(idPedido).orElse(null);
@@ -102,7 +108,7 @@ public class PedidoController {
                 .body(pdfBytes);
     }
     // Enviar Factura asociada al pedido como pdf
-    @GetMapping("/cliente/{idCliente}/factura/pedido/{idPedido}")
+    @GetMapping("/factura/pedido/{idPedido}/pdf")
     public ResponseEntity<byte[]> generarFacturaPDF(@PathVariable Long idCliente, @PathVariable Long idPedido) {
         // Lógica para obtener el pedido y su factura desde la base de datos
         Pedido pedido = pedidoRepository.findById(idPedido).orElse(null);
@@ -110,7 +116,6 @@ public class PedidoController {
         if (pedido == null) {
             return ResponseEntity.notFound().build();
         }
-
         // Crear un nuevo documento PDF
         Document document = new Document();
 
