@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tus Pedidos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            z-index: 1;
+        }
+
+        .filter {
+            float: bottom;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Tus Pedidos</h1>
+        <div class="filter">
+            <form>
+                <label for="diaInicio">Fecha de inicio:</label>
+                <input type="date" id="diaInicio" name="diaInicio" required>
+
+                <label for="diaFin">Fecha de fin:</label>
+                <input type="date" id="diaFin" name="diaFin" required>
+
+                <input type="submit" value="Filtrar">
+            </form>
+        </div>
+        <div id="pedidos">
+            <!-- Aca se cargan los pedidos dinamicamente de la db -->
+        </div>
+    </div>
+    <script src="js/scriptPedidosRecibidosNegocio.js"></script>
+    <script src="js/scriptDescargaPDF.js"></script>
+    <script src="js/scriptCookie.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            verificarCookies();
+            const id = getCookie('id');
+            cargarPedidos(id);
+        });
+    </script>
+</body>
+
+</html>
