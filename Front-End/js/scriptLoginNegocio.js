@@ -42,6 +42,7 @@ function cargarNegocio() {
     formData.append("tipoDeComida", tipoComida);
     formData.append("privilegios", "negocio");
 
+    // Creamos el restaurante en la db
     fetch('http://localhost:8080/restaurante', {
         method: 'POST',
         body: formData,
@@ -49,27 +50,45 @@ function cargarNegocio() {
         .then(response => {
             if (!response.ok) {
                 //MOSTRAR CARTEL DE QUE HUBO ALGUN ERROR
-                throw new Error('Usuario existente');
+                throw new Error('Restaurante existente');
             }
             return response.json(); // Parsea la respuesta JSON para obtener el ID del cliente
         })
+        // Con la respuesta de la db la enviamos al server.js y creamos el html para la pagina del negocio
         .then(data => {
-            // Asigna el ID del cliente a la cookie
-            document.cookie = `usuario=${data.id}; privilegio=${data.privilegios}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
+            const datosAEnviar = {
+                id: data.id,
+                nombre: data.nombre
+            };
 
-            const url = `http://localhost:3000/restaurante_${data.id}.html`;
-
-            // Crea la página HTML personalizada en el servidor
-            fetch(`http://localhost:3000/crear-pagina/${data.id}`, {
+            console.log(JSON.stringify(datosAEnviar));
+            fetch('http://localhost:3000/crear-pagina/' + data.id, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify(datosAEnviar)
             })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Error al crear la página');
                     }
+                    //Si la pagina se creo bien terminamos de asignar la url al negocio
 
-                    // Redirige al negocio a su nueva página
-                    window.location.href = url;
+                    // Asigna el ID del negocio a la cookie
+                    document.cookie = `usuario=${data.id}; privilegio=${data.privilegios}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
+
+                    const url = `http://localhost:3000/restaurante/id/${data.id}`;
+
+                    // Ahora actualizamos ese restaurante asignandole la url propia
+                    fetch('http://localhost:8080/restaurante/' + data.id, {
+                        method: 'POST',
+                        body: url,
+                    })
+                        .then(response => {
+                            // abre la pagina del negocio
+                            window.location.href = url;
+                        })
                 })
                 .catch(error => {
                     console.error('Error:', error);

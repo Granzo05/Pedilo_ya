@@ -86,7 +86,7 @@ function cargarUsuario() {
             document.cookie = `usuario=${data.id}; privilegio=${data.privilegios}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
 
             // Redirige al usuario al menú principal
-            window.location.href = 'mainMenu.html';
+            window.location.href = '/menu';
         })
         .catch(error => {
             console.error('Error:', error);
@@ -121,7 +121,7 @@ function iniciarSesionUsuario() {
             document.cookie = `usuario=${data.id}; privilegio=${data.privilegios}; expires=Sun, 31 Dec 2033 12:00:00 UTC; path=/`;
 
             // Redirige al usuario al menú principal
-            window.location.href = '/Front-End/html/mainMenu.html';
+            window.location.href = '/menu';
         })
         .catch(error => {
             console.error('Error:', error);

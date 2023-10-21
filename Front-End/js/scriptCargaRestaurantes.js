@@ -30,7 +30,10 @@ function cargarGrids(tipoComida) {
 
                 gridContainer.appendChild(gridItem);
                 gridContainer.id = restaurante.id;
-                gridContainer.onclick = getRestaurante(restaurante.id);
+                gridContainer.onclick = function () {
+                    getRestaurante(restaurante.id);
+                };
+
             });
 
         })
@@ -53,7 +56,8 @@ function getRestaurante(id) {
             return response.json();
         })
         .then(data => {
-            window.location.href = date.url;
+            console.log(data);
+            //window.location.href = data.url;
         })
         .catch(error => {
             console.error('Error:', error);

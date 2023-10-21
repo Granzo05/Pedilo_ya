@@ -35,13 +35,13 @@ public class RestauranteController {
     }
 
     @PostMapping("/restaurante")
-    public ResponseEntity<String> crearRestaurante(@RequestParam("file") MultipartFile file, @RequestParam("nombre") String nombre, @RequestParam("email") String email, @RequestParam("contraseña") String contraseña, @RequestParam("domicilio") String domicilio, @RequestParam("telefono") long telefono, @RequestParam("tipoDeComida") String tipoDeComida) throws IOException {
+    public ResponseEntity<Restaurante> crearRestaurante(@RequestParam("file") MultipartFile file, @RequestParam("nombre") String nombre, @RequestParam("email") String email, @RequestParam("contraseña") String contraseña, @RequestParam("domicilio") String domicilio, @RequestParam("telefono") long telefono, @RequestParam("tipoDeComida") String tipoDeComida) throws IOException {
         Optional<Restaurante> rest = restauranteRepository.findByEmail(email);
         if (rest.isEmpty()) {
             Restaurante restauranteDetails = new Restaurante();
             restauranteDetails.setNombre(nombre);
             restauranteDetails.setEmail(email);
-            //Encripto la pass con md5
+            // Encripto la contraseña con MD5
             restauranteDetails.setContraseña(Encrypt.encryptPassword(contraseña));
             restauranteDetails.setDomicilio(domicilio);
             restauranteDetails.setTelefono(telefono);
@@ -51,12 +51,11 @@ public class RestauranteController {
             restauranteDetails.setImagen(file.getBytes());
 
             restauranteRepository.save(restauranteDetails);
-            return new ResponseEntity<>("El restaurante ha sido añadido correctamente", HttpStatus.CREATED);
+            return ResponseEntity.ok(restauranteDetails);
         } else {
-            return new ResponseEntity<>("Error al registrar el restaurante: el correo electrónico ya existe", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-
     @CrossOrigin
     @PostMapping("/restaurante/login")
     public ResponseEntity<Restaurante> loginRestaurante(@RequestBody Restaurante restauranteDetails) {

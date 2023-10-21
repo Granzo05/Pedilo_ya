@@ -33,57 +33,7 @@ app.get('/login/js/scriptLoginNegocio.js', (req, res) => {
     res.sendFile(path.join(__dirname, '/js/scriptLoginCliente.js'));
 });
 
-app.get('/empanadas/js/scripCargaRestaurantes.js', (req, res) => {
-    res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scripCargaRestaurantes.js'));
-});
-
-app.get('/hamburguesas/js/scripCargaRestaurantes.js', (req, res) => {
-    res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scripCargaRestaurantes.js'));
-});
-
-app.get('/helado/js/scripCargaRestaurantes.js', (req, res) => {
-    res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scripCargaRestaurantes.js'));
-});
-
-app.get('/lomos/js/scripCargaRestaurantes.js', (req, res) => {
-    res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scripCargaRestaurantes.js'));
-});
-
-app.get('/panchos/js/scripCargaRestaurantes.js', (req, res) => {
-    res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scripCargaRestaurantes.js'));
-});
-
-app.get('/parrilla/js/scripCargaRestaurantes.js', (req, res) => {
-    res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scripCargaRestaurantes.js'));
-});
-
-app.get('/pastas/js/scripCargaRestaurantes.js', (req, res) => {
-    res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scripCargaRestaurantes.js'));
-});
-
-app.get('/pizzas/js/scripCargaRestaurantes.js', (req, res) => {
-    res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scripCargaRestaurantes.js'));
-});
-
-app.get('/sanguches/js/scripCargaRestaurantes.js', (req, res) => {
-    res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scripCargaRestaurantes.js'));
-});
-
-app.get('/sushi/js/scripCargaRestaurantes.js', (req, res) => {
-    res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scripCargaRestaurantes.js'));
-});
-
-app.get('/vegetariano/js/scripCargaRestaurantes.js', (req, res) => {
+app.get('/js/scripCargaRestaurantes.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.sendFile(path.join(__dirname, '/js/scripCargaRestaurantes.js'));
 });
@@ -175,25 +125,22 @@ app.get('/pedidos', (req, res) => {
     res.sendFile(path.join(__dirname, 'html/pedidosRealizados.html'));
 });
 
-//Creacion de cada una de las paginas de los restaurantes
+const fs = require('fs');
+const cheerio = require('cheerio');
+
 app.post('/crear-pagina/:id', (req, res) => {
     const id = req.params.id;
 
-    fs.readFile('html/html/plantillaNegocios.html', 'utf8', (err, data) => {
+    fs.readFile('html/plantillaNegocios.html', 'utf8', (err, data) => {
         if (err) {
+            console.error('Error al cargar la plantilla:', err);
             return res.status(500).send('Error al cargar la plantilla');
         }
-        // Aquí deberías obtener el título y contenido específico de tu base de datos
-        const tituloEspecifico = 'Título del restaurante';
-        const contenidoEspecifico = 'Información específica del restaurante.';
 
-        const paginaHTML = data
-            .replace(/{{titulo}}/g, tituloEspecifico)
-            .replace(/{{contenido}}/g, contenidoEspecifico);
-
-        // Guardar la página HTML personalizada en un archivo
-        fs.writeFile(`html/restaurante/id/${id}.html`, paginaHTML, (err) => {
+        // Ruta final del restaurante
+        fs.writeFile(__dirname + "html/restaurantes/${id}.html", data, (err) => {
             if (err) {
+                console.error('Error al crear la página:', err);
                 return res.status(500).send('Error al crear la página');
             }
             res.status(200).send('Página creada exitosamente');
@@ -201,6 +148,28 @@ app.post('/crear-pagina/:id', (req, res) => {
     });
 });
 
+app.get('/restaurante/id/:id', (req, res) => {
+    const restauranteId = req.params.id;
+    const rutaArchivo = path.join(__dirname, `html/restaurantes/${restauranteId}.html`);
+
+    fs.access(rutaArchivo, fs.constants.R_OK, (err) => {
+        if (err) {
+            // Manejar errores, por ejemplo, enviar una página de error 404
+            res.status(404).send('Página no encontrada');
+        } else {
+            res.sendFile(rutaArchivo);
+        }
+    });
+});
+
+
+
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
 });
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Algo salió mal en el servidor');
+});
+
