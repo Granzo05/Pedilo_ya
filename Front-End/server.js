@@ -88,6 +88,11 @@ app.get('/pedidos/js/scriptPedidosRecibidosNegocio.js', (req, res) => {
     res.sendFile(path.join(__dirname, '/js/restaurante/scriptPedidosRecibidosNegocio.js'));
 });
 
+app.get('restaurante/js/scriptStock.js', (req, res) => {
+    res.set('Content-Type', 'application/javascript');
+    res.sendFile(path.join(__dirname, '/js/restaurante/scriptStock.js'));
+});
+
 // HTML
 
 app.get('/login/cliente', (req, res) => {
@@ -148,6 +153,10 @@ app.get('/menu', (req, res) => {
 
 app.get('/menu', (req, res) => {
     res.sendFile(path.join(__dirname, 'html/clientes/mainMenu.html'));
+});
+
+app.get('/restaurante/id/:id/stock', (req, res) => {
+    res.sendFile(path.join(__dirname, 'html/restaurante/stock.html'));
 });
 
 app.get('/restaurante/id/:id/pago', (req, res) => {

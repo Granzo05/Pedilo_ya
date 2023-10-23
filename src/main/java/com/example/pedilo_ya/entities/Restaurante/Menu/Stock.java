@@ -22,17 +22,17 @@ public class Stock {
     private String medida;
     @ManyToOne
     @JoinColumn(name = "id_restaurante")
-    private Restaurante restaurante;
+    private long idRestaurante;
     @OneToOne
     private Ingrediente ingrediente;
 
     public Stock() {
     }
 
-    public Stock(int cantidad, String medida, Restaurante restaurante, Ingrediente ingrediente) {
+    public Stock(int cantidad, String medida, long restaurante, Ingrediente ingrediente) {
         this.cantidad = cantidad;
         this.medida = medida;
-        this.restaurante = restaurante;
+        this.idRestaurante = restaurante;
         this.ingrediente = ingrediente;
     }
 
@@ -60,12 +60,12 @@ public class Stock {
         this.medida = medida;
     }
 
-    public Restaurante getRestaurante() {
-        return restaurante;
+    public long getIdRestaurante() {
+        return idRestaurante;
     }
 
-    public void setRestaurante(Restaurante restaurante) {
-        this.restaurante = restaurante;
+    public void setIdRestaurante(long idRestaurante) {
+        this.idRestaurante = idRestaurante;
     }
 
     public Ingrediente getIngrediente() {

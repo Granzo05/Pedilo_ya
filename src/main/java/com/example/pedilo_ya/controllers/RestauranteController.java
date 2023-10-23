@@ -3,6 +3,7 @@ package com.example.pedilo_ya.controllers;
 import com.example.pedilo_ya.controllers.EncryptMD5.Encrypt;
 import com.example.pedilo_ya.entities.Cliente.Cliente;
 import com.example.pedilo_ya.entities.Pedidos.Pedido;
+import com.example.pedilo_ya.entities.Restaurante.Menu.Stock;
 import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import com.example.pedilo_ya.repositories.PedidoRepository;
 import com.example.pedilo_ya.repositories.RestauranteRepository;
@@ -28,6 +29,7 @@ public class RestauranteController {
         this.restauranteRepository = restauranteRepository;
         this.pedidoRepository = pedidoRepository;
     }
+
     // Busca por id de restaurante
     @GetMapping("/restaurante/id/{id}")
     public ResponseEntity<Restaurante> getRestaurantePorId(@PathVariable Long id) {

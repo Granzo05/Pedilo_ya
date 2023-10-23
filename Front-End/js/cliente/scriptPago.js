@@ -1,8 +1,10 @@
 let productos = [];
-
+let actualizarDomicilio = false;
+let idClliente = 0;
 
 // Carga de los detalles de productos para el pago
-document.addEventListener('DOMContentLoaded', function () {
+function cargarPedido(id) {
+    idClliente = id;
     // Obtener los parametros de la URL
     const urlParams = new URLSearchParams(window.location.search);
     const detallesCodificados = urlParams.get('detalles');
@@ -37,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         contenedor.appendChild(info);
 
-        // Agrega el producto a la lista 'productos'
         productos.push({
             nombre: pedido.nombre,
             precio: pedido.precio,
@@ -54,6 +55,35 @@ document.addEventListener('DOMContentLoaded', function () {
         domicilio.hidden = false;
         const botonEncargo = document.getElementById("botonEncargo");
         botonEncargo.hidden = false;
+
+        // Busco el domicilio del cliente
+        fetch("/cliente/id/" + idCliente, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error al efectuar el pago(${response.status}): ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                let domicilio = this.getElementById("domicilio");
+                domicilio.hidden = false;
+
+                // VALIDAR QUE EL DOMICILIO EXISTA
+                if (data.domicilio === null) {
+                    // VALIDAR QUE CUANDO SE HACE CLIC PARA PEDIR, HAYA UN VALOR EN EL CAMPO DOMICILIO, SI YA ESTA EN LA BD DEBERIA ESTAR COMPLETO, SI ES NULO LO DEBE INGRESAR EL CLIENTE
+                    alert("Debes ingresar un domicilio");
+                    actualizarDomicilio = true;
+                } else {
+                    domicilio.textContent = data.domicilio;
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
     } else {
         const botonMercadoPago = document.getElementById("botonMercadoPago");
         botonMercadoPago.hidden = false;
@@ -63,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let total = document.createElement("div");
     // Si es delivery no pasa nada, si es retiro le hago el 10 de descuento
     total.textContent = parseFloat(totalPagar * parseFloat(descuento));
-});
+}
 
 function efectuarPago() {
     // Enviar todo la informacion a la api y manejar el resultado
@@ -91,6 +121,11 @@ function efectuarPago() {
 }
 
 function enviarPedidoARestaurante(tipoPago) {
+    if (actualizarDomicilio) {
+        let domicilioInput = document.getElementById("domicilioCliente");
+        actualizarDomiclioCliente(domicilioInput.value, idCliente);
+    }
+
     // Obtengo todos los productos
     const productos = productos;
 
@@ -144,14 +179,29 @@ function enviarPedidoARestaurante(tipoPago) {
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Error al enviar datos al restaurante (${response.status}): ${response.statusText}`);
+            } else {
+                // MOSTRAR CARTEL DE PEDIDO CORRECTO O EN CAMINO O EN PRODUCCION O ALGO
             }
-            return response.json();
-        })
-        .then(data => {
-            // mostrar un mensaje de éxito
         })
         .catch(error => {
             console.error("Error:", error);
         });
 }
 
+function actualizarDomicilioCliente(domicilio) {
+    fetch("/cliente/" + idCliente, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ domicilio: domicilio })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error al enviar datos al servidor (${response.status}): ${response.statusText}`);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}

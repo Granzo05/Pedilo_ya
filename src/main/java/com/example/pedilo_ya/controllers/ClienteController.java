@@ -6,6 +6,7 @@ import com.example.pedilo_ya.entities.Factura.Factura;
 import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import com.example.pedilo_ya.repositories.ClienteRepository;
 import com.example.pedilo_ya.repositories.FacturaRepository;
+import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,16 @@ public class ClienteController {
         } else {
             return new ResponseEntity<>("El usuario ya existe", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/cliente/id/{id}")
+    public ResponseEntity<Cliente> buscarClientePorId(@PathVariable long id) {
+        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+        if (clienteOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Cliente cliente = clienteOptional.get();
+        return ResponseEntity.ok(cliente);
     }
 
     @CrossOrigin

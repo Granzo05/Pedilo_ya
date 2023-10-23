@@ -23,7 +23,12 @@
             <option value="RETIRO">Retiro en tienda</option>
         </select>
 
-        <Input type="text" id="domicilio" hidden placeholder="Domicilio"></Input>
+        <h2>Detalles del domicilio</h2>
+        <form>
+            <label id="domicilio">Domicilio:</label>
+            <input type="text" id="domicilioCliente" name="domicilioCliente" required placeholder="Ingresa tu domicilio"
+                hidden>
+        </form>
 
         <section class="informacion-pago">
             <h2>Información de Pago</h2>
@@ -54,6 +59,11 @@
     </main>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            verificarCookies();
+            const id = getCookie('id');
+            cargarPedido(id);
+        });
 
         /*
                 const mp = new MercadoPago("YOUR_PUBLIC_KEY");

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            z-index: 1;
+        }
+
+        .filter {
+            float: bottom;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="modal" onclick="abrirModalAñadir()">Añadir ingrediente al stock</button>
+    <button class="modal" onclick="abrirModalEditar()">Editar ingrediente del stock</button>
+    <button class="modal" onclick="abrirModalBorrar()">Borrar ingrediente del stock</button>
+
+    <div id="modal-añadir" class="modal">
+        <div class="modal-content">
+            <label>
+                <input type="text" placeholder="Nombre del ingrediente" id="nombreIngrediente">
+            </label>
+            <br>
+            <label>
+                <i class='bx bx-lock'></i>
+                <input type="text" placeholder="Cantidad" id="cantidadIngredienteAñadir">
+            </label>
+            <br>
+            <label>
+                <select id="medidaIngredienteAñadir" name="medidaIngrediente">
+                    <option value="Medida" disabled>Medida</option>
+                    <option value="kilogramos">KG</option>
+                    <option value="litros">LITROS</option>
+                    <option value="gramos">GRAMOS</option>
+                </select>
+            </label>
+            <br>
+            <label>
+                <i class='bx bx-price'></i>
+                <input type="number" placeholder="Costo del ingrediente" id="costoIngredienteAñadir">
+            </label>
+            <br>
+            <input type="button" value="añadirIngrediente" id="añadirIngrediente" onclick="agregarStock()">
+        </div>
+    </div>
+
+    <div id="modal-editar" class="modal">
+        <div class="modal-content">
+            <label>
+                <select id="select-nombre-ingrediente-actualizar" name="nombreIngredienteActualizar">
+                </select>
+            </label>
+            <br>
+            <label>
+                <input type="text" placeholder="Cantidad" id="cantidadIngredienteActualizar">
+            </label>
+            <br>
+            <label>
+                <select id="medidaIngredienteActualizar" name="medidaIngrediente">
+                    <option value="kilogramos">KG</option>
+                    <option value="litros">LITROS</option>
+                    <option value="gramos">GRAMOS</option>
+                </select>
+            </label>
+            <br>
+            <label>
+                <input type="number" placeholder="Costo del ingrediente" id="costoIngredienteActualizar">
+            </label>
+            <br>
+            <input type="button" value="cargarIngrediente" id="cargarIngredienteActualizar" onclick="updateStock()">
+        </div>
+    </div>
+
+    <div id="modal-borrar" class="modal">
+        <div class="modal-content">
+            <label>
+                <select id="select-nombre-ingrediente-borrar" name="nombreIngrediente">
+                </select>
+            </label>
+            <br>
+            <input type="button" value="borrarIngrediente" id="borrarIngrediente" onclick="deleteStock()"
+                style="color: red;">
+        </div>
+    </div>
+
+    <div class="container">
+
+        <h1 class="title">Stock total</h1>
+
+        <div id="stock">
+            <!-- Aca se cargan los pedidos dinamicamente de la db -->
+        </div>
+    </div>
+    <script src="js/scriptStock.js"></script>
+    <script src="js/scriptCookie.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // True porque si es un usuario normal no debería poder ingresar
+            verificarCookies(true);
+            const id = getCookie('id');
+            buscarStock(id);
+        });
+
+    </script>
+</body>
+
+</html>
