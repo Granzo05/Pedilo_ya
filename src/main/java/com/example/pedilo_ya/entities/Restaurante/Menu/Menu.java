@@ -26,7 +26,7 @@ public class Menu {
     @JoinColumn(name = "id_restaurante")
     private Restaurante restaurante;
     @OneToMany
-    private List<Ingrediente> ingredientes = new ArrayList<>();
+    private List<IngredienteMenu> ingredientes = new ArrayList<>();
     @Lob
     @Column(name = "imagen")
     private byte[] imagen;
@@ -34,15 +34,6 @@ public class Menu {
 
     public Menu() {
     }
-
-    public Menu(int tiempoCoccion, EnumTipoMenu tipo, int comensales, double precio, List<Ingrediente> ingredientes) {
-        this.tiempoCoccion = tiempoCoccion;
-        this.tipo = tipo;
-        this.comensales = comensales;
-        this.precio = precio;
-        this.ingredientes = ingredientes;
-    }
-
     public Menu(int tiempoCoccion, EnumTipoMenu tipo, int comensales, double precio) {
         this.tiempoCoccion = tiempoCoccion;
         this.tipo = tipo;
@@ -122,15 +113,11 @@ public class Menu {
         this.precio = precio;
     }
 
-    public List<Ingrediente> getIngredientes() {
+    public List<IngredienteMenu> getIngredientes() {
         return ingredientes;
     }
 
-    public void setIngredientes(List<Ingrediente> ingredientes) {
+    public void setIngredientes(List<IngredienteMenu> ingredientes) {
         this.ingredientes = ingredientes;
-    }
-
-    public void addIngredientes(Ingrediente ingredientes) {
-        this.ingredientes.add(ingredientes);
     }
 }

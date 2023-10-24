@@ -163,7 +163,7 @@ function cerrarModal() {
     modal.style.display = "none";
 }
 
-function enviarMenu() {
+function agregarMenu() {
     const nombreInput = document.getElementById("nombreMenu");
     const ingredientesInputs = document.querySelectorAll(".ingredienteMenu");
     const coccionInput = document.getElementById("coccionMenu");
@@ -182,7 +182,9 @@ function enviarMenu() {
     formData.append("file", imagenInput.files[0]);
 
     ingredientesInputs.forEach((input, index) => {
-        formData.append(`ingredientes[${index}]`, input.value);
+        const ingrediente = input.value;
+        const cantidad = cantidadesInputs[index].value;
+        ingredientes.push({ nombre: ingrediente, cantidad: cantidad });
     });
 
     fetch('http://localhost:8080/restaurante/menu', {

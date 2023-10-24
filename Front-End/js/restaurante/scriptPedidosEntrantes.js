@@ -29,15 +29,37 @@ function cargarPedidos(idRestaurante) {
                     contenedor.appendChild(domicilio);
                 }
 
+                let menus = [];
+
                 pedido.detalles.forEach(detalle => {
                     let menu = document.createElement("p");
                     menu.textContent = detalle.menu;
                     contenedor.appendChild(menu);
+                    // Obtengo todos los menus para validar mas adelante
+                    menus.push(detalle.menu)
 
                     let cantidad = document.createElement("p");
                     cantidad.textContent = detalle.cantidad;
                     contenedor.appendChild(cantidad);
                 });
+
+                // Validar stock para ver si los ingredientes alcanzan para el pedido
+
+                fetch('http://localhost:8080/restaurante/id/' + idRestaurante + '/stock/check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(menus)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            alert(`El stock actual es insuficiente para los menus solicitados`);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
 
                 let buttonAceptar = document.createElement("button");
                 buttonOk.onclick = function () {

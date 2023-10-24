@@ -1,23 +1,16 @@
 package com.example.pedilo_ya.controllers;
 
-import com.example.pedilo_ya.controllers.EncryptMD5.Encrypt;
-import com.example.pedilo_ya.entities.Cliente.Cliente;
-import com.example.pedilo_ya.entities.Pedidos.Pedido;
 import com.example.pedilo_ya.entities.Restaurante.Menu.Ingrediente;
+import com.example.pedilo_ya.entities.Restaurante.Menu.IngredienteMenu;
+import com.example.pedilo_ya.entities.Restaurante.Menu.Menu;
 import com.example.pedilo_ya.entities.Restaurante.Menu.Stock;
-import com.example.pedilo_ya.entities.Restaurante.Restaurante;
-import com.example.pedilo_ya.repositories.PedidoRepository;
 import com.example.pedilo_ya.repositories.RestauranteRepository;
 import com.example.pedilo_ya.repositories.StockRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +47,23 @@ public class StockController {
         return ResponseEntity.ok(stock);
     }
 
+    // Busca stock id de restaurante y nombre del producto
+    @GetMapping("/restaurante/id/{id}/stock/check")
+    public ResponseEntity<String> getStockRestaurantePorIdYNombre(@PathVariable Long id, @RequestBody List<Menu> menus) {
+        for (Menu menu : menus) {
+            for (IngredienteMenu ingrediente : menu.getIngredientes()) {
+                Optional<Stock> stockEncontrado = stockRepository.findByNombreProductoYRestauranteId(ingrediente.getNombre(), id);
+
+                if (stockEncontrado.isPresent() && stockEncontrado.get().getCantidad() < ingrediente.getCantidad()) {
+                    // Si es menor solo devuelve los menus que puede producir junto con un error
+                    return new ResponseEntity<>("El stock no es suficiente", HttpStatus.BAD_REQUEST);
+                }
+            }
+        }
+        return new ResponseEntity<>("El stock es suficiente", HttpStatus.CREATED);
+    }
+
+
     @PostMapping("/restaurante/id/{id}/stock/carga")
     public ResponseEntity<String> crearStock(@PathVariable long id,
                                              @RequestParam("nombre") String nombre,
@@ -79,6 +89,7 @@ public class StockController {
             return new ResponseEntity<>("El stock ya existía", HttpStatus.BAD_REQUEST);
         }
     }
+
     @PutMapping("/restaurante/id/{id}/stock/update")
     public ResponseEntity<Stock> actualizarStock(@PathVariable Long id, @RequestBody Stock stock) {
         Optional<Stock> stockEncontrado = stockRepository.findByNombreProductoYRestauranteId(stock.getIngrediente().getNombre(), id);

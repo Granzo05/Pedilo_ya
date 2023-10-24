@@ -1,10 +1,9 @@
 package com.example.pedilo_ya.controllers;
 
-import com.example.pedilo_ya.controllers.EncryptMD5.Encrypt;
 import com.example.pedilo_ya.entities.Restaurante.Menu.EnumTipoMenu;
 import com.example.pedilo_ya.entities.Restaurante.Menu.Ingrediente;
+import com.example.pedilo_ya.entities.Restaurante.Menu.IngredienteMenu;
 import com.example.pedilo_ya.entities.Restaurante.Menu.Menu;
-import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import com.example.pedilo_ya.repositories.MenuRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class MenuController {
@@ -38,7 +35,7 @@ public class MenuController {
                                             @RequestParam("tipo") String tipoMenu,
                                             @RequestParam("comensales") int comensales,
                                             @RequestParam("precio") double precio,
-                                            @RequestParam("ingredientes") List<String> ingredientesString) throws IOException {
+                                            @RequestParam("ingredientes") List<IngredienteMenu> ingredientes) throws IOException {
         Optional<Menu> menu = menuRepository.findByName(nombre);
         if (menu.isEmpty()) {
             Menu menuDetails = new Menu();
@@ -48,16 +45,17 @@ public class MenuController {
             menuDetails.setComensales(comensales);
             menuDetails.setPrecio(precio);
 
-            List<String> ingredientesPagina = ingredientesString;
-            // Almaceno cada ingrediente por su clase
-            List<Ingrediente> ingredientes = new ArrayList<>();
+            List<IngredienteMenu> ingredientesMenu = new ArrayList<>();
 
-            for (String ingrediente: ingredientesPagina){
-                Ingrediente ingred = new Ingrediente();
-                ingred.setNombre(ingrediente);
-                ingredientes.add(ingred);
+            for (IngredienteMenu ingrediente : ingredientes) {
+                IngredienteMenu ingr = new IngredienteMenu();
+                ingr.setNombre(ingrediente.getNombre());
+                ingr.setCantidad(ingrediente.getCantidad());
+                ingredientesMenu.add(ingr);
             }
-            menuDetails.setIngredientes(ingredientes);
+
+            menuDetails.setIngredientes(ingredientesMenu);
+
             // Separo la imagen en bytes
             menuDetails.setImagen(file.getBytes());
 

@@ -46,7 +46,13 @@ public class RestauranteController {
         return pedidos;
     }
     @PostMapping("/restaurante")
-    public ResponseEntity<Restaurante> crearRestaurante(@RequestParam("file") MultipartFile file, @RequestParam("nombre") String nombre, @RequestParam("email") String email, @RequestParam("contraseña") String contraseña, @RequestParam("domicilio") String domicilio, @RequestParam("telefono") long telefono, @RequestParam("tipoDeComida") String tipoDeComida) throws IOException {
+    public ResponseEntity<Restaurante> crearRestaurante(@RequestParam("file") MultipartFile file,
+                                                        @RequestParam("nombre") String nombre,
+                                                        @RequestParam("email") String email,
+                                                        @RequestParam("contraseña") String contraseña,
+                                                        @RequestParam("domicilio") String domicilio,
+                                                        @RequestParam("telefono") long telefono,
+                                                        @RequestParam("tipoDeComida") String tipoDeComida) throws IOException {
         Optional<Restaurante> rest = restauranteRepository.findByEmail(email);
         if (rest.isEmpty()) {
             Restaurante restauranteDetails = new Restaurante();

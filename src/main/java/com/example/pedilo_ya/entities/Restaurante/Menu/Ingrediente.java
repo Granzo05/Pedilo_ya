@@ -12,10 +12,8 @@ public class Ingrediente {
     private double costo;
     @Column(name = "nombre")
     private String nombre;
-
     public Ingrediente() {
     }
-
     public Ingrediente(double costo, String nombre) {
         this.costo = costo;
         this.nombre = nombre;
