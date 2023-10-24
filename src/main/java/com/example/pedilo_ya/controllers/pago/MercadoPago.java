@@ -1,7 +1,5 @@
 package com.example.pedilo_ya.controllers.pago;
 
-import com.mercadopago.exceptions.MPException;
-
 public class MercadoPago {
     /*
     public static void main(String[] args) {

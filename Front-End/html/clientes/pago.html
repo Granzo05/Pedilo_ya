@@ -31,50 +31,31 @@
         </form>
 
         <section class="informacion-pago">
-            <h2>Información de Pago</h2>
-            <form>
-                <label for="nombre-titular">Nombre del Titular:</label>
-                <input type="text" id="nombre-titular" name="nombre-titular" required>
-
-                <label for="numero-tarjeta">Número de Tarjeta:</label>
-                <input type="text" id="numero-tarjeta" name="numero-tarjeta" required>
-
-                <label for="fecha-expiracion">Fecha de Expiración:</label>
-                <input type="text" id="fecha-expiracion" name="fecha-expiracion" required>
-
-                <label for="codigo-seguridad">Código de Seguridad:</label>
-                <input type="text" id="codigo-seguridad" name="codigo-seguridad" required>
-
-
-                <button type="submit" onclick="enviarPedidoARestaurante('EFECTIVO')" hidden id="botonEncargo">Realizar
-                    encargo</button>
-
-                <!-- Me falta programar esto todavia, pero lo dejo para mas adelante, igual el boton este va a quedar -->
-                <div id="wallet_container">
-                    <button type="submit" onclick="efectuarPago()" hidden id="botonMercadoPago">Pagar con
-                        mercadopago</button>
-                </div>
-            </form>
+            <button type="submit" onclick="enviarPedidoARestaurante('EFECTIVO')" hidden id="botonEncargo">Realizar
+                encargo</button>
+            <button type="submit" hidden id="checkout-btn" onclick="realizarPago()">Pagar con MercadoPago</button>
         </section>
+
     </main>
 
+    <div id="wallet_container">
+    </div>
     <script>
+        const mp = new MercadoPago('TEST-5611d9aa-ca43-4d69-8f17-006f2a52b3db', {
+            locale: 'es-AR'
+        });
+
+        mp.bricks().create("wallet", "wallet_container", {
+            initialization: {
+                preferenceId: "<PREFERENCE_ID>",
+            },
+        });
+
         document.addEventListener("DOMContentLoaded", function () {
             verificarCookies();
             const id = getCookie('id');
             cargarPedido(id);
         });
-
-        /*
-                const mp = new MercadoPago("YOUR_PUBLIC_KEY");
-        
-                mp.bricks().create("wallet", "wallet_container", {
-                    initialization: {
-                        preferenceId: "botonMercadoPago",
-                    },
-                });
-        
-        */
     </script>
 </body>
 

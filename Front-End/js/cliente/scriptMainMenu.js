@@ -47,7 +47,7 @@ function toggleImage(div) {
         }
         //Si la pagina se abre por primera vez, hamburguesas va a esta ampliada por lo que es al pedo hacerle dos clic para entrar, con esto deberia enviarte a la pagina con un solo clic
     } else if (primerClic === null && divId === "hamburguesas") {
-        window.location.href = "/hamburguesas.html";
+        window.location.href = "/hamburguesas";
     } else {
         div.classList.add("enlarged");
     }

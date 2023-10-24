@@ -2,19 +2,12 @@ package com.example.pedilo_ya.controllers;
 
 import com.example.pedilo_ya.controllers.EncryptMD5.Encrypt;
 import com.example.pedilo_ya.entities.Cliente.Cliente;
-import com.example.pedilo_ya.entities.Factura.Factura;
-import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import com.example.pedilo_ya.repositories.ClienteRepository;
-import com.example.pedilo_ya.repositories.FacturaRepository;
-import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
 import java.util.Optional;
 
 @RestController

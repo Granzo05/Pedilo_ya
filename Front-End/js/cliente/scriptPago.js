@@ -26,12 +26,15 @@ function cargarPedido(id) {
 
         let nombre = document.createElement("span");
         nombre.textContent = pedido.nombre;
+        nombre.id = "product-name";
 
         let cantidad = document.createElement("span");
         cantidad.textContent = pedido.cantidad;
+        cantidad.id = "quantity";
 
         let precio = document.createElement("span");
         precio.textContent = pedido.precio;
+        precio.id = "unit-price";
 
         info.appendChild(img);
         info.appendChild(nombre);
@@ -42,6 +45,7 @@ function cargarPedido(id) {
         productos.push({
             nombre: pedido.nombre,
             precio: pedido.precio,
+            cantidad: pedido.cantidad,
             imagen: pedido.imagen
         });
     });
@@ -85,7 +89,7 @@ function cargarPedido(id) {
                 console.error("Error:", error);
             });
     } else {
-        const botonMercadoPago = document.getElementById("botonMercadoPago");
+        const botonMercadoPago = document.getElementById("checkout-btn");
         botonMercadoPago.hidden = false;
         let descuento = 0.9;
     }
@@ -93,31 +97,6 @@ function cargarPedido(id) {
     let total = document.createElement("div");
     // Si es delivery no pasa nada, si es retiro le hago el 10 de descuento
     total.textContent = parseFloat(totalPagar * parseFloat(descuento));
-}
-
-function efectuarPago() {
-    // Enviar todo la informacion a la api y manejar el resultado
-
-    fetch("/mercadopago", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(pedido)
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Error al efectuar el pago(${response.status}): ${response.statusText}`);
-            }
-            // Si no falló el pago, entonces envío el pedido al restaurante
-            enviarPedidoARestaurante("MERCADOPAGO");
-
-            // Generar factura y enviarla por correo
-            generarFactura();
-        })
-        .catch(error => {
-            console.error("Error:", error);
-        });
 }
 
 function enviarPedidoARestaurante(tipoPago) {
@@ -205,3 +184,25 @@ function actualizarDomicilioCliente(domicilio) {
             console.error("Error:", error);
         });
 }
+
+function realizarPago() {
+    const productos = productos;
+
+    fetch('/mercadopago', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productos })
+    })
+        .then(response => response.json())
+        .then(data => {
+            // El pago se hizo bien
+            enviarPedidoARestaurante("MERCADOPAGO");
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos al servidor:', error);
+        });
+}
+
+

@@ -1,8 +1,9 @@
 //node server.js
 const express = require('express');
 const app = express();
-const path = require('path'); // Importa el módulo path
+const path = require('path');
 const port = 3000;
+const mercadopago = require("mercadopago");
 
 // Define la carpeta raíz para servir archivos estáticos
 app.use(express.static(path.join(__dirname)));
@@ -33,12 +34,12 @@ app.get('/login/js/scriptLoginNegocio.js', (req, res) => {
     res.sendFile(path.join(__dirname, '/js/restaurante/scriptLoginNegocio.js'));
 });
 
-app.get('/js/scripCargaRestaurantes.js', (req, res) => {
+app.get('/js/scriptCargaRestaurantes.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/restaurante/scripCargaRestaurantes.js'));
+    res.sendFile(path.join(__dirname, '/js/restaurante/scriptCargaRestaurantes.js'));
 });
 
-app.get('/menu/js/scriptMainMenu.js', (req, res) => {
+app.get('/js/scriptMainMenu.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.sendFile(path.join(__dirname, '/js/cliente/scriptMainMenu.js'));
 });
@@ -147,7 +148,7 @@ app.get('/accesoDenegado', (req, res) => {
     res.sendFile(path.join(__dirname, 'html/accesoDenegado.html'));
 });
 
-app.get('/menu', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'html/clientes/mainMenu.html'));
 });
 
@@ -234,3 +235,57 @@ app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Algo salió mal en el servidor');
 });
+
+// MERCADOPAGO
+/*
+mercadopago.configure({
+    access_token: 'TOKEN PRIVADO'
+});
+
+
+app.post('/mercadopago', (req, res) => {
+    const productos = req.body;
+
+    let items = [];
+
+    productos.forEach(producto => {
+        const nombre = producto.nombre;
+        const precio = producto.precio;
+        const cantidad = producto.cantidad;
+        const imagen = producto.imagen;
+
+        items.push({
+            title: nombre,
+            currency_id: 'BRL',
+            picture_url: imagen,
+            quantity: cantidad,
+            unit_price: precio
+        });
+    });
+
+    let preference = {
+        items: items,
+        back_urls: {
+            success: 'https://www.success.com',
+            failure: 'http://www.failure.com',
+        },
+        auto_return: 'approved',
+        payment_methods: {
+            excluded_payment_methods: [],
+            excluded_payment_types: [],
+            installments: 1
+        }
+    };
+
+    mercadopago.preferences
+        .create(preference)
+        .then(function (response) {
+            global.id = response.body.id;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+    res.status(200).send('OK');
+});
+*/

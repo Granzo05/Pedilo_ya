@@ -1,6 +1,5 @@
 package com.example.pedilo_ya.entities.Restaurante.Menu;
 
-import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
