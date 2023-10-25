@@ -30,7 +30,7 @@ public class Pedido {
     @Column(name = "domicilio")
     private String domicilio;
     @Column(name = "estado")
-    private String estadoPedido;
+    private String estado;
     @Column(name = "telefono")
     private long telefono;
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -62,11 +62,11 @@ public class Pedido {
     }
 
     public String getEstadoPedido() {
-        return estadoPedido;
+        return estado;
     }
 
     public void setEstadoPedido(String estadoPedido) {
-        this.estadoPedido = estadoPedido;
+        this.estado = estadoPedido;
     }
 
     public List<DetallesPedido> getDetallesPedido() {

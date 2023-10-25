@@ -1,5 +1,8 @@
 package com.example.pedilo_ya.entities.Restaurante.Menu;
 
+import jakarta.persistence.Entity;
+
+@Entity
 public class IngredienteMenu extends Ingrediente {
     private int cantidad;
 

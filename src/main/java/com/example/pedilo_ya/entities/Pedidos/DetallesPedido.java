@@ -19,7 +19,7 @@ public class DetallesPedido {
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
     @ManyToOne
-    @JoinColumn(name = "id_pedido")
+    @JoinColumn(name = "id_factura")
     private Factura factura;
     @Column(name = "subTotal")
 

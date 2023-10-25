@@ -1,5 +1,6 @@
 package com.example.pedilo_ya.entities.Restaurante.Menu;
 
+import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -21,17 +22,17 @@ public class Stock {
     private String medida;
     @ManyToOne
     @JoinColumn(name = "id_restaurante")
-    private long idRestaurante;
+    private Restaurante restaurante;
     @OneToOne
     private Ingrediente ingrediente;
 
     public Stock() {
     }
 
-    public Stock(int cantidad, String medida, long restaurante, Ingrediente ingrediente) {
+    public Stock(int cantidad, String medida, Restaurante restaurante, Ingrediente ingrediente) {
         this.cantidad = cantidad;
         this.medida = medida;
-        this.idRestaurante = restaurante;
+        this.restaurante = restaurante;
         this.ingrediente = ingrediente;
     }
 
@@ -59,12 +60,12 @@ public class Stock {
         this.medida = medida;
     }
 
-    public long getIdRestaurante() {
-        return idRestaurante;
+    public Restaurante getRestaurante() {
+        return restaurante;
     }
 
-    public void setIdRestaurante(long idRestaurante) {
-        this.idRestaurante = idRestaurante;
+    public void setRestaurante(Restaurante idRestaurante) {
+        this.restaurante = idRestaurante;
     }
 
     public Ingrediente getIngrediente() {

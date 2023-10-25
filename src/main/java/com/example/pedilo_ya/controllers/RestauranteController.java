@@ -38,9 +38,11 @@ public class RestauranteController {
         Restaurante restaurante = restauranteEncontrado.get();
         return ResponseEntity.ok(restaurante);
     }
+
+    // Una vez que el admin acepta el pedido se envia a la cocina
     @GetMapping("/restaurante/id/{idNegocio}/cocina")
     public List<Pedido> getPedidosEntrantesACocina(@PathVariable Long idNegocio) {
-        List<Pedido> pedidos = pedidoRepository.findPedidosProcesadosByRestaurante(idNegocio);
+        List<Pedido> pedidos = pedidoRepository.findPedidosAceptadosACocina(idNegocio);
         return pedidos;
     }
     @PostMapping("/restaurante")

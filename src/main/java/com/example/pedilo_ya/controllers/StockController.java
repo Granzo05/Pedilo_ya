@@ -4,6 +4,7 @@ import com.example.pedilo_ya.entities.Restaurante.Menu.Ingrediente;
 import com.example.pedilo_ya.entities.Restaurante.Menu.IngredienteMenu;
 import com.example.pedilo_ya.entities.Restaurante.Menu.Menu;
 import com.example.pedilo_ya.entities.Restaurante.Menu.Stock;
+import com.example.pedilo_ya.entities.Restaurante.Restaurante;
 import com.example.pedilo_ya.repositories.RestauranteRepository;
 import com.example.pedilo_ya.repositories.StockRepository;
 import org.springframework.http.HttpStatus;
@@ -64,7 +65,7 @@ public class StockController {
 
 
     @PostMapping("/restaurante/id/{id}/stock/carga")
-    public ResponseEntity<String> crearStock(@PathVariable long id,
+    public ResponseEntity<String> crearStock(@PathVariable Long id,
                                              @RequestParam("nombre") String nombre,
                                              @RequestParam("cantidad") int cantidad,
                                              @RequestParam("medida") String medida,
@@ -76,8 +77,10 @@ public class StockController {
             ingrediente.setNombre(nombre);
             ingrediente.setCosto(costo);
 
+            Optional<Restaurante> restauranteEncontrado = restauranteRepository.findById(id);
+
             Stock stock = new Stock();
-            stock.setIdRestaurante(id);
+            stock.setRestaurante(restauranteEncontrado.get());
             stock.setCantidad(cantidad);
             stock.setMedida(medida);
             stock.setIngrediente(ingrediente);
