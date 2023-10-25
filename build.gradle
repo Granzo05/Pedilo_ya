@@ -14,6 +14,8 @@ repositories {
 
 
 dependencies {
+	// JSONS
+	implementation group: 'org.json', name: 'json', version: '20231013'
 	//Mercado pago
 	implementation group: 'com.mercadopago', name: 'sdk-java', version: '2.1.15'
 	//Generador de pdfs

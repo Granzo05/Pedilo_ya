@@ -24,19 +24,19 @@ app.get('/css/styleNegocio.css', (req, res) => {
 
 // JS
 
-app.get('/login/js/scriptLoginCliente.js', (req, res) => {
+app.get('/js/scriptLoginCliente.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.sendFile(path.join(__dirname, '/js/cliente/scriptLoginCliente.js'));
 });
 
-app.get('/login/js/scriptLoginNegocio.js', (req, res) => {
+app.get('/js/scriptLoginNegocio.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.sendFile(path.join(__dirname, '/js/restaurante/scriptLoginNegocio.js'));
 });
 
 app.get('/js/scriptCargaRestaurantes.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/restaurante/scriptCargaRestaurantes.js'));
+    res.sendFile(__dirname, '/js/restaurante/scriptCargaRestaurantes.js');
 });
 
 app.get('/js/scriptMainMenu.js', (req, res) => {
@@ -44,52 +44,52 @@ app.get('/js/scriptMainMenu.js', (req, res) => {
     res.sendFile(path.join(__dirname, '/js/cliente/scriptMainMenu.js'));
 });
 
-app.get('/pago/js/scriptPago.js', (req, res) => {
+app.get('/js/scriptPago.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.sendFile(path.join(__dirname, '/js/scriptPago.js'));
 });
 
-app.get('/pedidos/js/scriptPedidosRealizadosCliente.js', (req, res) => {
+app.get('/js/scriptPedidosRealizadosCliente.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/scriptPedidosRealizadosCliente.js'));
+    res.sendFile(path.join('/js/scriptPedidosRealizadosCliente.js'));
 });
 
-app.get('/pedidos/js/scriptPedidosRealizadosNegocio.js', (req, res) => {
+app.get('/js/scriptPedidosRealizadosNegocio.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.sendFile(path.join(__dirname, '/js/cliente/scriptPedidosRealizadosNegocio.js'));
 });
 
-app.get('/pedidos/js/scriptPedidosEntrantes.js', (req, res) => {
+app.get('/js/scriptPedidosEntrantes.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.sendFile(path.join(__dirname, '/js/restaurante/scriptPedidosEntrantes.js'));
 });
 
-app.get('/pedidos/js/scriptPedido.js', (req, res) => {
+app.get('/js/scriptPedido.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.sendFile(path.join(__dirname, '/js/pedidos/scriptPedido.js'));
 });
 
-app.get('/pedidos/js/scriptPedidosRecibidosCocina.js', (req, res) => {
+app.get('/js/scriptPedidosRecibidosCocina.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.sendFile(path.join(__dirname, '/js/restaurante/scriptPedidosRecibidosCocina.js'));
 });
 
-app.get('/pedidos/js/scriptCookies.js', (req, res) => {
+app.get('/js/scriptCookie.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
-    res.sendFile(path.join(__dirname, '/js/cookies/scriptCookies.js'));
+    res.sendFile(path.join(__dirname, '/js/cookies/scriptCookie.js'));
 });
 
-app.get('/pedidos/js/scriptDescargaPDF.js', (req, res) => {
+app.get('/js/scriptDescargaPDF.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.sendFile(path.join(__dirname, '/js/pdfs/scriptDescargaPDF.js'));
 });
 
-app.get('/pedidos/js/scriptPedidosRecibidosNegocio.js', (req, res) => {
+app.get('/js/scriptPedidosRecibidosNegocio.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.sendFile(path.join(__dirname, '/js/restaurante/scriptPedidosRecibidosNegocio.js'));
 });
 
-app.get('restaurante/js/scriptStock.js', (req, res) => {
+app.get('js/scriptStock.js', (req, res) => {
     res.set('Content-Type', 'application/javascript');
     res.sendFile(path.join(__dirname, '/js/restaurante/scriptStock.js'));
 });
@@ -109,7 +109,7 @@ app.get('/empanadas', (req, res) => {
 });
 
 app.get('/hamburguesas', (req, res) => {
-    res.sendFile(path.join('html/restaurantesPorCategoriaComida/hamburguesas.html'));
+    res.sendFile(path.join(__dirname, 'html/restaurantesPorCategoriaComida/hamburguesas.html'));
 });
 
 app.get('/lomos', (req, res) => {
@@ -203,7 +203,7 @@ app.post('/crear-pagina/:id', (req, res) => {
         }
 
         // Ruta final del restaurante
-        fs.writeFile(__dirname + "html/restaurantes/${id}.html", data, (err) => {
+        fs.writeFile(__dirname + "/html/restaurantesAutomaticos/" + id + ".html", data, (err) => {
             if (err) {
                 console.error('Error al crear la página:', err);
                 return res.status(500).send('Error al crear la página');
@@ -215,7 +215,7 @@ app.post('/crear-pagina/:id', (req, res) => {
 
 app.get('/restaurante/id/:id', (req, res) => {
     const restauranteId = req.params.id;
-    const rutaArchivo = path.join(__dirname, `html/restaurantes/${restauranteId}.html`);
+    const rutaArchivo = path.join(__dirname, `/html/restaurantesAutomaticos/${restauranteId}.html`);
 
     fs.access(rutaArchivo, fs.constants.R_OK, (err) => {
         if (err) {

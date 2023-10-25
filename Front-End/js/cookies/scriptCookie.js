@@ -18,7 +18,7 @@ function verificarCookies(privilegioNecesario = false) {
     const privilegio = getCookie('privilegio');
     const email = getCookie('email');
 
-    if (!usuario) {
+    if (!id) {
         // El usuario no está autenticado
         window.location.href = 'login/loginCliente.html';
         return;

@@ -4,6 +4,10 @@ import com.example.pedilo_ya.entities.Restaurante.Menu.EnumTipoMenu;
 import com.example.pedilo_ya.entities.Restaurante.Menu.IngredienteMenu;
 import com.example.pedilo_ya.entities.Restaurante.Menu.Menu;
 import com.example.pedilo_ya.repositories.MenuRepository;
+import com.example.pedilo_ya.repositories.RestauranteRepository;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,59 +16,71 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 public class MenuController {
     private final MenuRepository menuRepository;
+    private final RestauranteRepository restauranteRepository;
 
-    public MenuController(MenuRepository menuRepository) {
+    public MenuController(MenuRepository menuRepository,
+                          RestauranteRepository restauranteRepository) {
         this.menuRepository = menuRepository;
+        this.restauranteRepository = restauranteRepository;
     }
 
     // Busca por id de menu
     @GetMapping("/restaurante/{id}/menu")
     public List<Menu> getMenusPorIdRestaurante(@PathVariable Long id) {
-        return menuRepository.findByIdRestaurante(id);
+        List<Menu> menus = menuRepository.findByIdRestaurante(id);
+
+        for (Menu menu: menus) {
+            // Convertimos la imagen a base64 para poder mostrarla
+            menu.setImagen64(Base64.getEncoder().encodeToString(menu.getImagen()));
+        }
+
+        return menus;
     }
 
     @PostMapping("/restaurante/menu")
-    public ResponseEntity<String> crearMenu(@RequestParam("file") MultipartFile file,
-                                            @RequestParam("nombre") String nombre,
-                                            @RequestParam("tiempoCoccion") int tiempoCoccion,
-                                            @RequestParam("tipo") String tipoMenu,
-                                            @RequestParam("comensales") int comensales,
-                                            @RequestParam("precio") double precio,
-                                            @RequestParam("ingredientes") List<IngredienteMenu> ingredientes) throws IOException {
-        Optional<Menu> menu = menuRepository.findByName(nombre);
-        if (menu.isEmpty()) {
-            Menu menuDetails = new Menu();
-            menuDetails.setNombre(nombre);
-            menuDetails.setTiempoCoccion(tiempoCoccion);
-            menuDetails.setTipo(EnumTipoMenu.valueOf(tipoMenu));
-            menuDetails.setComensales(comensales);
-            menuDetails.setPrecio(precio);
+    public ResponseEntity<Menu> crearMenu(@RequestParam("file") MultipartFile file,
+                                          @RequestParam("nombre") String nombre,
+                                          @RequestParam("tipo") EnumTipoMenu tipo,
+                                          @RequestParam("comensales") int comensales,
+                                          @RequestParam("tiempoCoccion") int tiempo,
+                                          @RequestParam("precio") double precio,
+                                          @RequestParam("restauranteID") Long restauranteId,
+                                          @RequestParam("ingredientesInputs") List<String> ingredientesInputs) throws IOException {
 
-            List<IngredienteMenu> ingredientesMenu = new ArrayList<>();
 
-            for (IngredienteMenu ingrediente : ingredientes) {
-                IngredienteMenu ingr = new IngredienteMenu();
-                ingr.setNombre(ingrediente.getNombre());
-                ingr.setCantidad(ingrediente.getCantidad());
-                ingredientesMenu.add(ingr);
+        Menu menu = new Menu();
+        menu.setNombre(nombre);
+        menu.setTipo(tipo);
+        menu.setComensales(comensales);
+        menu.setPrecio(precio);
+        menu.setTiempoCoccion(tiempo);
+        // Separo la imagen en bytes
+        menu.setImagen(file.getBytes());
+        menu.setRestaurante(restauranteRepository.findById(restauranteId).get());
+
+        List<IngredienteMenu> ingredientes = new ArrayList<>();
+        try {
+            JSONArray ingredientesJSON = new JSONArray(ingredientesInputs);
+            for (int i = 0; i < ingredientesJSON.length(); i++) {
+                JSONObject ingredienteJSON = ingredientesJSON.getJSONObject(i);
+                IngredienteMenu ingrediente = new IngredienteMenu();
+                ingrediente.setNombre(ingredienteJSON.getString("nombre"));
+                ingrediente.setCantidad(ingredienteJSON.getInt("cantidad"));
+                ingredientes.add(ingrediente);
             }
-
-            menuDetails.setIngredientes(ingredientesMenu);
-
-            // Separo la imagen en bytes
-            menuDetails.setImagen(file.getBytes());
-
-            menuRepository.save(menuDetails);
-            return new ResponseEntity<>("El restaurante ha sido añadido correctamente", HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>("Error al registrar el restaurante: el correo electrónico ya existe", HttpStatus.BAD_REQUEST);
+        } catch (JSONException ignored) {
         }
+        menu.setIngredientes(ingredientes);
+
+        menuRepository.save(menu);
+        return ResponseEntity.ok(menu);
     }
 
     @PutMapping("/restaurante/menu/{id}")

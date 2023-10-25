@@ -1,5 +1,10 @@
+idRestaurante = null;
+
 function cargarMenu() {
-    fetch("http://localhost:8080/restaurante/menu" + id, {
+    const urlActual = window.location.href;
+    idRestaurante = urlActual.split('/').pop();
+
+    fetch("http://localhost:8080/restaurante/" + idRestaurante + "/menu", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -15,6 +20,7 @@ function cargarMenu() {
             let contenedor = document.getElementById("container-items");
 
             data.forEach(menu => {
+                console.log(menu);
                 //Creamos el div que contiene cada menu
                 let carta = document.createElement("div");
                 carta.className = "card";
@@ -28,17 +34,22 @@ function cargarMenu() {
 
                 let nombreMenu = document.createElement("h2");
                 nombreMenu.textContent = menu.nombre;
+                nombreMenu.className = "nombre";
 
                 let precioMenu = document.createElement("h2");
-                precioMenu.textContent = menu.precio;
+                precioMenu.textContent = "$" + menu.precio;
+                precioMenu.className = "precio"
 
                 let añadirBoton = document.createElement("button");
                 añadirBoton.textContent = "Añadir al pedido";
-                añadirBoton.onclick = añadirProductoAlCarrito(this);
+                añadirBoton.onclick = function () {
+                    añadirAlCarrito(this);
+                }
 
                 frenteCarta.appendChild(imgElement);
                 frenteCarta.appendChild(nombreMenu);
                 frenteCarta.appendChild(precioMenu);
+                frenteCarta.appendChild(añadirBoton);
 
                 // Creamos el dorso que va a contener los ingredientes y alguna descripcion quizas
                 let dorsoCarta = document.createElement("div");
@@ -52,11 +63,11 @@ function cargarMenu() {
                 });
 
                 // Lo asignamos al dorso
-                dorsoCarta.appendChild(ingredientes);
+                //dorsoCarta.appendChild(ingredientes);
 
                 // Asignamos ambas caras a la tarjeta
                 carta.appendChild(frenteCarta);
-                carta.appendChild(dorsoCarta);
+                //carta.appendChild(dorsoCarta);
 
                 // Asignamos la carta completa al div
                 contenedor.appendChild(carta);
@@ -96,8 +107,8 @@ function añadirAlCarrito(button) {
     const botonAñadir = tarjetaCopia.querySelector('button');
     botonAñadir.remove();
 
-    const cantidad = tarjetaCopia.createElement('input');
-    cantidad.className("cantidad");
+    const cantidad = document.createElement('input');
+    cantidad.className = "cantidad";
     cantidad.type = 'number';
     cantidad.value = 1;
 
@@ -110,13 +121,15 @@ function añadirAlCarrito(button) {
     contador.textContent = parseInt(contador.textContent) + 1;
 
     var totalPagar = document.querySelector('.total-pagar');
-    var total = 0;
+    var total = parseFloat(0);
 
     if (totalPagar.textContent != "") {
-        total = parseFloat(totalPagar.textContent.replace("$", "").replace(".", ""));
+        total = parseFloat(totalPagar.textContent.replace("$", ""));
     }
-    var precioActual = parseFloat(precio.replace("$", "").replace(".", "") * parseFloat(cantidad)) + parseFloat(total);
-    totalPagar.textContent = precioActual;
+    var precioActual = parseFloat(precio.replace("$", "")) + parseFloat(total);
+    console.log(precioActual);
+
+    totalPagar.textContent = parseFloat(precioActual);
 }
 
 
@@ -173,24 +186,29 @@ function agregarMenu() {
     const precioInput = document.getElementById("precioMenu");
     const imagenInput = document.getElementById("imagenProducto");
 
+    const ingredientes = [];
     const formData = new FormData();
     formData.append("nombre", nombreInput.value);
     formData.append("tiempoCoccion", coccionInput.value);
     formData.append("tipo", tipoMenuSeleccionado);
-    formData.append("comensales", comensalesInput);
+    formData.append("comensales", comensalesInput.value);
     formData.append("precio", precioInput.value);
     formData.append("file", imagenInput.files[0]);
+    formData.append("restauranteID", idRestaurante);
 
     ingredientesInputs.forEach((input, index) => {
         const ingrediente = input.value;
-        const cantidad = cantidadesInputs[index].value;
+        const cantidad = ingredientesInputs[index].nextElementSibling.value;
         ingredientes.push({ nombre: ingrediente, cantidad: cantidad });
     });
+
+    formData.append("ingredientesInputs", JSON.stringify(ingredientes));
 
     fetch('http://localhost:8080/restaurante/menu', {
         method: 'POST',
         body: formData,
     })
+
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al cargar el menu');
@@ -211,9 +229,15 @@ function añadirCampoIngrediente() {
     inputIngrediente.placeholder = "Ingrediente";
     inputIngrediente.className = "ingredienteMenu";
 
+    let inputCantidad = document.createElement("input");
+    inputCantidad.type = "number";
+    inputCantidad.placeholder = "Cantidad necesaria";
+    inputCantidad.className = "cantidadIngrediente";
+
     let br = document.createElement("br");
 
     containter.appendChild(inputIngrediente);
+    containter.appendChild(inputCantidad);
     containter.appendChild(br);
 }
 
@@ -224,14 +248,14 @@ window.addEventListener("click", function (event) {
     }
 });
 
-/*
+
 const btnCarrito = document.querySelector('.container-icon');
 const containerCarrito = document.querySelector('.container-productosCarrito');
 
 btnCarrito.addEventListener('click', e => {
     containerCarrito.classList.toggle('hidden-cart');
 });
-*/
+
 
 
 
