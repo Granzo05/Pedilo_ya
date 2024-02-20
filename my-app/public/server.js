@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const port = 3000;
-const mercadopago = require("mercadopago");
 
 // Define la carpeta raíz para servir archivos estáticos
 app.use(express.static(path.join(__dirname)));
