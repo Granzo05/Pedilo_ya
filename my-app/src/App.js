@@ -1,6 +1,6 @@
-import React from 'react';
-import './App.css';
-import MainMenu from './mainMenu';
+import MainMenu from './mainMenu'; 
+
+import './css/styleMainMenu.css';
 
 function App() {
   return (
